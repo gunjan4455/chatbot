@@ -1,19 +1,15 @@
-//import {getBookByIdAsync, editBookByIdAsync, isSuccess} from '../actions';
 import { connect } from 'react-redux';
 import Admin from '../components/Admin';
+import { getSocket } from '../actions';
 
-const mapStateToProps = ({state}) => {
+const mapStateToProps = (state, props) => {
     return {
-        //book: state.library.book,
-        //books: state.library.books,
-        //isSuccess: state.library.isSuccess
+        socket: state.socket
     }
 };
 
 const mapDispatchToProps = dispatch => ({
-    //getBookById: (id) =>dispatch(getBookByIdAsync(id)),
-    //editBookById: (id, formData) => dispatch(editBookByIdAsync(id, formData)),
-    //isSuccessAction: () => dispatch(isSuccess(false))
+    getSocket: (socket) => dispatch(getSocket(socket))
 });
 
 const AdminPanel = connect(mapStateToProps, mapDispatchToProps)(Admin);

@@ -1,19 +1,21 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { addNewUser, createChatRoom} from '../actions';
+import { addNewUser, createChatRoom, getSocket } from '../actions';
 import HomeComponent from '../components/Home';
-import { getBooks } from '../utility/selectors';
 
-const mapStateToProps = (state,props) => {
+const mapStateToProps = (state,ownProps) => {
+    console.log(ownProps,"in containerrrr");
     return {
        user: state.user,
-       room: state.room
+       room: state.room,
+       socket: state.socket
     }
 };
 
 const mapDispatchToProps = dispatch => ({
     addNewUser: (user) => dispatch(addNewUser(user)),
-    createChatRoom: (room) => dispatch(createChatRoom(room))
+    createChatRoom: (room) => dispatch(createChatRoom(room)),
+    getSocket: (socket) => dispatch(getSocket(socket))
 });
 
 const Home = connect(mapStateToProps,mapDispatchToProps)(HomeComponent);

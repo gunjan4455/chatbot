@@ -17,6 +17,10 @@ class Home extends React.Component {
         };
     }
 
+    componentWillMount() {
+        this.props.getSocket(socket);
+    }
+
     getCredentials = (value, type) => {
         switch (type) {
             case 'name':
@@ -28,39 +32,16 @@ class Home extends React.Component {
     }
 
     init(user, type){
-        //switch (type) {
-        //    case 'admin':
-        //        socket.emit('subscribe', {user: user})
-        //        break;
-        //    case 'client':
-        //        socket.emit('subscribe', {user: user})
-        //        break;
-        //    default:
-        //        break;
-        //}
-        //if(!(this.state.connected)){
-        //    socket.emit('subscribe', {user: user})
-        //    this.setState({connected: true})
-        //}
+        const {socket} = this.props;
         socket.emit('subscribe', {user: user});
         let self = this;
         socket.on('subscribeSuccess', function (user) {
             let room = {};
             room.title = user.name;
             room.owner = user._id;
-            if(user.isAdmin)
+            if(!user.isAdmin)
                 self.props.createChatRoom(room)
         });
-
-        socket.on('greeting-request', function (msg) {
-            console.log(msg);
-        });
-
-
-    }
-
-    createRoom = () => {
-
     }
 
     addUser = (user) => {
@@ -71,12 +52,12 @@ class Home extends React.Component {
     componentWillReceiveProps(nextProps, prv) {
         if (!_.isEmpty(nextProps.user) && nextProps.user.isAdmin && _.isEmpty(nextProps.room)) {
             this.init(nextProps.user,"admin");
-            //nextProps.history.push('/admin');
+            nextProps.history.push('/admin');
         } else if (!_.isEmpty(nextProps.user) && _.isEmpty(nextProps.room))
             this.init(nextProps.user,"client");
 
         if(!_.isEmpty(nextProps.room)) {
-            socket.emit('joinRoom', {room: nextProps.room});
+            nextProps.socket.emit('joinRoom', {room: nextProps.room});
         }
 
     }

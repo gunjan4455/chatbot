@@ -13,10 +13,10 @@ export const createChatRoom = (room) => {
     }
 };
 
-export const getBookByIdAsync = (id) => {
+export const getSocket = (socket) => {
     return {
-        type: types.GET_BOOK_BY_ID_ASYNC,
-        id:id
+        type: types.GET_SOCKET_ASYNC,
+        socket: socket
     }
 };
 

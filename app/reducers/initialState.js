@@ -32,6 +32,9 @@ export default {
 
     room: {
 
+    },
+    socket: {
+
     }
 
 }
