@@ -1,6 +1,6 @@
 export default {
     books: 'api/books',
-    book: 'api/book',
+    admins: 'api/admins',
     user: 'api/user',
     room: 'api/room'
 }

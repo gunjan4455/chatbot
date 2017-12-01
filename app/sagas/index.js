@@ -25,7 +25,7 @@ export function* createChatRoom(action) {
             endpoint: endPoints.room,
             payload: action.room
         });
-        console.log("in saga room==", data.result);
+
         yield put({type: types.NEW_CHAT_ROOM, room: data.result.room});
     } catch(err) {
         console.log("error",err);
@@ -33,11 +33,12 @@ export function* createChatRoom(action) {
 }
 export function* getAdmins() {
     try {
-        const admins = yield call(apiCall, {
+        const data = yield call(apiCall, {
             method: 'get',
-            endpoint: endPoints.admin
+            endpoint: endPoints.admins
         });
-        yield put({type: types.GET_ADMINS, admins: admins});
+        console.log("in saga admins==");
+       yield put({type: types.GET_ADMINS, admins: data.result.admins[0]});
 
     } catch(err) {
         console.log("error",err);

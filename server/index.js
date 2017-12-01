@@ -117,11 +117,16 @@ io.on('connection', function (socket) {
     socket.on('subscribe', (data) => {
             io.sockets.emit('subscribeSuccess', data.user);
             if (data.user.isAdmin) {
-                Users.findOneAndUpdate({_id: data.user._id}, {$set: {status: "online", socketId: socket.id}}).exec(function (err, user) {
+                Users.findOneAndUpdate({_id: data.user._id}, {
+                    $set: {
+                        status: "online",
+                        socketId: socket.id
+                    }
+                }).exec(function (err, user) {
                     if (err) {
                         res.status(422).json(helper.responseObject(422, err, null, true));
                     } else if (user) {
-                        let obj ={
+                        let obj = {
                             email: user.email,
                             status: user.status,
                             socketId: socket.id,
@@ -163,11 +168,15 @@ io.on('connection', function (socket) {
         }
     )
     socket.on('joinRoom', (room) => {
-        socket.join(room, function(err) {
-            Admins.find({}).exec(function(err, admins) {
-                _.map(admins, function(admin, index) {
-                    io.sockets.connected[admin.socketId].emit("greeting-request", "Hey admin how r u???");
-                });
+        socket.join(room, function (err) {
+            Admins.find({}).exec(function (err, admins) {
+                if (admins.length) {
+                    console.log("admins===================",admins);
+                    _.map(admins, function (admin, index) {
+                        console.log("ooooooo",admin.socketId);
+                        io.sockets.connected[admin.socketId].emit("greeting-request", "Hey admin how r u???");
+                    });
+                }
             });
         });
         console.log('joined room', room)
