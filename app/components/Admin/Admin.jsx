@@ -20,6 +20,5 @@ class Admin extends React.Component {
         return (<div></div>);
     }
 }
-
 export default Admin
 
