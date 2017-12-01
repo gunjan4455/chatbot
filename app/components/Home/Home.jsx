@@ -2,11 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import ChatBot from 'react-simple-chatbot';
 import {renderBooksList, emailValidator} from "../../utility";
-import io from 'socket.io-client';
 import InputForm from "./InputForm";
-
-const socket = io('http://localhost:9000');
-
 class Home extends React.Component {
     constructor(props) {
         super(props);
@@ -19,7 +15,7 @@ class Home extends React.Component {
     }
 
     componentWillMount() {
-        this.props.getSocket(socket);
+     //   this.props.getSocket(socket);
     }
 
     getCredentials = (value, type) => {
