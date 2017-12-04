@@ -36,6 +36,7 @@ export default {
     socket: {
 
     },
-    admins: []
+    admins: [],
+    onlineUsers: []
 
 }

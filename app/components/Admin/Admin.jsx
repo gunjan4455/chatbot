@@ -10,10 +10,13 @@ class Admin extends React.Component {
     }
 
     componentWillMount() {
+
+        this.props.getOnlineUsers();
+        this.props.getAdmins();
+
     }
 
     componentDidMount() {
-        this.props.getAdmins();
 
         const {socket} = this.props;
         socket.on('greeting-request', function (msg) {
@@ -27,11 +30,10 @@ class Admin extends React.Component {
                 <div className="row well">
                     <div className="col-md-2">
                         <ul className="nav nav-pills nav-stacked well">
-                            <li className="active"><a href="#"><i className="fa fa-envelope"></i> Users</a></li>
-                            <li><a href="#"><i className="fa fa-home"></i> Home</a></li>
-                            <li><a href="#"><i className="fa fa-user"></i> Profile</a></li>
-                            <li><a href="#"><i className="fa fa-key"></i> Security</a></li>
-                            <li><a href="#"><i className="fa fa-sign-out"></i> Logout</a></li>
+                            <li className="active"><a><i className="fa fa-envelope"></i>Online</a></li>
+                            {this.props.onlineUsers && this.props.onlineUsers.length && _.map(this.props.onlineUsers,(onlineUsers, index) => {
+                                return  (<li className="list-group-item" key={index}>{onlineUsers.name}</li>)
+                            }) }
                         </ul>
                     </div>
                     <div className="col-md-8">

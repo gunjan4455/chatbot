@@ -45,6 +45,19 @@ export function* getAdmins() {
         console.log("error",err);
     }
 }
+export function* getOnlineUsers() {
+    try {
+        const data = yield call(apiCall, {
+            method: 'get',
+            endpoint: endPoints.user
+        });
+        console.log("in saga getonlineuser==", data);
+       yield put({type: types.GET_ONLINE_USERS, onlineUsers: data.result.onlineUsers});
+
+    } catch(err) {
+        console.log("error",err);
+    }
+}
 
 export function* getSocket() {
     try {
@@ -82,6 +95,10 @@ export function* watchGetAdmins() {
     yield takeEvery(types.GET_ADMINS_ASYNC, getAdmins)
 }
 
+export function* watchGetOnlineUsers() {
+    yield takeEvery(types.GET_ONLINE_USERS_ASYNC, getOnlineUsers)
+}
+
 export function* watchCreateRoom() {
     yield takeEvery(types.NEW_CHAT_ROOM_ASYNC, createChatRoom)
 }
@@ -96,6 +113,7 @@ export default function* rootSaga() {
         watchAddUser(),
         watchGetAdmins(),
         watchCreateRoom(),
+        watchGetOnlineUsers(),
         watchLogout()
     ])
 }

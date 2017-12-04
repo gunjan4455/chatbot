@@ -33,6 +33,11 @@ export const getAdmins = () => {
         type: types.GET_ADMINS_ASYNC
     }
 };
+export const getOnlineUsers = () => {
+    return {
+        type: types.GET_ONLINE_USERS_ASYNC
+    }
+};
 
 export const logout = (admin) => {
     return {
