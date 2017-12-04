@@ -25,7 +25,23 @@ module.exports = {
                 });
             }
         });
+    },
+    getOnlineUsers: function (req, res, next) {
+        Users.find({"status":"online"}).exec(function (err, onlineUsers) {
+            if (err) {
+                res.status(422).json(helper.responseObject(422, err, null, true));
+            } else {
+                req.result = {};
+                req.result.onlineUsers = onlineUsers;
+                next();
     }
+        });
+    }
+
+
+
+
+
 };
 
 

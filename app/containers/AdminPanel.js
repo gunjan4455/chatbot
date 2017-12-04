@@ -1,17 +1,19 @@
 import { connect } from 'react-redux';
 import Admin from '../components/Admin';
-import { getSocket, getAdmins } from '../actions';
+import { getSocket, getAdmins ,getOnlineUsers} from '../actions';
 
 const mapStateToProps = (state, props) => {
     return {
         socket: state.socket,
-        admins: state.admins
+        admins: state.admins,
+        onlineUsers:state.onlineUsers
     }
 };
 
 const mapDispatchToProps = dispatch => ({
     getSocket: (socket) => dispatch(getSocket(socket)),
-    getAdmins: () => dispatch(getAdmins())
+    getAdmins: () => dispatch(getAdmins()),
+    getOnlineUsers: () => dispatch(getOnlineUsers())
 });
 
 const AdminPanel = connect(mapStateToProps, mapDispatchToProps)(Admin);

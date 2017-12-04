@@ -14,6 +14,7 @@ class Admin extends React.Component {
 
     componentDidMount() {
         this.props.getAdmins();
+        this.props.getOnlineUsers();
 
         const {socket} = this.props;
         socket.on('greeting-request', function (msg) {
