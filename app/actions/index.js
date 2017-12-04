@@ -34,3 +34,10 @@ export const getAdmins = () => {
     }
 };
 
+export const logout = (admin) => {
+    return {
+        type: types.LOGOUT_ASYNC,
+        admin: admin
+    }
+};
+

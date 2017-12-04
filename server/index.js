@@ -132,7 +132,8 @@ io.on('connection', function (socket) {
                             socketId: socket.id,
                             password: user.password,
                             userid: user.userid,
-                            name: user.name
+                            name: user.name,
+                            user: user._id
                         }
 
                         new Admins(obj).save(function (err, admin) {

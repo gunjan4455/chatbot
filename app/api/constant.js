@@ -21,3 +21,6 @@ export const GET_ADMINS_ASYNC ="GET_ADMINS_ASYNC";
 
 export const GET_SOCKET="GET_SOCKET";
 export const GET_SOCKET_ASYNC="GET_SOCKET_ASYNC";
+
+export const LOGOUT="LOGOUT";
+export const LOGOUT_ASYNC="LOGOUT_ASYNC";

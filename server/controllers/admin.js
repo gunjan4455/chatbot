@@ -13,6 +13,22 @@ module.exports = {
                 next();
             }
         });
+    },
+
+    logout: function (req, res, next) {
+        console.log("pppppppppppppppppp", req.params.id);
+        Admins.remove({ user : req.params.id }, function (err, change) {
+            if (err)
+                res.status(422).json(helper.handleError(422, err));
+            if (!(change.ok === 1 && change.n === 1)) {
+                console.log("changeeeeeeeeeeeeee",change);
+                //return res.status(422).json(helper.handleError(422, "User not found sorry"));
+            }
+            else {
+                req.result = change;
+                next();
+            }
+        });
     }
 };
 

@@ -55,16 +55,16 @@ export function* getSocket() {
     }
 }
 
-export function* editBookByIdAsync(action) {
+export function* logout(action) {
     try {
-        const endpoint = `${endPoints.book}/${action.id}`;
+        const endpoint = `${endPoints.admins}/${action.admin._id}`;
         const book = yield call(apiCall, {
-            method: 'put',
-            endpoint: endpoint,
-            payload: action.formData
+            method: 'delete',
+            endpoint: endpoint
         });
-        yield put({type: types.EDIT_BOOK, book: book});
-        yield put({type: types.CHECK_SUCCESS, check: true});
+        console.log("oggggggggggg",book);
+        //yield put({type: types.EDIT_BOOK, book: book});
+        //yield put({type: types.CHECK_SUCCESS, check: true});
     } catch(err) {
         console.log("error",err);
     }
@@ -86,11 +86,16 @@ export function* watchCreateRoom() {
     yield takeEvery(types.NEW_CHAT_ROOM_ASYNC, createChatRoom)
 }
 
+export function* watchLogout() {
+    yield takeEvery(types.LOGOUT_ASYNC, logout)
+}
+
 export default function* rootSaga() {
     yield all([
         watchGetSocket(),
         watchAddUser(),
         watchGetAdmins(),
-        watchCreateRoom()
+        watchCreateRoom(),
+        watchLogout()
     ])
 }

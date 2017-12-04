@@ -23,6 +23,9 @@ const AdminSchema = new mongoose.Schema({
     },
     socketId : {
         type: String
+    },
+    user: {
+        type: String
     }
 });
 
