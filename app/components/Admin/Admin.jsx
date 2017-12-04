@@ -10,10 +10,11 @@ class Admin extends React.Component {
     }
 
     componentWillMount() {
-        //this.props.getAdmins();
     }
 
     componentDidMount() {
+        this.props.getAdmins();
+
         const {socket} = this.props;
         socket.on('greeting-request', function (msg) {
             console.log(msg);
@@ -24,8 +25,11 @@ class Admin extends React.Component {
         return (
             <div className="col-sm-3 user-listing">
                 <ul className="list-group">
-                    <li className="list-group-item active">Cras justo odio</li>
-                    <li className="list-group-item">Dapibus ac facilisis in</li>
+                    <li className="list-group-item active">Admins</li>
+                    {this.props.admins && this.props.admins.length && _.map(this.props.admins,(admin, index) => {
+                        return  (<li className="list-group-item" key={index}>{admin.name}</li>)
+                    }) }
+
                     <li className="list-group-item">Morbi leo risus</li>
                     <li className="list-group-item">Porta ac consectetur ac</li>
                     <li className="list-group-item">Vestibulum at eros</li>

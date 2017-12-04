@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import WrapperComponent from "../components/shared/Wrapper/wrapper"
+import { getSocket } from '../actions';
 
-import { addNewUser, createChatRoom, getSocket } from '../actions';
 const mapStateToProps = (state,ownProps) => {
 return {};
 };

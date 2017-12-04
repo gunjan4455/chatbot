@@ -1,6 +1,7 @@
 import { combineReducers } from 'redux'
-import {user, admins} from './userReducer';
+import user from './userReducer';
 import room from './roomReducer';
+import admins from './adminReducer';
 import socket from './socketReducer';
 
 const rootReducer = combineReducers({

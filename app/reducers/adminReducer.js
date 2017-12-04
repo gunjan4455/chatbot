@@ -1,10 +1,10 @@
 import initialState from './initialState';
 import * as types from '../api/constant';
 
-export default function user(state = initialState.user, action){
+export default function admins(state = initialState.admins, action){
     switch(action.type){
-        case types.ADD_USER:
-            const newState = action.user;
+        case types.GET_ADMINS:
+            const newState = action.admins;
             return newState;
         default:
             return state

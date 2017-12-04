@@ -4,28 +4,26 @@ import Header from '../../Header/index';
 import Home from '../../../containers/Home';
 import AdminPanel from '../../../containers/AdminPanel';
 import NotFound from '../../NotFound/index';
-import io from 'socket.io-client';
-const socket = io('http://localhost:9000');
 
 class Wrapper extends React.Component {
     constructor(props) {
         super(props);
     }
 
-    componentWillMount()
-    {
-        this.props.getSocket(socket);
+    componentWillMount() {
+        this.props.getSocket();
     }
 
     render() {
         return (
-            <Router><Switch>
-                <Redirect exact from='/' to='/home'/>
-                <Route path='/home' component={Home}/>
-                <Route path='/admin'   component={AdminPanel}/>
-                <Route path='/404'   component={NotFound}/>
-                <Redirect from='*' to='/404'/>
-            </Switch>
+            <Router>
+                <Switch>
+                    <Redirect exact from='/' to='/home'/>
+                    <Route path='/home' component={Home}/>
+                    <Route path='/admin' component={AdminPanel}/>
+                    <Route path='/404' component={NotFound}/>
+                    <Redirect from='*' to='/404'/>
+                </Switch>
             </Router>);
     }
 }

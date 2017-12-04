@@ -1,11 +1,5 @@
 import * as types from '../api/constant';
 
-export const getAdmins = () => {
-    return {
-        type: types.GET_ADMINS_ASYNC
-    }
-};
-
 export const createChatRoom = (room) => {
     return {
         type: types.NEW_CHAT_ROOM_ASYNC,
@@ -34,4 +28,9 @@ export const addNewUser = (user) => {
     }
 };
 
+export const getAdmins = () => {
+    return {
+        type: types.GET_ADMINS_ASYNC
+    }
+};
 

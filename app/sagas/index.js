@@ -3,6 +3,7 @@ import {call,put,takeEvery,all,race,take,select} from "redux-saga/effects";
 import apiCall from '../api/apiRequest';
 import endPoints from '../api/endPoints';
 import * as types from '../api/constant';
+import io from 'socket.io-client';
 
 export function* addNewUser(action) {
     try {
@@ -37,22 +38,18 @@ export function* getAdmins() {
             method: 'get',
             endpoint: endPoints.admins
         });
-        console.log("in saga admins==");
-       yield put({type: types.GET_ADMINS, admins: data.result.admins[0]});
+        console.log("in saga admins==", data);
+       yield put({type: types.GET_ADMINS, admins: data.result.admins});
 
     } catch(err) {
         console.log("error",err);
     }
 }
 
-export function* getBookByIdAsync(obj) {
+export function* getSocket() {
     try {
-        const endpoint = `${endPoints.book}/${obj.id}`;
-        const book = yield call(apiCall, {
-            method: 'get',
-            endpoint: endpoint
-        });
-        yield put({type: types.GET_BOOK_BY_ID, book: book});
+        const socket = io('http://localhost:9000');
+        yield put({type: types.GET_SOCKET, socket: socket});
     } catch(err) {
         console.log("error",err);
     }
@@ -73,6 +70,10 @@ export function* editBookByIdAsync(action) {
     }
 }
 
+export function* watchGetSocket() {
+    yield takeEvery(types.GET_SOCKET_ASYNC, getSocket)
+}
+
 export function* watchAddUser() {
     yield takeEvery(types.ADD_USER_ASYNC, addNewUser)
 }
@@ -87,6 +88,7 @@ export function* watchCreateRoom() {
 
 export default function* rootSaga() {
     yield all([
+        watchGetSocket(),
         watchAddUser(),
         watchGetAdmins(),
         watchCreateRoom()
