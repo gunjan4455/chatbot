@@ -135,16 +135,29 @@ io.on('connection', function (socket) {
                             name: user.name,
                             user: user._id
                         }
-
-                        new Admins(obj).save(function (err, admin) {
-                            if (err) {
-                                console.log("err", err);
-                                //res.status(422).json(helper.responseObject(422, err, null, true));
-                            } else {
-                                console.log("admin added successfully", admin);
-                                //res.status(200).json(helper.responseObject(200, user, null, true));
+                        Admins.findOneAndUpdate({user: user._id}, {
+                            $set: {
+                                status: "online",
+                                socketId: socket.id
                             }
-                        })
+                        }).exec(function (err, user) {
+                            if (err) {
+                                res.status(422).json(helper.responseObject(422, err, null, true));
+                            } else if (user) {
+                                console.log("admin found");
+                            } else {
+                                new Admins(obj).save(function (err, admin) {
+                                    if (err) {
+                                        console.log("err", err);
+                                        //res.status(422).json(helper.responseObject(422, err, null, true));
+                                    } else {
+                                        console.log("admin added successfully", admin);
+                                        //res.status(200).json(helper.responseObject(200, user, null, true));
+                                    }
+                                })
+                            }
+                        });
+
                     }
                 });
             } else {
@@ -173,7 +186,7 @@ io.on('connection', function (socket) {
             Admins.find({}).exec(function (err, admins) {
                 if (admins.length) {
                     _.map(admins, function (admin, index) {
-                        if(io.sockets.connected[admin.socketId])
+                        if (io.sockets.connected[admin.socketId])
                             io.sockets.connected[admin.socketId].emit("greeting-request", "Hey admin how r u???");
                     });
                 }
