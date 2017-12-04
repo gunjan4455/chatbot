@@ -4,7 +4,6 @@ import { addNewUser, createChatRoom, getSocket } from '../actions';
 import HomeComponent from '../components/Home';
 
 const mapStateToProps = (state,ownProps) => {
-    console.log(ownProps,"in containerrrr");
     return {
        user: state.user,
        room: state.room,

@@ -172,10 +172,9 @@ io.on('connection', function (socket) {
         socket.join(room, function (err) {
             Admins.find({}).exec(function (err, admins) {
                 if (admins.length) {
-                    console.log("admins===================",admins);
                     _.map(admins, function (admin, index) {
-                        console.log("ooooooo",admin.socketId);
-                        io.sockets.connected[admin.socketId].emit("greeting-request", "Hey admin how r u???");
+                        if(io.sockets.connected[admin.socketId])
+                            io.sockets.connected[admin.socketId].emit("greeting-request", "Hey admin how r u???");
                     });
                 }
             });
