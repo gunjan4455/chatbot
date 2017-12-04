@@ -7,6 +7,11 @@ import BackButton from '../shared/BackButton';
 class Admin extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            greetingMessage:""
+        };
+        this.handleSubmit=this.handleSubmit.bind(this);
+        this.onHideModal=this.onHideModal.bind(this);
     }
 
     componentWillMount() {
@@ -19,21 +24,35 @@ class Admin extends React.Component {
     componentDidMount() {
 
         const {socket} = this.props;
+        const self=this;
         socket.on('greeting-request', function (msg) {
-            console.log(msg);
+            console.log("msssg", msg);
+            self.setState({
+                greetingMessage:msg
+            });
         });
+    }
+    handleSubmit(e) {
+        e.preventDefault();
+        this.setState({greetingMessage : ''})
+    }
+
+    onHideModal(e) {
+        e.preventDefault();
+        this.setState({greetingMessage : ''})
     }
 
     render() {
         return (
             <div className="container">
+                {this.state.greetingMessage && <DetailModal  handleSubmit={this.handleSubmit}  onHideModal={this.onHideModal}  greetingMessage={this.state.greetingMessage}></DetailModal>}
                 <div className="row well">
                     <div className="col-md-2">
                         <ul className="nav nav-pills nav-stacked well">
                             <li className="active"><a><i className="fa fa-envelope"></i>Online</a></li>
-                            {this.props.onlineUsers && this.props.onlineUsers.length && _.map(this.props.onlineUsers,(onlineUsers, index) => {
-                                return  (<li className="list-group-item" key={index}>{onlineUsers.name}</li>)
-                            }) }
+                            {this.props.onlineUsers && this.props.onlineUsers.length && _.map(this.props.onlineUsers, (onlineUsers, index) => {
+                                return (<li className="list-group-item" key={index}>{onlineUsers.name}</li>)
+                            })}
                         </ul>
                     </div>
                     <div className="col-md-8">
@@ -43,7 +62,7 @@ class Admin extends React.Component {
                             <div className="name">
                                 <small>Apple K, India</small>
                             </div>
-                            <a href="#" className="btn btn-xs btn-primary pull-right" style={{"margin":"10px"}}><span
+                            <a href="#" className="btn btn-xs btn-primary pull-right" style={{"margin": "10px"}}><span
                                 className="glyphicon glyphicon-picture"></span> Change cover</a>
                         </div>
 
@@ -60,7 +79,7 @@ class Admin extends React.Component {
                         <div className="tab-content">
                             <div className="tab-pane active" id="inbox">
                                 <a type="button" data-toggle="collapse" data-target="#a1">
-                                    <div className="btn-toolbar well well-sm" role="toolbar" style={{"margin":"0px"}}>
+                                    <div className="btn-toolbar well well-sm" role="toolbar" style={{"margin": "0px"}}>
                                         <div className="btn-group"><input type="checkbox"/></div>
 
                                         <div className="btn-group col-md-3">Admin Kumar</div>
@@ -88,7 +107,7 @@ class Admin extends React.Component {
                             <div className="tab-pane" id="sent">
                                 <a type="button" data-toggle="collapse" data-target="#s1">
                                     <div className="btn-toolbar well well-sm" role="toolbar"
-                                         style={{"margin":"0px"}}>
+                                         style={{"margin": "0px"}}>
                                         <div className="btn-group"><input type="checkbox"/></div>
 
                                         <div className="btn-group col-md-3">Kumar</div>
@@ -113,7 +132,7 @@ class Admin extends React.Component {
 
                             <div className="tab-pane" id="assignment">
                                 <a href="">
-                                    <div className="well well-sm" style={{"margin":"0px"}}>Open GL
+                                    <div className="well well-sm" style={{"margin": "0px"}}>Open GL
                                         Assignments <span className="pull-right"><i
                                             className="glyphicon glyphicon-time"></i> 12:20 AM 20 Dec 2014 </span>
                                     </div>
@@ -138,9 +157,9 @@ class Admin extends React.Component {
                     <div className="col-md-2">
                         <ul className="nav nav-pills nav-stacked well">
                             <li className="active"><a><i className="fa fa-envelope"></i>Online</a></li>
-                            {this.props.admins && this.props.admins.length && _.map(this.props.admins,(admin, index) => {
-                                return  (<li className="list-group-item" key={index}>{admin.name}</li>)
-                            }) }
+                            {this.props.admins && this.props.admins.length && _.map(this.props.admins, (admin, index) => {
+                                return (<li className="list-group-item" key={index}>{admin.name}</li>)
+                            })}
                         </ul>
                     </div>
                 </div>
@@ -148,5 +167,6 @@ class Admin extends React.Component {
         );
     }
 }
+
 export default Admin
 
