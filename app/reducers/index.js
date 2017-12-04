@@ -1,13 +1,13 @@
 import { combineReducers } from 'redux'
 import user from './userReducer';
-import onlineUser from './onlineUserReducer';
+import onlineUsers from './onlineUserReducer';
 import room from './roomReducer';
 import admins from './adminReducer';
 import socket from './socketReducer';
 
 const rootReducer = combineReducers({
     user,
-    onlineUser,
+    onlineUsers,
     room,
     socket,
     admins,
