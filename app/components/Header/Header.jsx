@@ -15,6 +15,7 @@ class Header extends React.Component {
     };
     logout = () => {
         this.props.logout(this.props.user);
+        this.setState({handleDropdown: "close"});
     };
 
     constructor(props) {
