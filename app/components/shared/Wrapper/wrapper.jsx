@@ -12,7 +12,10 @@ class Wrapper extends React.Component {
 
     componentWillMount() {
         this.props.getSocket();
+
+
     }
+
 
     render() {
         return (
