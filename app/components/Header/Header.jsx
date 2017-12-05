@@ -47,7 +47,7 @@ class Header extends React.Component {
 
                         <ul className="nav navbar-nav navbar-right">
                             <li className={`dropdown ${this.state.handleDropdown}`}>
-                                <a className="dropdown-toggle" data-toggle="dropdown" onClick={this.handlePanel}>User<b className="caret"></b></a>
+                                <a className="dropdown-toggle" data-toggle="dropdown" onClick={this.handlePanel}>{this.props.user.name||"user"}<b className="caret"></b></a>
                                 <ul className="dropdown-menu">
                                     <li align="center" className="well">
                                         <div><img className="img-responsive" style={{"padding":"2%"}} src="http://placehold.it/120x120"/><a className="change" href="">Change Picture</a></div>
