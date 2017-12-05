@@ -1,19 +1,18 @@
 import React from "react";
 import config from '../../config'
 const { API: { protocols, domain , imagePath} } = config;
+import _ from "lodash";
 
 class Header extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            handleDropdown : "dropdown"
-        }
+            handleDropdown : "dropdown",
+            currentUser:()=> {if(!_.isEmpty(JSON.parse(window.localStorage.getItem("user")))) {
+                return JSON.parse(window.localStorage.getItem("user")).user.name
+            }
+            }
     }
-
-    componentWillMount() {
-    }
-
-    componentDidMount() {
 
     }
 
@@ -47,7 +46,7 @@ class Header extends React.Component {
 
                         <ul className="nav navbar-nav navbar-right">
                             <li className={`dropdown ${this.state.handleDropdown}`}>
-                                <a className="dropdown-toggle" data-toggle="dropdown" onClick={this.handlePanel}>User<b className="caret"></b></a>
+                                <a className="dropdown-toggle" data-toggle="dropdown" onClick={this.handlePanel}>{this.state.currentUser()||"user"}<b className="caret"></b></a>
                                 <ul className="dropdown-menu">
                                     <li align="center" className="well">
                                         <div><img className="img-responsive" style={{"padding":"2%"}} src="http://placehold.it/120x120"/><a className="change" href="">Change Picture</a></div>

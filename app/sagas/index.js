@@ -13,6 +13,9 @@ export function* addNewUser(action) {
             payload: action.user
         });
         console.log("in saga", data.result);
+
+        window.localStorage.setItem("user",JSON.stringify(data.result));
+
         yield put({type: types.ADD_USER, user: data.result.user});
     } catch(err) {
         console.log("error",err);
@@ -71,11 +74,12 @@ export function* getSocket() {
 export function* logout(action) {
     try {
         const endpoint = `${endPoints.admins}/${action.admin._id}`;
-        const book = yield call(apiCall, {
+        const user = yield call(apiCall, {
             method: 'delete',
             endpoint: endpoint
         });
-        console.log("oggggggggggg",book);
+        console.log("oggggggggggg",user);
+        window.localStorage.removeItem("user"); //
         //yield put({type: types.EDIT_BOOK, book: book});
         //yield put({type: types.CHECK_SUCCESS, check: true});
     } catch(err) {

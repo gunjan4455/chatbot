@@ -76,7 +76,7 @@ class Home extends React.Component {
             default:
                 break;
         }
-    }
+    };
 
     init(user, type) {
         const {socket} = this.props;
@@ -93,7 +93,7 @@ class Home extends React.Component {
 
     addUser = (user) => {
         let details = Object.assign({}, user, this.user);
-        this.props.addNewUser(details);
+        this.props.addNewUser(details); //this dispatchs from wrapper
     }
 
     componentWillReceiveProps(nextProps, prv) {
@@ -123,8 +123,6 @@ class Home extends React.Component {
 
 Home.propTypes = {
     history: PropTypes.object.isRequired,
-    addNewUser: PropTypes.func.isRequired,
-
 };
 
 export default Home;
