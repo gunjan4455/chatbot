@@ -11,7 +11,6 @@ import Wrapper from "./containers/wrapper"
 
 const App = () => (
     <div>
-        <Header/>
         <Wrapper/>
     </div>
 );
