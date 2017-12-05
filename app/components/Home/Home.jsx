@@ -26,7 +26,7 @@ class Home extends React.Component {
             default:
                 break;
         }
-    }
+    };
 
     init(user, type){
         const {socket} = this.props;
@@ -43,7 +43,6 @@ class Home extends React.Component {
 
     addUser = (user) => {
         let details = Object.assign({}, user, this.user);
-        debugger;
         this.props.addNewUser(details); //this dispatchs from wrapper
     }
 

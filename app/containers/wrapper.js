@@ -4,7 +4,10 @@ import WrapperComponent from "../components/shared/Wrapper/wrapper"
 import {getSocket, addNewUser} from '../actions';
 
 const mapStateToProps = (state, ownProps) => {
-    return {};
+    return {
+
+        currentUser:state.user
+    };
 };
 
 const mapDispatchToProps = dispatch => ({

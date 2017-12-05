@@ -13,8 +13,12 @@ class Wrapper extends React.Component {
     componentWillMount() {
         this.props.getSocket();
 
-       // const user=this.state.user;
-        //window.localStorage.setItem("user",user);
+
+    }
+    componentWillReceiveProps(nextProps){
+        const user=JSON.stringify(nextProps.currentUser);
+         window.localStorage.setItem("user",user);
+        // console.log(JSON.parse(window.localStorage.getItem("user")));
     }
 
     render() {
