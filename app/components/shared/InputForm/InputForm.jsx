@@ -1,4 +1,5 @@
 import React from "react";
+
 export class InputForm extends React.PureComponent {
     constructor(props) {
         super(props);
@@ -90,11 +91,6 @@ export class InputForm extends React.PureComponent {
         );
     }
 }
-/*
-InputForm.propTypes = {
-
-
-};*/
 
 export default InputForm;
 

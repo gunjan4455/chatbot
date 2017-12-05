@@ -183,16 +183,22 @@ io.on('connection', function (socket) {
     )
     socket.on('joinRoom', (room) => {
         socket.join(room, function (err) {
+            console.log("roommmmmmmmmmmm", room);
+            room.message = "Hey admin how r u???";
             Admins.find({}).exec(function (err, admins) {
                 if (admins.length) {
                     _.map(admins, function (admin, index) {
                         if (io.sockets.connected[admin.socketId])
-                            io.sockets.connected[admin.socketId].emit("greeting-request", "Hey admin how r u???");
+                            io.sockets.connected[admin.socketId].emit("greeting-request", room);
                     });
                 }
             });
         });
         console.log('joined room', room)
+    })
+    socket.on('accept=greeting-request', (data) => {
+        socket.join(data.room);
+        console.log('admin joined room', data.room)
     })
 
     socket.on('unsubscribe', () => {
