@@ -12,6 +12,9 @@ class Wrapper extends React.Component {
 
     componentWillMount() {
         this.props.getSocket();
+
+       // const user=this.state.user;
+        //window.localStorage.setItem("user",user);
     }
 
     render() {

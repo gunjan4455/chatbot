@@ -43,7 +43,8 @@ class Home extends React.Component {
 
     addUser = (user) => {
         let details = Object.assign({}, user, this.user);
-        this.props.addNewUser(details);
+        debugger;
+        this.props.addNewUser(details); //this dispatchs from wrapper
     }
 
     componentWillReceiveProps(nextProps, prv) {
@@ -130,8 +131,6 @@ class Home extends React.Component {
 
 Home.propTypes = {
     history: PropTypes.object.isRequired,
-    addNewUser: PropTypes.func.isRequired,
-
 };
 
 export default Home;
