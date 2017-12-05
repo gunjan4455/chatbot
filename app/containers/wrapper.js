@@ -5,8 +5,6 @@ import {getSocket, addNewUser} from '../actions';
 
 const mapStateToProps = (state, ownProps) => {
     return {
-
-        currentUser:state.user
     };
 };
 
