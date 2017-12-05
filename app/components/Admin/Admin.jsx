@@ -3,19 +3,74 @@ import _ from 'lodash';
 import DetailModal from "../shared/DetailModal";
 import ConfirmationModal from "../shared/ConfirmationModal";
 import BackButton from '../shared/BackButton';
+import ChatBot from '../shared/ChatBot';
+import InputForm from "../shared/InputForm";
 
 class Admin extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            greetingMessage:""
+            greetingMessage:"",
+            chatRooms : [],
+            steps : []
         };
+        this.chatRequests = [];
+
         this.handleSubmit=this.handleSubmit.bind(this);
         this.onHideModal=this.onHideModal.bind(this);
     }
 
     componentWillMount() {
+        let steps = [{
+            id: '1',
+            message: 'What is your name?',
+            trigger: '2',
+        }, {
+            id: '2',
+            user: true,
+            validator: (value) => {
+                if (!value) {
+                    return 'We will need your credentials';
+                }
+                this.getCredentials(value, 'name');
+                return true;
+            },
+            trigger: '3',
+        }, {
+            id: '3',
+            message: 'Hi {previousValue},what would you like to enter?',
+            trigger: '4'
 
+        },
+            {
+                id: '4',
+                options: [
+                    {value: 'id', label: 'Id/Password', trigger: '5'},
+                    {value: 'email', label: 'Email', trigger: '6'},
+                ]
+                //validator: (value) => {
+                //  //if (!emailValidator(value)) {
+                //  //  return 'Please enter valid email';
+                //  //}
+                //  this.getCredentials(value, 'email');
+                //  return true;
+                //},
+            }, {
+                id: '5',
+                component: <InputForm option={true} addUser={this.addUser} {...this.props}/>,
+                waitAction: true,
+                trigger: '7'
+            }, {
+                id: '6',
+                component: <InputForm addUser={this.addUser} option={false}/>,
+                waitAction: true,
+                trigger: '7'
+            }, {
+                id: '7',
+                message: "Great!!done",
+                end: true
+            }];
+        this.setState({steps : steps});
         this.props.getOnlineUsers();
         this.props.getAdmins();
 
@@ -25,16 +80,23 @@ class Admin extends React.Component {
 
         const {socket} = this.props;
         const self=this;
-        socket.on('greeting-request', function (msg) {
-            console.log("msssg", msg);
+        socket.on('greeting-request', function (data) {
+            self.room = data.room;
+            self.chatRequests.unshift(data.room);
+            console.log("msssg", data.room);
             self.setState({
-                greetingMessage:msg
+                greetingMessage:data.message
             });
         });
     }
     handleSubmit(e) {
         e.preventDefault();
-        this.setState({greetingMessage : ''})
+        const {socket} = this.props;
+        this.setState({greetingMessage : ''});
+        socket.emit('accept=greeting-request', {room : this.room});
+        let chats = this.state.chatRooms;
+        chats.push(this.chatRequests.pop());
+        this.setState({chatRooms : chats});
     }
 
     onHideModal(e) {
@@ -42,7 +104,18 @@ class Admin extends React.Component {
         this.setState({greetingMessage : ''})
     }
 
+    chats = () => {
+        let rooms = _.map(this.state.chatRooms, (room, index) => {
+            return (
+                <ChatBot key={index} steps={this.state.steps}/>
+            )
+        });
+        return rooms;
+    }
+
     render() {
+        let rooms = this.chats();
+        console.log("chats==========", this.chats());
         return (
             <div className="container">
                 {this.state.greetingMessage && <DetailModal  handleSubmit={this.handleSubmit}  onHideModal={this.onHideModal}  greetingMessage={this.state.greetingMessage}></DetailModal>}
@@ -163,6 +236,7 @@ class Admin extends React.Component {
                         </ul>
                     </div>
                 </div>
+                {rooms}
             </div>
         );
     }
