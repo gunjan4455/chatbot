@@ -236,7 +236,10 @@ class Admin extends React.Component {
                         </ul>
                     </div>
                 </div>
+
+                <div className="chat-room-container">
                 {rooms}
+                </div>
             </div>
         );
     }
