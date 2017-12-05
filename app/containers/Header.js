@@ -5,7 +5,7 @@ import HeaderComponent from '../components/Header';
 
 const mapStateToProps = (state,ownProps) => {
     return {
-        user: state.user,
+        user: state.user
     }
 };
 
