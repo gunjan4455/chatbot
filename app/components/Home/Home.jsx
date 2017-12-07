@@ -109,6 +109,17 @@ class Home extends React.Component {
 
     }
 
+    handleMessageEvent = () => {
+        const {socket} = this.props;
+        socket.on('chat-message', (inboundMessage) => {
+            //this.props.createMessage({room: this.props.room, newMessage: {user: JSON.parse(inboundMessage).user, message: JSON.parse(inboundMessage).message}})
+            console.log('received message from adminnnnnnnnnnnn', inboundMessage)
+        });
+    }
+
+    componentDidMount() {
+        this.handleMessageEvent();
+    }
 
     render() {
         return (

@@ -7,8 +7,11 @@ class ChatBot extends React.Component {
     }
 
     render() {
+        console.log("rooooooooooo",this.props);
+        let room = this.props.room ? this.props.room.title : "";
         return (
             <Chatbot
+                headerTitle={room}
                 steps={this.props.steps}
             />);
     }

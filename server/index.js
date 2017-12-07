@@ -181,24 +181,27 @@ io.on('connection', function (socket) {
             //console.log('joined room', room)
         }
     )
-    socket.on('joinRoom', (room) => {
-        socket.join(room, function (err) {
-            console.log("roommmmmmmmmmmm", room);
-            room.message = "Hey admin how r u???";
+
+    socket.on('joinRoom', (data) => {
+        console.log("jjjjjjjjjjjjjjj", data.room.title);
+        socket.join(data.room.title, function (err) {
+            console.log("roommmmmmmmmmmm", data.room);
+            data.room.message = "Hey admin how r u???";
             Admins.find({}).exec(function (err, admins) {
                 if (admins.length) {
                     _.map(admins, function (admin, index) {
                         if (io.sockets.connected[admin.socketId])
-                            io.sockets.connected[admin.socketId].emit("greeting-request", room);
+                            io.sockets.connected[admin.socketId].emit("greeting-request", data.room);
                     });
                 }
             });
         });
-        console.log('joined room', room)
+        console.log('joined room', data.room);
     })
-    socket.on('accept=greeting-request', (data) => {
-        socket.join(data.room);
-        console.log('admin joined room', data.room)
+
+    socket.on('accept-greeting-request', (data) => {
+        console.log('admin joined room', data)
+        socket.join(data.room.title);
     })
 
     socket.on('unsubscribe', () => {
@@ -210,15 +213,17 @@ io.on('connection', function (socket) {
         console.log('a user disconnected')
     })
 
-    socket.on('chat message', function (msg) {
-        console.log('sending message to', msg.room)
-        console.log('this message', msg)
-        let message = new Message({user: msg.user, content: msg.message, room: msg.room})
-        message.save((err) => {
-            if (err) return err
-        })
+    socket.on('chat-message', function (msg) {
+        console.log('sending message to', msg)
+        //let message = new Message({user: msg.user, content: msg.message, room: msg.room})
+        //message.save((err) => {
+        //    if (err) return err
+        //})
+        console.log("clients=======",io.sockets.adapter.rooms[msg.room.title].sockets, socket.id);
+        //io.to(msg.room).emit('chat-message', JSON.stringify(msg.message))
+        io.sockets.in(msg.room.title).emit('chat-message', msg.message);
 
-        io.to(msg.room).emit('chat message', JSON.stringify(msg))
+        //io.sockets.in(msg.room.title).emit('chat-message', msg.message);
     })
 
     socket.on('new room', (roomData) => {
@@ -226,7 +231,6 @@ io.on('connection', function (socket) {
         message.save((err) => {
             if (err) return err
         })
-
     })
 
     socket.on('file_upload', (data, buffer) => {

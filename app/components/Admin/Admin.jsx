@@ -12,7 +12,8 @@ class Admin extends React.Component {
         this.state = {
             greetingMessage:"",
             chatRooms : [],
-            steps : []
+            steps : [],
+            room : {}
         };
         this.chatRequests = [];
 
@@ -20,11 +21,20 @@ class Admin extends React.Component {
         this.onHideModal=this.onHideModal.bind(this);
     }
 
+    sendMessage = (value) => {
+        const {socket} = this.props;
+        socket.emit('chat-message', {room : this.state.room, message : value});
+    }
+
     componentWillMount() {
         let steps = [{
             id: '1',
-            message: 'What is your name?',
-            trigger: '2',
+            message: "How may I help?",
+            trigger: ({value, steps}) => {
+                this.sendMessage(steps[1].message);
+                return '2';
+            }
+
         }, {
             id: '2',
             user: true,
@@ -35,7 +45,7 @@ class Admin extends React.Component {
                 this.getCredentials(value, 'name');
                 return true;
             },
-            trigger: '3',
+            trigger: '3'
         }, {
             id: '3',
             message: 'Hi {previousValue},what would you like to enter?',
@@ -80,20 +90,23 @@ class Admin extends React.Component {
 
         const {socket} = this.props;
         const self=this;
-        socket.on('greeting-request', function (data) {
-            self.room = data.room;
-            self.chatRequests.unshift(data.room);
-            console.log("msssg", data.room);
+        socket.on('greeting-request', function (room) {
+            self.chatRequests.unshift(room);
+            console.log("msssg", room);
             self.setState({
-                greetingMessage:data.message
+                greetingMessage:room.message,
+                room : room
             });
         });
     }
+
     handleSubmit(e) {
         e.preventDefault();
         const {socket} = this.props;
+        const {room} = this.state;
         this.setState({greetingMessage : ''});
-        socket.emit('accept=greeting-request', {room : this.room});
+        console.log("rrrrrrrrrrr", this.state.room);
+        socket.emit('accept-greeting-request', {room : room});
         let chats = this.state.chatRooms;
         chats.push(this.chatRequests.pop());
         this.setState({chatRooms : chats});
@@ -107,7 +120,7 @@ class Admin extends React.Component {
     chats = () => {
         let rooms = _.map(this.state.chatRooms, (room, index) => {
             return (
-                <ChatBot key={index} steps={this.state.steps}/>
+                <ChatBot key={index} steps={this.state.steps} room={room}/>
             )
         });
         return rooms;
