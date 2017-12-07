@@ -17,7 +17,6 @@ export default class DetailModal extends React.Component {
     }*/
 
     render() {
-        console.log("deatailllllllllllllllllllll")
         return (
             <div className="modal-backdrop detail-modal-background">
                 <button type="button" className="close-detail-modal close" data-dismiss="modal" aria-label="Close"
@@ -26,14 +25,9 @@ export default class DetailModal extends React.Component {
                 </button>
                 <form>
                     <div className="col-sm-4 detail-modal">
-                        <div className="detail_modal_heading"><b>EDIT BOOK</b></div>
                         <div>
                             <div className="form-group col-sm-12">
-                                <label>Title:</label>
-                                <p>{this.props.greetingMessage}</p>
-                            </div>
-                            <div className="form-group col-sm-12">
-                                <label>Description:</label>
+                                <label>Message:</label>
                                 <input type="text" ref="description" className="form-control" placeholder="Description"
                                        defaultValue={this.props.greetingMessage}/>
                             </div>
@@ -49,7 +43,6 @@ export default class DetailModal extends React.Component {
                     </div>
                 </form>
             </div>
-
         )
     }
 }
