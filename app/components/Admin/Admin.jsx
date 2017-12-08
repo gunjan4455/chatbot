@@ -87,8 +87,9 @@ class Admin extends React.Component {
     }
 
     componentDidMount() {
-
         const {socket} = this.props;
+        //socket.emit('shobhit', {"ss" : "ss"});
+
         const self=this;
         socket.on('greeting-request', function (room) {
             self.chatRequests.unshift(room);
