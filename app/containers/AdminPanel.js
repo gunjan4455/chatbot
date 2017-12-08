@@ -4,6 +4,7 @@ import { getSocket, getAdmins ,getOnlineUsers} from '../actions';
 
 const mapStateToProps = (state, props) => {
     return {
+        user: state.user,
         socket: state.socket,
         admins: state.admins,
         onlineUsers:state.onlineUsers

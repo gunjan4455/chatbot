@@ -8,7 +8,8 @@ class Home extends React.Component {
         super(props);
         this.state = {
             connected: false,
-            steps: []
+            steps: [],
+            flag: false
         };
         this.user = {
             name: ''
@@ -103,7 +104,8 @@ class Home extends React.Component {
         } else if (!_.isEmpty(nextProps.user) && _.isEmpty(nextProps.room))
             this.init(nextProps.user, "client");
 
-        if (!_.isEmpty(nextProps.room)) {
+        if (!_.isEmpty(nextProps.room) && !this.state.flag) {
+            this.setState({flag : true});
             nextProps.socket.emit('joinRoom', {room: nextProps.room});
         }
 

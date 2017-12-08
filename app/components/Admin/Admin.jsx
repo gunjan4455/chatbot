@@ -106,7 +106,7 @@ class Admin extends React.Component {
         const {room} = this.state;
         this.setState({greetingMessage : ''});
         console.log("rrrrrrrrrrr", this.state.room);
-        socket.emit('accept-greeting-request', {room : room});
+        socket.emit('accept-greeting-request', {room : room, user: this.props.user});
         let chats = this.state.chatRooms;
         chats.push(this.chatRequests.pop());
         this.setState({chatRooms : chats});

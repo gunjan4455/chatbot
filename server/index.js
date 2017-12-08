@@ -112,7 +112,7 @@ if (isDeveloping) {
 //socket
 
 io.on('connection', function (socket) {
-    console.log("socket connection on=======");
+    console.log("socket connection on=======",socket.id);
     console.log('a user connected')
     socket.on('subscribe', (data) => {
             io.sockets.emit('subscribeSuccess', data.user);
@@ -186,7 +186,9 @@ io.on('connection', function (socket) {
         console.log("jjjjjjjjjjjjjjj", data.room.title);
         socket.join(data.room.title, function (err) {
             console.log("roommmmmmmmmmmm", data.room);
+            console.log("clients=======",io.sockets.adapter.rooms[data.room.title],  'ffffffffff', io.sockets.adapter.rooms);
             data.room.message = "Hey admin how r u???";
+            data.room.socketId = socket.id;
             Admins.find({}).exec(function (err, admins) {
                 if (admins.length) {
                     _.map(admins, function (admin, index) {
@@ -200,8 +202,12 @@ io.on('connection', function (socket) {
     })
 
     socket.on('accept-greeting-request', (data) => {
-        console.log('admin joined room', data)
-        socket.join(data.room.title);
+        console.log('admin joined room', data, socket.id);
+        if(data.user.isAdmin) {
+            socket.join(data.room.title,(err)=> {
+                console.log("admin joined successfully", err);
+            });
+        }
     })
 
     socket.on('unsubscribe', () => {
@@ -219,7 +225,7 @@ io.on('connection', function (socket) {
         //message.save((err) => {
         //    if (err) return err
         //})
-        console.log("clients=======",io.sockets.adapter.rooms[msg.room.title].sockets, socket.id);
+        console.log("clients=======",io.sockets.adapter.rooms[msg.room.title].sockets, io.sockets.adapter.rooms);
         //io.to(msg.room).emit('chat-message', JSON.stringify(msg.message))
         io.sockets.in(msg.room.title).emit('chat-message', msg.message);
 
@@ -273,9 +279,3 @@ db.once('open', () => {
     });
 });
 
-//app.listen(port, '0.0.0.0', function onStart(err) {
-//    if (err) {
-//        console.log(err);
-//    }
-//    console.info('====> Listening on http://localhost:3000');
-//});
