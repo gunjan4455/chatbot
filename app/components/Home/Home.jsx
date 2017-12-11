@@ -2,82 +2,22 @@ import React from "react";
 import PropTypes from "prop-types";
 import ChatBot from '../shared/ChatBot';
 import {renderBooksList, emailValidator} from "../../utility";
-import InputForm from "../shared/InputForm";
+import DynamicStep from "../shared/DynamicStep";
+
+
 class Home extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             connected: false,
             steps: [],
-            flag: false
+            flag: false,
+            stepName: "last",
+            message:"abcd",
+            newStep: {}
         };
-        this.user = {
-            name: ''
-        };
+
     }
-
-    componentWillMount() {
-        let steps = [{
-            id: '1',
-            message: 'What is your name?',
-            trigger: '2',
-        }, {
-            id: '2',
-            user: true,
-            validator: (value) => {
-                if (!value) {
-                    return 'We will need your credentials';
-                }
-                this.getCredentials(value, 'name');
-                return true;
-            },
-            trigger: '3',
-        }, {
-            id: '3',
-            message: 'Hi {previousValue},what would you like to enter?',
-            trigger: '4'
-
-        },
-            {
-                id: '4',
-                options: [
-                    {value: 'id', label: 'Id/Password', trigger: '5'},
-                    {value: 'email', label: 'Email', trigger: '6'},
-                ]
-                //validator: (value) => {
-                //  //if (!emailValidator(value)) {
-                //  //  return 'Please enter valid email';
-                //  //}
-                //  this.getCredentials(value, 'email');
-                //  return true;
-                //},
-            }, {
-                id: '5',
-                component: <InputForm option={true} addUser={this.addUser} {...this.props}/>,
-                waitAction: true,
-                trigger: '7'
-            }, {
-                id: '6',
-                component: <InputForm addUser={this.addUser} option={false}/>,
-                waitAction: true,
-                trigger: '7'
-            }, {
-                id: '7',
-                message: "Great!!done",
-                end: true
-            }];
-        this.setState({steps : steps});
-    }
-
-    getCredentials = (value, type) => {
-        switch (type) {
-            case 'name':
-                this.user.name = value;
-                break;
-            default:
-                break;
-        }
-    };
 
     init(user, type) {
         const {socket} = this.props;
@@ -92,10 +32,9 @@ class Home extends React.Component {
         });
     }
 
-    addUser = (user) => {
-        let details = Object.assign({}, user, this.user);
-        this.props.addNewUser(details); //this dispatchs from wrapper
-    }
+    createUser = (user) => {
+        this.props.addNewUser(user); //this dispatchs from wrapper
+    };
 
     componentWillReceiveProps(nextProps, prv) {
         if (!_.isEmpty(nextProps.user) && nextProps.user.isAdmin && _.isEmpty(nextProps.room)) {
@@ -116,6 +55,23 @@ class Home extends React.Component {
         socket.on('chat-message', (inboundMessage) => {
             //this.props.createMessage({room: this.props.room, newMessage: {user: JSON.parse(inboundMessage).user, message: JSON.parse(inboundMessage).message}})
             console.log('received message from adminnnnnnnnnnnn', inboundMessage)
+            //let self = this;
+            //let id="8",trigger="9";
+            //let chats = this.state.steps;
+            //chats.push(newStep);
+            //this.setState({steps : chats,
+            //message:inboundMessage
+            //});
+
+            let newStep = {
+                id: '7',
+                component: <DynamicStep  message={this.state.message}/>,
+                asMessage: true,
+                end: true
+            }
+
+            this.setState({newStep : newStep});
+
         });
     }
 
@@ -127,7 +83,7 @@ class Home extends React.Component {
         return (
             <section className="container bg-gray">
                 <div className="wraper">
-                    <ChatBot steps={this.state.steps}/>
+                    <ChatBot message={this.state.message} createUser={this.createUser} {...this.props} step={this.state.newStep}/>
                 </div>
             </section>
         )
@@ -135,7 +91,7 @@ class Home extends React.Component {
 }
 
 Home.propTypes = {
-    history: PropTypes.object.isRequired,
+    history: PropTypes.object.isRequired
 };
 
 export default Home;

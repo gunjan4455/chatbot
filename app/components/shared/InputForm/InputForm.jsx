@@ -1,4 +1,5 @@
 import React from "react";
+import DynamicStep from "../DynamicStep";
 
 export class InputForm extends React.PureComponent {
     constructor(props) {
@@ -6,7 +7,8 @@ export class InputForm extends React.PureComponent {
         this.details = {
             userid: '',
             password: '',
-            email: ''
+            email: '',
+            name: this.props.name ? this.props.name : ""
         };
         this.state = {
             showForm : true
@@ -40,9 +42,39 @@ export class InputForm extends React.PureComponent {
             nextProps.history.push('/admin');
         else {
             this.setState({showForm : false});
-            nextProps.triggerNextStep();
+            //nextProps.triggerNextStep();
             //nextProps.createConnection();
         }
+    }
+
+    handleMessageEvent = () => {
+        const {socket} = this.props;
+        socket.on('chat-message', (inboundMessage) => {
+            //this.props.createMessage({room: this.props.room, newMessage: {user: JSON.parse(inboundMessage).user, message: JSON.parse(inboundMessage).message}})
+            console.log('received message from adminnnnnnnnnnnn', inboundMessage)
+            //let self = this;
+            //let id="8",trigger="9";
+            //let chats = this.state.steps;
+            //chats.push(newStep);
+            //this.setState({steps : chats,
+            //message:inboundMessage
+            //});
+
+            let newStep = {
+                id: '7',
+                component: <DynamicStep  message={inboundMessage}/>,
+                asMessage: true,
+                end: true
+            }
+
+            this.props.newMessage(inboundMessage);
+            this.props.triggerNextStep();
+
+        });
+    }
+
+    componentDidMount() {
+        this.handleMessageEvent();
     }
 
     render() {
