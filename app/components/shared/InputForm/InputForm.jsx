@@ -1,7 +1,7 @@
 import React from "react";
 import DynamicStep from "../DynamicStep";
 
-export class InputForm extends React.PureComponent {
+export class InputForm extends React.Component {
     constructor(props) {
         super(props);
         this.details = {
@@ -40,53 +40,21 @@ export class InputForm extends React.PureComponent {
     componentWillReceiveProps(nextProps, prv) {
         if(!_.isEmpty(nextProps.user) && !_.isEmpty(nextProps.user.isAdmin))
             nextProps.history.push('/admin');
-        else {
+        else
             this.setState({showForm : false});
-            //nextProps.triggerNextStep();
-            //nextProps.createConnection();
-        }
-    }
 
-    handleMessageEvent = () => {
-        const {socket} = this.props;
-        socket.on('chat-message', (inboundMessage) => {
-            //this.props.createMessage({room: this.props.room, newMessage: {user: JSON.parse(inboundMessage).user, message: JSON.parse(inboundMessage).message}})
-            console.log('received message from adminnnnnnnnnnnn', inboundMessage)
-            //let self = this;
-            //let id="8",trigger="9";
-            //let chats = this.state.steps;
-            //chats.push(newStep);
-            //this.setState({steps : chats,
-            //message:inboundMessage
-            //});
-
-            let newStep = {
-                id: '7',
-                component: <DynamicStep  message={inboundMessage}/>,
-                asMessage: true,
-                end: true
-            };
-
-            this.props.newMessage(inboundMessage);
-            this.props.triggerNextStep();
-
-        });
-    }
-
-    componentDidMount() {
-        this.handleMessageEvent();
     }
 
     render() {
         return (
-            <div className="container">
+            <div className="response">
                 {this.state.showForm ?
-                    <div>
+                    <div  className="message-text">
                         { this.props.option ? (
                             <form className="form-horizontal" onSubmit={this.onSubmit}>
-                                <h3> hi, {this.props.username}
+                                <h5> hi, {this.props.username}
                                 <br/><p>Please enter the credentials
-                                </p></h3>
+                                </p></h5>
                                 <div style={{"marginBottom": "25px"}} className="input-group">
                                     <span className="input-group-addon"><i
                                         className="glyphicon glyphicon-user"></i></span>
@@ -121,7 +89,11 @@ export class InputForm extends React.PureComponent {
                             </form>)
                         }
                     </div>
-                    : <div>Successfully registered</div> }
+                    : <div className="response">
+                        <div className="message-text">
+                            <p>Successfully registered</p>
+                    </div>
+                </div> }
             </div>
         );
     }

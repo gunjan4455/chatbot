@@ -5,7 +5,6 @@ import ConfirmationModal from "../shared/ConfirmationModal";
 import BackButton from '../shared/BackButton';
 import ChatBot from '../shared/ChatBot';
 import InputForm from "../shared/InputForm";
-import {Widget, addResponseMessage} from 'react-chat-widget';
 
 
 class Admin extends React.Component {
@@ -29,60 +28,6 @@ class Admin extends React.Component {
     }
 
     componentWillMount() {
-        let steps = [{
-            id: '1',
-            message: "How may I help?",
-            trigger: ({value, steps}) => {
-                this.sendMessage(steps[1].message);
-                return '2';
-            }
-
-        }, {
-            id: '2',
-            user: true,
-            validator: (value) => {
-                if (!value) {
-                    return 'We will need your credentials';
-                }
-                this.getCredentials(value, 'name');
-                return true;
-            },
-            trigger: '3'
-        }, {
-            id: '3',
-            message: 'Hi {previousValue},what would you like to enter?',
-            trigger: '4'
-
-        },
-            {
-                id: '4',
-                options: [
-                    {value: 'id', label: 'Id/Password', trigger: '5'},
-                    {value: 'email', label: 'Email', trigger: '6'},
-                ]
-                //validator: (value) => {
-                //  //if (!emailValidator(value)) {
-                //  //  return 'Please enter valid email';
-                //  //}
-                //  this.getCredentials(value, 'email');
-                //  return true;
-                //},
-            }, {
-                id: '5',
-                component: <InputForm option={true} addUser={this.addUser} {...this.props}/>,
-                waitAction: true,
-                trigger: '7'
-            }, {
-                id: '6',
-                component: <InputForm addUser={this.addUser} option={false}/>,
-                waitAction: true,
-                trigger: '7'
-            }, {
-                id: '7',
-                message: "Great!!done",
-                end: true
-            }];
-        this.setState({steps : steps});
         this.props.getOnlineUsers();
         this.props.getAdmins();
 
@@ -90,8 +35,6 @@ class Admin extends React.Component {
 
     componentDidMount() {
         const {socket} = this.props;
-        //socket.emit('shobhit', {"ss" : "ss"});
-
         const self=this;
         socket.on('greeting-request', function (room) {
             self.chatRequests.unshift(room);
@@ -119,8 +62,9 @@ class Admin extends React.Component {
         e.preventDefault();
         this.setState({greetingMessage : ''})
     }
+
     handleNewUserMessage = (newMessage) => {
-        console.log(`New message incoming! ${newMessage}`);
+        console.log(`New adminsssssssssssmessage incoming! ${newMessage}`);
         // Now send the message throught the backend API
        // addResponseMessage(`Hi ${newMessage},what would you like to enter?`);
         const {socket} = this.props;
@@ -130,20 +74,14 @@ class Admin extends React.Component {
 
         socket.on('user-msg', (inboundMessage) => {
             console.log('received message from user', inboundMessage);
-            addResponseMessage(inboundMessage);
+          //  addResponseMessage("from 22222");
     });
     }
 
     chats = () => {
         let rooms = _.map(this.state.chatRooms, (room, index) => {
             return (
-        //   {/*     <ChatBot steps={this.state.steps} />*/}
-                <Widget  key={index}
-                    handleNewUserMessage={this.handleNewUserMessage}
-                         {...this.props}
-                         title={room.title}
-                         subtitle={this.props.user.name}
-                />
+                <ChatBot key={room.title} id={room._id} room={room} user={this.props.user} {...this.props}/>
             )
         });
         return rooms;
@@ -151,7 +89,6 @@ class Admin extends React.Component {
 
     render() {
         let rooms = this.chats();
-        console.log("chats==========", this.chats());
         return (
             <div className="container">
                 {this.state.greetingMessage && <DetailModal  handleSubmit={this.handleSubmit}  onHideModal={this.onHideModal}  greetingMessage={this.state.greetingMessage}></DetailModal>}
