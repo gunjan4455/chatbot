@@ -141,7 +141,6 @@ class Home extends React.Component {
         const self=this;
         socket.on("room-details",(data)=>{
             this.room = data;
-
         });
         socket.on('greeting-request', function (room) {
         //    self.chatRequests.unshift(room);

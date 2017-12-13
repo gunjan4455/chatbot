@@ -115,7 +115,6 @@ class Admin extends React.Component {
         chats.push(this.chatRequests.pop());
         this.setState({chatRooms : chats});
     }
-
     onHideModal(e) {
         e.preventDefault();
         this.setState({greetingMessage : ''})
