@@ -5,6 +5,8 @@ import ConfirmationModal from "../shared/ConfirmationModal";
 import BackButton from '../shared/BackButton';
 import ChatBot from '../shared/ChatBot';
 import InputForm from "../shared/InputForm";
+import {Widget, addResponseMessage} from 'react-chat-widget';
+
 
 class Admin extends React.Component {
     constructor(props) {
@@ -99,6 +101,7 @@ class Admin extends React.Component {
                 room : room
             });
         });
+
     }
 
     handleSubmit(e) {
@@ -117,11 +120,31 @@ class Admin extends React.Component {
         e.preventDefault();
         this.setState({greetingMessage : ''})
     }
+    handleNewUserMessage = (newMessage) => {
+        console.log(`New message incoming! ${newMessage}`);
+        // Now send the message throught the backend API
+       // addResponseMessage(`Hi ${newMessage},what would you like to enter?`);
+        const {socket} = this.props;
+        const {room} = this.state;
+        socket.emit('admin-msg',  {room : room,message:newMessage});
+
+
+        socket.on('user-msg', (inboundMessage) => {
+            console.log('received message from user', inboundMessage);
+            addResponseMessage(inboundMessage);
+    });
+    }
 
     chats = () => {
         let rooms = _.map(this.state.chatRooms, (room, index) => {
             return (
-                <ChatBot key={index} steps={this.state.steps} room={room}/>
+        //   {/*     <ChatBot steps={this.state.steps} />*/}
+                <Widget  key={index}
+                    handleNewUserMessage={this.handleNewUserMessage}
+                         {...this.props}
+                         title={room.title}
+                         subtitle={this.props.user.name}
+                />
             )
         });
         return rooms;

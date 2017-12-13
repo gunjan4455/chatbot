@@ -65,7 +65,7 @@ export class InputForm extends React.PureComponent {
                 component: <DynamicStep  message={inboundMessage}/>,
                 asMessage: true,
                 end: true
-            }
+            };
 
             this.props.newMessage(inboundMessage);
             this.props.triggerNextStep();
@@ -84,6 +84,9 @@ export class InputForm extends React.PureComponent {
                     <div>
                         { this.props.option ? (
                             <form className="form-horizontal" onSubmit={this.onSubmit}>
+                                <h3> hi, {this.props.username}
+                                <br/><p>Please enter the credentials
+                                </p></h3>
                                 <div style={{"marginBottom": "25px"}} className="input-group">
                                     <span className="input-group-addon"><i
                                         className="glyphicon glyphicon-user"></i></span>

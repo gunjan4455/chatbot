@@ -5,7 +5,6 @@ import AdminPanel from '../../../containers/AdminPanel';
 import NotFound from '../../NotFound/index';
 import Header from '../../../containers/Header';
 
-
 class Wrapper extends React.Component {
     constructor(props) {
         super(props);
@@ -13,10 +12,7 @@ class Wrapper extends React.Component {
 
     componentWillMount() {
         this.props.getSocket();
-
-
     }
-
 
     render() {
         return (

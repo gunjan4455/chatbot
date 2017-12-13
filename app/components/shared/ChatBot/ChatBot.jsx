@@ -2,15 +2,32 @@ import React from "react";
 import Chatbot from 'react-simple-chatbot';
 import InputForm from "../InputForm";
 import DynamicStep from "../DynamicStep";
-import DynamicStep1 from "../DynamicStep1";
+import DynamicStep1 from "../InputFormWrapper";
 
 class ChatBot extends React.Component {
+    newMessage = (msg) => {
+        this.setState({message: msg});
+    }
+    getCredentials = (value, type) => {
+        switch (type) {
+            case 'name':
+                this.user.name = value;
+                break;
+            default:
+                break;
+        }
+    };
+    addUser = (user) => {
+        let details = Object.assign({}, user, this.user);
+        this.props.createUser(details); //this dispatchs from wrapper
+    };
+
     constructor(props) {
         super(props);
         this.state = {
-            steps : [],
+            steps: [],
             name: "",
-            message : ""
+            message: ""
         };
         this.user = {
             name: ''
@@ -54,7 +71,8 @@ class ChatBot extends React.Component {
                 //},
             }, {
                 id: '5',
-                component: <InputForm option={true} addUser={this.addUser} {...this.props} newMessage={this.newMessage}/>,
+                component: <InputForm option={true} addUser={this.addUser} {...this.props}
+                                      newMessage={this.newMessage}/>,
                 waitAction: true,
                 asMessage: true,
                 trigger: '7'
@@ -63,47 +81,46 @@ class ChatBot extends React.Component {
                 component: <InputForm addUser={this.addUser} option={false}/>,
                 waitAction: true,
                 asMessage: true
-            },{
+            }, {
                 id: '7',
-                component: <DynamicStep  message={this.state.message}/>,
+                component: <DynamicStep message={this.state.message}/>,
                 asMessage: true,
                 end: true
             }];
-        if(!_.isEmpty(this.props.step))
+        if (!_.isEmpty(this.props.step))
             steps.push(this.props.step);
-        this.setState({steps : steps});
+        this.setState({steps: steps});
     }
-
-    newMessage = (msg) => {
-        this.setState({message : msg});
-    }
-
-    getCredentials = (value, type) => {
-        switch (type) {
-            case 'name':
-                this.user.name=value;
-                break;
-            default:
-                break;
-        }
-    };
-
-    addUser = (user) => {
-        let details = Object.assign({}, user, this.user);
-        this.props.createUser(details); //this dispatchs from wrapper
-    };
-
 
     render() {
-        console.log("rooooooooooo",this.props);
+        console.log("rooooooooooo", this.props);
         let room = this.props.room ? this.props.room.title : "";
         return (
-            <Chatbot
-                headerTitle={room}
-                steps={this.state.steps}
-                {...this.props}/>);
-    }
-}
 
-export default ChatBot;
+            <div className="wrapper ">
+                <div className="rsc-container sc-iwsKbI kdZMGe" width="350px">
+                    <div className="rsc-header sc-gqjmRU glfuN"><h2 className="rsc-header-title sc-VigVT dYUxQs">Chat</h2></div>
+                    <div className="rsc-content sc-gZMcBi bxslzG">
+                        <div className="rsc-ts sc-dnqmqq efROPc">
+                            <div className="rsc-ts-image-container sc-htoDjs vmYlS"><img
+                                className="rsc-ts-image sc-gzVnrw hLGSaN" alt="avatar"/></div>
+                            <div className="rsc-ts-bubble sc-bZQynM fhAWVE">What is your name?</div>
+                        </div>
+                    </div>
+                    <div className="rsc-footer sc-jzJRlG byHcWR"><input type="textarea" className="rsc-input sc-cSHVUG ivHxXV"
+                                                                    placeholder="Type the message ..." value=""/>
+                        <button className="rsc-submit-button sc-kAzzGY dBBLzP"></button>
+                    </div>
+                </div>
+            </div>
+
+    //<Chatbot
+        //    headerTitle={room}
+         //   steps={this.state.steps}
+          //  {...this.props}/>
+    );
+    }
+    }
+
+    export default ChatBot;
 

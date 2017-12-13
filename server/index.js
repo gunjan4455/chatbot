@@ -112,7 +112,7 @@ if (isDeveloping) {
 //socket
 
 io.on('connection', function (socket) {
-    console.log("socket connection on=======",socket.id);
+    console.log("socket connection on=======", socket.id);
     console.log('a user connected')
     socket.on('subscribe', (data) => {
             io.sockets.emit('subscribeSuccess', data.user);
@@ -186,7 +186,7 @@ io.on('connection', function (socket) {
         console.log("jjjjjjjjjjjjjjj", data.room.title);
         socket.join(data.room.title, function (err) {
             console.log("roommmmmmmmmmmm", data.room);
-            console.log("clients=======",io.sockets.adapter.rooms[data.room.title],  'ffffffffff', io.sockets.adapter.rooms);
+            console.log("clients=======", io.sockets.adapter.rooms[data.room.title], 'ffffffffff', io.sockets.adapter.rooms);
             data.room.message = "Hey admin how r u???";
             data.room.socketId = socket.id;
             Admins.find({}).exec(function (err, admins) {
@@ -194,6 +194,8 @@ io.on('connection', function (socket) {
                     _.map(admins, function (admin, index) {
                         if (io.sockets.connected[admin.socketId])
                             io.sockets.connected[admin.socketId].emit("greeting-request", data.room);
+                            socket.emit('room-details', data.room);
+
                     });
                 }
             });
@@ -203,8 +205,8 @@ io.on('connection', function (socket) {
 
     socket.on('accept-greeting-request', (data) => {
         console.log('admin joined room', data, socket.id);
-        if(data.user.isAdmin) {
-            socket.join(data.room.title,(err)=> {
+        if (data.user.isAdmin) {
+            socket.join(data.room.title, (err) => {
                 console.log("admin joined successfully", err);
             });
         }
@@ -225,12 +227,34 @@ io.on('connection', function (socket) {
         //message.save((err) => {
         //    if (err) return err
         //})
-        console.log("clients=======",io.sockets.adapter.rooms[msg.room.title].sockets, io.sockets.adapter.rooms);
+        console.log("clients=======", io.sockets.adapter.rooms[msg.room.title].sockets, io.sockets.adapter.rooms);
         //io.to(msg.room).emit('chat-message', JSON.stringify(msg.message))
         io.sockets.in(msg.room.title).emit('chat-message', msg.message);
 
         //io.sockets.in(msg.room.title).emit('chat-message', msg.message);
     })
+    socket.on('admin-msg', function (msg) {
+        console.log('admin-msg', msg)
+        //let message = new Message({user: msg.user, content: msg.message, room: msg.room})
+        //message.save((err) => {
+        //    if (err) return err
+        //})
+        //io.to(msg.room).emit('chat-message', JSON.stringify(msg.message))
+        io.sockets.in(msg.room.title).emit('admin-msg', msg.message);
+
+        //io.sockets.in(msg.room.title).emit('chat-message', msg.message);
+    });
+    socket.on('user-msg', function (msg) {
+        console.log('user-msg', msg);
+        //let message = new Message({user: msg.user, content: msg.message, room: msg.room})
+        //message.save((err) => {
+        //    if (err) return err
+        //})
+        //io.to(msg.room).emit('chat-message', JSON.stringify(msg.message))
+        io.sockets.in(msg.room.title).emit('user-msg', msg.message);
+
+        //io.sockets.in(msg.room.title).emit('chat-message', msg.message);
+    });
 
     socket.on('new room', (roomData) => {
         let message = new Message({user: roomData.user, content: roomData.message, room: roomData.room})
