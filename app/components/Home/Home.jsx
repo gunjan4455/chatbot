@@ -162,7 +162,7 @@ render() {
              <ChatBot message={this.state.message} createUser={this.createUser} {...this.props} step={this.state.newStep}/>
              </div>*/}
             <div className="App">
-                <Widget
+                <Widget id="1234" key="1234"
                     handleNewUserMessage={this.handleNewUserMessage}  profileAvatar={this.logo}
                     title={room}
                     subtitle={this.user.name}

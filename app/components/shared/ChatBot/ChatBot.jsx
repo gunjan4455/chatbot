@@ -4,7 +4,7 @@ import InputForm from "../InputForm";
 import DynamicStep from "../DynamicStep";
 import DynamicStep1 from "../InputFormWrapper";
 
-import {Widget, addResponseMessage} from 'react-chat-widget';
+import {Widget  as Bot, addResponseMessage} from 'react-chat-widget';
 
 class ChatBot extends React.Component {
     newMessage = (msg) => {
@@ -58,10 +58,10 @@ class ChatBot extends React.Component {
         console.log("rooooooooooo", this.props);
         let room = this.props.room ? this.props.room.title : "";
         return (
-            <Widget key={this.props.room.title} id={`${this.props.room._id}+2`}
+            <Bot key={this.props.room.title} id={this.props.room._id}
                     handleNewUserMessage={this.handleNewUserMessage}
                     title={this.props.room.title}
-                    subtitle={this.props.user.name}
+                    subtitle={this.props.room.title}
                 />
         );
     }
