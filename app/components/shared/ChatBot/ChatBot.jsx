@@ -55,7 +55,7 @@ class ChatBot extends React.Component {
         // Now send the message throught the backend API
         // addResponseMessage(`Hi ${newMessage},what would you like to enter?`);
         const {socket, room} = this.props;
-        socket.emit('admin-msg', {room: room, message: newMessage});
+        socket.emit('admin-msg',  {room : room,message:newMessage});
 
 
         socket.on('user-msg', (inboundMessage) => {
@@ -70,10 +70,10 @@ class ChatBot extends React.Component {
         return (
             <div>
                 <Bot key={this.props.room.title} id={this.props.room._id}
-                     handleNewUserMessage={this.handleNewUserMessage}
-                     title={this.props.room.title}
-                     subtitle={this.props.room.title}
-                    />
+                    handleNewUserMessage={this.handleNewUserMessage}
+                    title={this.props.room.title}
+                    subtitle={this.props.room.title}
+                />
             </div>
         );
     }

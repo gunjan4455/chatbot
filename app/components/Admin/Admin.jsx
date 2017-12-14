@@ -81,7 +81,7 @@ class Admin extends React.Component {
     chats = () => {
         let rooms = _.map(this.state.chatRooms, (room, index) => {
             return (
-                <ChatBot key={room.title} id={room._id} room={room} user={this.props.user} {...this.props}/>
+                <ChatBot id={Math.random()*10} key={Math.random()*11} room={room} user={this.props.user} {...this.props}/>
             )
         });
         return rooms;
@@ -210,7 +210,7 @@ class Admin extends React.Component {
                     </div>
                 </div>
 
-                <div className="chat-room-container">
+                <div className="chat-room-container" id={Math.random()*10} key={Math.random()*11}>
                 {rooms}
                 </div>
             </div>
