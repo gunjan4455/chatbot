@@ -29,7 +29,17 @@ class ChatBot extends React.Component {
         this.state = {
             steps: [],
             name: "",
-            message: ""
+            message: "",
+            messages :
+                [{
+                    "type" : 0,
+                    "image": "cat.jpg",
+                    "text": "Hello! Good Morning!"
+                }, {
+                    "type": 1,
+                    "image": "dog.jpg",
+                    "text": "Hello! Good Afternoon!"
+                }]
         };
         this.user = {
             name: ''
@@ -45,7 +55,7 @@ class ChatBot extends React.Component {
         // Now send the message throught the backend API
         // addResponseMessage(`Hi ${newMessage},what would you like to enter?`);
         const {socket, room} = this.props;
-        socket.emit('admin-msg',  {room : room,message:newMessage});
+        socket.emit('admin-msg', {room: room, message: newMessage});
 
 
         socket.on('user-msg', (inboundMessage) => {
@@ -58,11 +68,13 @@ class ChatBot extends React.Component {
         console.log("rooooooooooo", this.props);
         let room = this.props.room ? this.props.room.title : "";
         return (
-            <Bot key={this.props.room.title} id={this.props.room._id}
-                    handleNewUserMessage={this.handleNewUserMessage}
-                    title={this.props.room.title}
-                    subtitle={this.props.room.title}
-                />
+            <div>
+                <Bot key={this.props.room.title} id={this.props.room._id}
+                     handleNewUserMessage={this.handleNewUserMessage}
+                     title={this.props.room.title}
+                     subtitle={this.props.room.title}
+                    />
+            </div>
         );
     }
 }

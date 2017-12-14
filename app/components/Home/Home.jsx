@@ -5,6 +5,8 @@ import {renderBooksList, emailValidator} from "../../utility";
 import DynamicStep from "../shared/DynamicStep";
 import {Widget, addResponseMessage, addLinkSnippet, renderCustomComponent} from 'react-chat-widget';
 import InputForm from "../shared/InputForm";
+import 'react-chat-elements/dist/main.css';
+import { ChatItem, MessageBox, ChatList, Input, Button } from 'react-chat-elements'
 
 
 class Home extends React.Component {
@@ -15,7 +17,29 @@ class Home extends React.Component {
             this.state = {
                 steps: [],
                 name: "",
-                message: ""
+                message: "",
+                messages : [{
+                    message:'How do I use this messaging app?',
+                    from: 'right',
+                    backColor: '#3d83fa',
+                    textColor: "white",
+                    avatar: 'https://www.seeklogo.net/wp-content/uploads/2015/09/google-plus-new-icon-logo.png',
+                    duration: 2000,
+                },{
+                    message:'How do I use this messaging app?',
+                    from: 'left',
+                    backColor: '#3d83fa',
+                    textColor: "white",
+                    avatar: 'https://www.seeklogo.net/wp-content/uploads/2015/09/google-plus-new-icon-logo.png',
+                    duration: 2000,
+                },{
+                    message:'How do I use this messaging app?',
+                    from: 'right',
+                    backColor: '#3d83fa',
+                    textColor: "white",
+                    avatar: 'https://www.seeklogo.net/wp-content/uploads/2015/09/google-plus-new-icon-logo.png',
+                    duration: 2000,
+                }]
             };
         this.user = {
             name: ''
@@ -167,6 +191,88 @@ render() {
                     title={room}
                     subtitle={this.user.name}
                     />
+                <ChatItem
+                    avatar={'https://facebook.github.io/react/img/logo.svg'}
+                    alt={'Reactjs'}
+                    title={'Facebook'}
+                    subtitle={'What are you doing?'}
+                    date={new Date()}
+                    unread={0} />
+                <MessageBox
+                    position={'left'}
+                    type={'photo'}
+                    text={'react.svg'}
+                    data={{
+                        uri: 'https://facebook.github.io/react/img/logo.svg',
+                        status: {
+                            click: false,
+                            loading: 0,
+                        }
+                    }}/>
+                <ChatList
+                    className='chat-list'
+                    dataSource={[
+                {
+                    avatar: 'https://facebook.github.io/react/img/logo.svg',
+                    alt: 'Reactjs',
+                    title: 'Facebook',
+                    subtitle: 'What are you doing?',
+                    date: new Date(),
+                    unread: 0,
+                },{
+                    avatar: 'https://facebook.github.io/react/img/logo.svg',
+                    alt: 'Reactjs',
+                    title: 'Facebook',
+                    subtitle: 'What are you doing?',
+                    date: new Date(),
+                    unread: 0,
+                },{
+                    avatar: 'https://facebook.github.io/react/img/logo.svg',
+                    alt: 'Reactjs',
+                    title: 'Facebook',
+                    subtitle: 'What are you doing?',
+                    date: new Date(),
+                    unread: 0,
+                },{
+                    avatar: 'https://facebook.github.io/react/img/logo.svg',
+                    alt: 'Reactjs',
+                    title: 'Facebook',
+                    subtitle: 'What are you doing?',
+                    date: new Date(),
+                    unread: 0,
+                },{
+                    avatar: 'https://facebook.github.io/react/img/logo.svg',
+                    alt: 'Reactjs',
+                    title: 'Facebook',
+                    subtitle: 'What are you doing?',
+                    date: new Date(),
+                    unread: 0,
+                },{
+                    avatar: 'https://facebook.github.io/react/img/logo.svg',
+                    alt: 'Reactjs',
+                    title: 'Facebook',
+                    subtitle: 'What are you doing?',
+                    date: new Date(),
+                    unread: 0,
+                },{
+                    avatar: 'https://facebook.github.io/react/img/logo.svg',
+                    alt: 'Reactjs',
+                    title: 'Facebook',
+                    subtitle: 'What are you doing?',
+                    date: new Date(),
+                    unread: 0,
+                },
+            ]} />
+                <Input
+                    placeholder="Type here..."
+                    multiline={true}
+                    rightButtons={
+                        <Button
+                        color='white'
+                        backgroundColor='black'
+                        text='Send'
+                        onClick={this.handleNewUserMessage}/>
+                }/>
             </div>
         </section>
     )
