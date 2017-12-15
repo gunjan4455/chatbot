@@ -8,17 +8,28 @@ class Admin extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            greetingMessage:"",
-            chatRooms : [],
-            room : {},
-            messages : [],
+            greetingMessage: "",
+            chatRooms: [],
+            room: {},
+            messages: [],
         };
         this.chatRequests = [];
     }
 
     sendMessage = (value) => {
         const {socket} = this.props;
-        socket.emit('chat-message', {room : this.state.room, message : value});
+        socket.emit('chat-message', {room: this.state.room, message: value});
+        _.map(this.state.chatRooms, (room) => {
+            if (room._id == this.state.room._id) {
+                let obj = {
+                    type: "response",
+                    text: "How may i help you?",
+                    template: false
+                }
+                room.chat = [];
+                room.chat.push(obj);
+            }
+        })
     }
 
     componentWillMount() {
@@ -29,13 +40,12 @@ class Admin extends React.Component {
 
     componentDidMount() {
         const {socket} = this.props;
-        const self=this;
+        const self = this;
         socket.on('greeting-request', function (room) {
-            self.chatRequests.unshift(room);
-            console.log("msssg", room);
+            //self.chatRequests.unshift(room);
             self.setState({
-                greetingMessage:room.message,
-                room : room
+                greetingMessage: room.message,
+                room: room
             });
         });
 
@@ -44,41 +54,48 @@ class Admin extends React.Component {
     acceptRequest = (e) => { //accepting request from client
         e.preventDefault();
         const {socket} = this.props;
-        const {room} = this.state;
-
-        this.setState({greetingMessage : ''});
-        console.log("rrrrrrrrrrr", this.state.room);
-        socket.emit('accept-greeting-request', {room : room, user: this.props.user});
-
+        socket.emit('accept-greeting-request', {room: this.state.room, user: this.props.user});
         let chats = this.state.chatRooms;
-        chats.push(this.chatRequests.pop());
-        this.setState({chatRooms : chats});
+        chats.push(this.state.room);
+        this.setState({chatRooms: chats, greetingMessage: ""});
     }
 
     onHideModal = (e) => {
         e.preventDefault();
-        this.setState({greetingMessage : ''})
+        this.setState({greetingMessage: ''})
     }
 
     handleNewUserMessage = (newMessage) => {
         console.log(`New adminsssssssssssmessage incoming! ${newMessage}`);
         // Now send the message throught the backend API
-       // addResponseMessage(`Hi ${newMessage},what would you like to enter?`);
+        // addResponseMessage(`Hi ${newMessage},what would you like to enter?`);
         const {socket} = this.props;
         const {room} = this.state;
-        socket.emit('admin-msg',  {room : room,message:newMessage});
+        socket.emit('admin-msg', {room: room, message: newMessage});
 
 
         socket.on('user-msg', (inboundMessage) => {
             console.log('received message from user', inboundMessage);
-          //  addResponseMessage("from 22222");
-    });
+            //  addResponseMessage("from 22222");
+        });
+    }
+
+    handleUserMessage = (msg) => {
+        let obj = {
+            type: "response",
+            text: msg.text,
+            template: false
+        }
+        //let chats = this.state.messages;
+        //chats.push(obj);
+        //this.setState({messages : chats});
     }
 
     chats = () => {
         let rooms = _.map(this.state.chatRooms, (room, index) => {
             return (
-                <ChatBot messages={this.state.messages} handleUserMessage={this.handleUserMessage} key={Math.random()*11} room={room} user={this.props.user} {...this.props}/>
+                <ChatBot messages={room.messages} handleUserMessage={this.handleUserMessage} key={Math.random()*11}
+                         room={room} user={this.props.user} {...this.props}/>
             )
         });
         return rooms;
@@ -88,7 +105,9 @@ class Admin extends React.Component {
         let rooms = this.chats();
         return (
             <div className="container">
-                {this.state.greetingMessage && <DetailModal  handleSubmit={this.acceptRequest}  onHideModal={this.onHideModal}  greetingMessage={this.state.greetingMessage}></DetailModal>}
+                {this.state.greetingMessage &&
+                <DetailModal handleSubmit={this.acceptRequest} onHideModal={this.onHideModal}
+                             greetingMessage={this.state.greetingMessage}></DetailModal>}
                 <div className="row well">
                     <div className="col-md-2">
                         <ul className="nav nav-pills nav-stacked well">
@@ -208,7 +227,7 @@ class Admin extends React.Component {
                 </div>
 
                 <div className="chat-room-container" id={Math.random()*10} key={Math.random()*11}>
-                {rooms}
+                    {rooms}
                 </div>
             </div>
         );

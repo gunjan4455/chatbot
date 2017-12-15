@@ -36,8 +36,7 @@ export default class DetailModal extends React.PureComponent {
 
                         </div>
                         <div className="button_right">
-                            <button type="submit" className="btn btn-default save_button"
-                            >save
+                            <button type="submit" className="btn btn-default save_button">save
                             </button>
                             <button type="button" className="btn btn-default">cancel
                             </button>

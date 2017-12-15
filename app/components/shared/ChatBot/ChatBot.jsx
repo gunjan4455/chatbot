@@ -56,7 +56,8 @@ class ChatBot extends React.Component {
         let obj = {
             type : this.props.user,
             text : this.state.message,
-            field : "name"
+            field : "name",
+            room : this.props.room
         }
         this.props.handleUserMessage(obj);
         this.setState({message : ""});

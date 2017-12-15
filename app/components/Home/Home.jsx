@@ -6,7 +6,7 @@ import InputForm from "../shared/InputForm";
 class Home extends React.Component {
     constructor(props) {
         super(props);
-        this.room = {};
+        //this.room = {};
         this.logo = 'https://medias2.prestastore.com/835054-pbig/chat-bot-for-social-networking.jpg',
         this.state = {
             messages :
@@ -57,7 +57,7 @@ class Home extends React.Component {
         const {socket} = this.props;
         const self = this;
         socket.on("room-details", (data) => {
-            this.room = data;
+            self.setState({room : data});
         });
         socket.on('greeting-request', function (room) {
             //    self.chatRequests.unshift(room);
@@ -143,7 +143,7 @@ class Home extends React.Component {
     render() {
         return (
             <section className="container bg-gray">
-                <ChatBot messages={this.state.messages} handleUserMessage={this.handleUserMessage} user={this.state.user} addUser={this.addUser}/>
+                <ChatBot messages={this.state.messages} handleUserMessage={this.handleUserMessage} user={this.state.user} addUser={this.addUser} room={this.state.room}/>
             </section>
         )
     }
