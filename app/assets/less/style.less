@@ -522,10 +522,8 @@
     div:nth-child(2) {
       background-color: #a3eaf7;
       border-radius: 10px;
-      max-width: 215px;
       text-align: left;
       margin-left: auto;
-      width: 11em;
       word-wrap: break-word;
       .rce-citem-avatar {
         position: absolute;
@@ -587,8 +585,24 @@
   word-break: break-word;
   overflow: visible;
   white-space: nowrap;
+
+}
+.rce-citem{
+  height:inherit;
+}
+.rce-container-citem{
+  height:initial;
 }
 
+.rce-citem-body--bottom-title, .rce-citem-body--top-title {
+
+  flex: inherit;
+  white-space: pre-line;
+  overflow: visible;
+}
+.rce-citem-body--bottom-status{
+  display: none;
+}
 .message {
   font-size: 14px;
   margin: 10px;
@@ -596,5 +610,15 @@
 }
 
 .rce-citem-body {
+  padding-left: 10px;
   display: block;
+  height:inherit;
+}
+
+.rce-citem-body--top-time {
+  position: absolute;
+  bottom: 0;
+}
+.rce-citem-body--bottom{
+  margin: 9px 0 18px;
 }

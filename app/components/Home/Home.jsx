@@ -197,14 +197,14 @@ class Home extends React.Component {
                                     avatar={'https://medias2.prestastore.com/835054-pbig/chat-bot-for-social-networking.jpg'}
                                     alt={'Reactjs'}
                                     title={'Facebook'}
-                                    subtitle={'What are you doing?'}
+                                    subtitle={'What are you doing?What are you doing?What are you doing?What are you doing?What are you doing?What are you doing?What are you doing?'}
                                     date={new Date()}
                                     unread={0}/>
                                 <ChatItem className="response"
                                 avatar={'https://medias2.prestastore.com/835054-pbig/chat-bot-for-social-networking.jpg'}
                                 alt={'Reactjs'}
                                 title={'Facebook'}
-                                subtitle={'What are you doing?'}
+                                subtitle={'What are you doing?What are you doing?What are you doing?What are you doing?What are you doing?What are you doing?What are you doing?What are you doing?'}
                                 date={new Date()}
                                 unread={0}/>
                                 <ChatItem className="client"
