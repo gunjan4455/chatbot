@@ -471,15 +471,12 @@
 }
 
 .conversation-container {
-  -webkit-animation-delay: 0;
   -webkit-animation-duration: 0.5s;
   -webkit-animation-name: slide-in;
   -webkit-animation-fill-mode: forwards;
-  -moz-animation-delay: 0;
   -moz-animation-duration: 0.5s;
   -moz-animation-name: slide-in;
   -moz-animation-fill-mode: forwards;
-  animation-delay: 0;
   animation-duration: 0.5s;
   animation-name: slide-in;
   animation-fill-mode: forwards;
@@ -517,7 +514,7 @@
 }
 
 .client {
-  .rce-citem{
+  .rce-citem {
     direction: rtl;
   }
   background: none;
@@ -525,9 +522,9 @@
     div:nth-child(2) {
       background-color: #a3eaf7;
       border-radius: 10px;
-      max-width: 215px;
       text-align: left;
       margin-left: auto;
+      word-wrap: break-word;
       .rce-citem-avatar {
         position: absolute;
         right: 0;
@@ -535,8 +532,9 @@
     }
   }
 }
+
 .response {
-  .rce-citem{
+  .rce-citem {
     direction: ltr;
   }
   background: none;
@@ -547,6 +545,8 @@
       max-width: 215px;
       text-align: left;
       margin-left: auto;
+      width: 11em;
+      word-wrap: break-word;
       .rce-citem-avatar {
         position: absolute;
         right: 0;
@@ -554,6 +554,7 @@
     }
   }
 }
+
 .rce-citem {
   background: inherit;
 }
@@ -561,7 +562,8 @@
 .rce-citem:hover {
   background: inherit;
 }
-.rce-citem-body--top-title{
+
+.rce-citem-body--top-title {
   display: none;
 }
 
@@ -579,12 +581,44 @@
 
 }
 
+.rce-citem-body--bottom-title {
+  word-break: break-word;
+  overflow: visible;
+  white-space: nowrap;
+
+}
+.rce-citem{
+  height:inherit;
+}
+.rce-container-citem{
+  height:initial;
+}
+
+.rce-citem-body--bottom-title, .rce-citem-body--top-title {
+
+  flex: inherit;
+  white-space: pre-line;
+  overflow: visible;
+}
+.rce-citem-body--bottom-status{
+  display: none;
+}
 .message {
   font-size: 14px;
   margin: 10px;
   display: flex;
 }
 
-.rce-citem-body{
+.rce-citem-body {
+  padding-left: 10px;
   display: block;
+  height:inherit;
+}
+
+.rce-citem-body--top-time {
+  position: absolute;
+  bottom: 0;
+}
+.rce-citem-body--bottom{
+  margin: 9px 0 18px;
 }
