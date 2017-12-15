@@ -76,16 +76,17 @@ class ChatBot extends React.Component {
                             {messages}
                         </div>
                         <form onSubmit={this.handleUserMessage}>
-                            <input
+                            <input className="sender"
                                 placeholder="Type here..."
                                 multiline="true"
                                 value={this.state.message}
                                 onChange={this.updateInputValue}/>
-                            <button
+                            <button className="send"
                                 color='white'
                                 text='Send'
                                 type="submit"
-                                onSubmit={this.handleUserMessage}/>
+                                  value="send"
+                                    onSubmit={this.handleUserMessage} >send</button>
 
                         </form>
                     </div>
