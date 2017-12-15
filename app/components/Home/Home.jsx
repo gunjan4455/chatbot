@@ -86,14 +86,21 @@ class Home extends React.Component {
 
     handleMessageEvent = () => {
         const {socket} = this.props;
-        socket.on('chat-message', (inboundMessage) => {
+        socket.on('chat-message', (msg) => {
             //this.props.createMessage({room: this.props.room, newMessage: {user: JSON.parse(inboundMessage).user, message: JSON.parse(inboundMessage).message}})
-            console.log('received message from adminnnnnnnnnnnn', inboundMessage)
+            console.log('received message from adminnnnnnnnnnnn', msg)
         });
-        socket.on('admin-msg', (inboundMessage) => {
+        socket.on('admin-msg', (msg) => {
             //this.props.createMessage({room: this.props.room, newMessage: {user: JSON.parse(inboundMessage).user, message: JSON.parse(inboundMessage).message}})
-            console.log('received message from adminnnnnnnnnnnn', inboundMessage);
-            //addResponseMessage(inboundMessage);
+            console.log('received message from adminnnnnnnnnnnn', msg);
+            let obj = {
+                type : msg.type,
+                text : msg.text,
+                template : false
+            }
+            let chats = this.state.messages;
+            chats.push(obj);
+            this.setState({messages : chats});
         });
 
     }
@@ -143,7 +150,7 @@ class Home extends React.Component {
     render() {
         return (
             <section className="container bg-gray">
-                <ChatBot messages={this.state.messages} handleUserMessage={this.handleUserMessage} user={this.state.user} addUser={this.addUser} room={this.state.room}/>
+                <ChatBot messages={this.state.messages} handleUserMessage={this.handleUserMessage} user={this.state.user} addUser={this.addUser} room={this.state.room} from="client"/>
             </section>
         )
     }

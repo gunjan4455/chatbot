@@ -2,7 +2,7 @@ import React from "react";
 import _ from 'lodash';
 import DetailModal from "../shared/DetailModal";
 import ConfirmationModal from "../shared/ConfirmationModal";
-import ChatBot from '../shared/ChatBot';
+import ChatBot from '../shared/ChatBotAdmin';
 
 class Admin extends React.Component {
     constructor(props) {
@@ -19,17 +19,17 @@ class Admin extends React.Component {
     sendMessage = (value) => {
         const {socket} = this.props;
         socket.emit('chat-message', {room: this.state.room, message: value});
-        _.map(this.state.chatRooms, (room) => {
-            if (room._id == this.state.room._id) {
-                let obj = {
-                    type: "response",
-                    text: "How may i help you?",
-                    template: false
-                }
-                room.chat = [];
-                room.chat.push(obj);
-            }
-        })
+        //_.map(this.state.chatRooms, (room) => {
+        //    if (room._id == this.state.room._id) {
+        //        let obj = {
+        //            type: "response",
+        //            text: "How may i help you?",
+        //            template: false
+        //        }
+        //        room.chat = [];
+        //        room.chat.push(obj);
+        //    }
+        //})
     }
 
     componentWillMount() {
@@ -43,6 +43,7 @@ class Admin extends React.Component {
         const self = this;
         socket.on('greeting-request', function (room) {
             //self.chatRequests.unshift(room);
+            room.messages = [];
             self.setState({
                 greetingMessage: room.message,
                 room: room
@@ -80,22 +81,11 @@ class Admin extends React.Component {
         });
     }
 
-    handleUserMessage = (msg) => {
-        let obj = {
-            type: "response",
-            text: msg.text,
-            template: false
-        }
-        //let chats = this.state.messages;
-        //chats.push(obj);
-        //this.setState({messages : chats});
-    }
-
     chats = () => {
         let rooms = _.map(this.state.chatRooms, (room, index) => {
             return (
-                <ChatBot messages={room.messages} handleUserMessage={this.handleUserMessage} key={Math.random()*11}
-                         room={room} user={this.props.user} {...this.props}/>
+                <ChatBot key={Math.random()*11}
+                         room={room} user={this.props.user} {...this.props} from="admin"/>
             )
         });
         return rooms;
