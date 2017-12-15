@@ -1,109 +1,28 @@
 import React from "react";
 import PropTypes from "prop-types";
 import ChatBot from '../shared/ChatBot';
-import {renderBooksList, emailValidator} from "../../utility";
-import DynamicStep from "../shared/DynamicStep";
-import {Widget, addResponseMessage, addLinkSnippet, renderCustomComponent} from 'react-chat-widget';
 import InputForm from "../shared/InputForm";
-import 'react-chat-elements/dist/main.css';
-
 
 class Home extends React.Component {
     constructor(props) {
         super(props);
         this.room = {};
         this.logo = 'https://medias2.prestastore.com/835054-pbig/chat-bot-for-social-networking.jpg',
-            this.state = {
-                steps: [],
-                name: "",
-                message: "",
-                messages :
-                    [{
-                        "type": 'response',
-                        "text": "Hello! What is your name?"
-                    },{
-                        "type" : 'client',
-                        "text": "yes...."
-                    }],
-                room: {},
-                connected: false,
-                steps: [],
-                flag: false,
-                stepName: "last",
-                newStep: {}
-            };
+        this.state = {
+            messages :
+                [{
+                    "type": 'response',
+                    "text": "Hello! What is your name?",
+                    "template" : false
+                }],
+            room: {},
+            connected: false,
+            flag: false,
+            user: "client" //to distinguish between admin and user
+        };
         this.user = {
             name: ''
         };
-
-    }
-
-    newMessage = (msg) => {
-        this.setState({message: msg});
-    }
-    getCredentials = (value, type) => {
-        switch (type) {
-            case 'name':
-                this.user.name = value;
-                this.setState({name: value});
-                break;
-            default:
-                break;
-        }
-    }
-    addUser = (user) => {
-        let details = Object.assign({}, user, this.user);
-        this.props.addNewUser(details);
-    }
-    handleMessageEvent = () => {
-        const {socket} = this.props;
-        socket.on('chat-message', (inboundMessage) => {
-            //this.props.createMessage({room: this.props.room, newMessage: {user: JSON.parse(inboundMessage).user, message: JSON.parse(inboundMessage).message}})
-            console.log('received message from adminnnnnnnnnnnn', inboundMessage)
-            /* let newStep = {
-             id: '7',
-             component: <DynamicStep message={this.state.message}/>,
-             asMessage: true,
-             end: true
-             };
-
-             this.setState({newStep: newStep});*/
-
-        });
-        socket.on('admin-msg', (inboundMessage) => {
-            //this.props.createMessage({room: this.props.room, newMessage: {user: JSON.parse(inboundMessage).user, message: JSON.parse(inboundMessage).message}})
-            console.log('received message from adminnnnnnnnnnnn', inboundMessage);
-            addResponseMessage(inboundMessage);
-            /* let newStep = {
-             id: '7',
-             component: <DynamicStep message={this.state.message}/>,
-             asMessage: true,
-             end: true
-             };
-
-             this.setState({newStep: newStep});*/
-
-        });
-
-    }
-    handleNewUserMessage = (newMessage) => {
-        console.log(`New message incomig! ${newMessage}`);
-        this.getCredentials(newMessage, 'name');
-        const {socket} = this.props;
-
-        // Now send the message throught the backend API
-        //addResponseMessage(newMessage);
-        if (!_.isEmpty(this.user.name) && !this.state.flag) {
-            renderCustomComponent(InputForm, {
-                ...this.props,
-                addUser: this.addUser,
-                option: true,
-                username: this.user.name
-            }, true)
-        }
-        if (!_.isEmpty(this.user.name) && !_.isEmpty(this.room)) {
-            socket.emit('user-msg', {room: this.room, message: newMessage});
-        }
     }
 
     init(user, type) {
@@ -131,15 +50,11 @@ class Home extends React.Component {
             addResponseMessage(`How may i help you?`);
             nextProps.socket.emit('joinRoom', {room: nextProps.room});
         }
-
     }
 
     componentDidMount() {
         this.handleMessageEvent();
-
-        addResponseMessage("Welcome....What is your name?");
         const {socket} = this.props;
-
         const self = this;
         socket.on("room-details", (data) => {
             this.room = data;
@@ -153,12 +68,82 @@ class Home extends React.Component {
         });
     }
 
+    getCredentials = (value, type) => {
+        switch (type) {
+            case 'name':
+                this.user.name = value;
+                this.setState({name: value});
+                break;
+            default:
+                break;
+        }
+    }
+
+    addUser = (user) => {
+        let details = Object.assign({}, user, this.user);
+        this.props.addNewUser(details);
+    }
+
+    handleMessageEvent = () => {
+        const {socket} = this.props;
+        socket.on('chat-message', (inboundMessage) => {
+            //this.props.createMessage({room: this.props.room, newMessage: {user: JSON.parse(inboundMessage).user, message: JSON.parse(inboundMessage).message}})
+            console.log('received message from adminnnnnnnnnnnn', inboundMessage)
+        });
+        socket.on('admin-msg', (inboundMessage) => {
+            //this.props.createMessage({room: this.props.room, newMessage: {user: JSON.parse(inboundMessage).user, message: JSON.parse(inboundMessage).message}})
+            console.log('received message from adminnnnnnnnnnnn', inboundMessage);
+            addResponseMessage(inboundMessage);
+        });
+
+    }
+
+    handleUserMessage = (msg) => {
+        console.log(`New message incomig! ${msg}`);
+        if(msg && msg.field && msg.field=="name") {
+            let obj = {
+                type : "client",
+                text : msg.text,
+                template : false
+            }
+            let chats = this.state.messages;
+            chats.push(obj);
+            this.setState({messages : chats},() => {
+                if(this.state.messages.length == 2) {
+                    let obj = {
+                        type : "response",
+                        text : "",
+                        template : true
+                    }
+                    let chats = this.state.messages;
+                    chats.push(obj);
+                    this.setState({messages : chats});
+                }
+            });
+        }
+
+        //this.getCredentials(newMessage, 'name');
+        //const {socket} = this.props;
+        //
+        //// Now send the message throught the backend API
+        ////addResponseMessage(newMessage);
+        //if (!_.isEmpty(this.user.name) && !this.state.flag) {
+        //    renderCustomComponent(InputForm, {
+        //        ...this.props,
+        //        addUser: this.addUser,
+        //        option: true,
+        //        username: this.user.name
+        //    }, true)
+        //}
+        //if (!_.isEmpty(this.user.name) && !_.isEmpty(this.room)) {
+        //    socket.emit('user-msg', {room: this.room, message: newMessage});
+        //}
+    }
+
     render() {
-        console.log("rooooooooooo", this.props);
-        let room = this.props.room ? this.props.room.title : "";
         return (
             <section className="container bg-gray">
-                <ChatBot messages={this.state.messages}/>
+                <ChatBot messages={this.state.messages} handleUserMessage={this.handleUserMessage} user={this.state.user}/>
             </section>
         )
     }
