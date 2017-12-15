@@ -2,10 +2,7 @@ import React from "react";
 import _ from 'lodash';
 import DetailModal from "../shared/DetailModal";
 import ConfirmationModal from "../shared/ConfirmationModal";
-import BackButton from '../shared/BackButton';
 import ChatBot from '../shared/ChatBot';
-import InputForm from "../shared/InputForm";
-
 
 class Admin extends React.Component {
     constructor(props) {
@@ -13,13 +10,10 @@ class Admin extends React.Component {
         this.state = {
             greetingMessage:"",
             chatRooms : [],
-            steps : [],
-            room : {}
+            room : {},
+            messages : [],
         };
         this.chatRequests = [];
-
-        this.handleSubmit=this.handleSubmit.bind(this);
-        this.onHideModal=this.onHideModal.bind(this);
     }
 
     sendMessage = (value) => {
@@ -47,18 +41,21 @@ class Admin extends React.Component {
 
     }
 
-    handleSubmit(e) {
+    acceptRequest = (e) => { //accepting request from client
         e.preventDefault();
         const {socket} = this.props;
         const {room} = this.state;
+
         this.setState({greetingMessage : ''});
         console.log("rrrrrrrrrrr", this.state.room);
         socket.emit('accept-greeting-request', {room : room, user: this.props.user});
+
         let chats = this.state.chatRooms;
         chats.push(this.chatRequests.pop());
         this.setState({chatRooms : chats});
     }
-    onHideModal(e) {
+
+    onHideModal = (e) => {
         e.preventDefault();
         this.setState({greetingMessage : ''})
     }
@@ -81,7 +78,7 @@ class Admin extends React.Component {
     chats = () => {
         let rooms = _.map(this.state.chatRooms, (room, index) => {
             return (
-                <ChatBot id={Math.random()*10} key={Math.random()*11} room={room} user={this.props.user} {...this.props}/>
+                <ChatBot messages={this.state.messages} handleUserMessage={this.handleUserMessage} key={Math.random()*11} room={room} user={this.props.user} {...this.props}/>
             )
         });
         return rooms;
@@ -91,7 +88,7 @@ class Admin extends React.Component {
         let rooms = this.chats();
         return (
             <div className="container">
-                {this.state.greetingMessage && <DetailModal  handleSubmit={this.handleSubmit}  onHideModal={this.onHideModal}  greetingMessage={this.state.greetingMessage}></DetailModal>}
+                {this.state.greetingMessage && <DetailModal  handleSubmit={this.acceptRequest}  onHideModal={this.onHideModal}  greetingMessage={this.state.greetingMessage}></DetailModal>}
                 <div className="row well">
                     <div className="col-md-2">
                         <ul className="nav nav-pills nav-stacked well">

@@ -1,7 +1,6 @@
 import React from "react";
 import './ChatItem.css';
-
-import Avatar from '../Avatar/Avatar';
+import Avatar from '../Avatar';
 import InputForm from "../InputForm";
 
 const moment = require('moment');
@@ -49,8 +48,7 @@ export class ChatItem extends  React.Component {
 
                         <div className="rce-citem-body--bottom">
                             <div className="rce-citem-body--bottom-title">
-                                oooooo
-                                {this.props.template ?  <InputForm option="true"/> : this.props.subtitle}
+                                {this.props.template ?  <InputForm option="true" addUser={this.props.addUser}/> : this.props.subtitle}
                             </div>
                             <div className="rce-citem-body--bottom-status">
                                 {

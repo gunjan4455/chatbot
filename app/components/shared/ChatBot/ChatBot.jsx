@@ -1,16 +1,13 @@
 import React from "react";
-import Chatbot from 'react-simple-chatbot';
 import _ from 'lodash';
 import InputForm from "../InputForm";
-import ChatItem from "../ChatItem/ChatItem";
+import ChatItem from "../ChatItem";
 import {Navbar, Button} from 'react-chat-elements'
 
 class ChatBot extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            steps: [],
-            name: "",
             message: ""
         };
         this.user = {
@@ -30,7 +27,7 @@ class ChatBot extends React.Component {
 
     addUser = (user) => {
         let details = Object.assign({}, user, this.user);
-        this.props.createUser(details); //this dispatchs from wrapper
+        this.props.addUser(details); //this dispatchs from wrapper
     }
 
     messages = () => {
@@ -43,14 +40,14 @@ class ChatBot extends React.Component {
                           date={new Date()}
                           unread={0}
                           key={message.text}
-                          template={message.template}/>
+                          template={message.template}
+                          addUser={this.addUser}/>
                 )
             })
         return texts;
     }
 
     updateInputValue = (evt) => {
-        console.log("jjjjjj",evt.target.value);
         this.setState({message : evt.target.value});
     }
 

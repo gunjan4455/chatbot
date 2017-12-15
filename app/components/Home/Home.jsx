@@ -47,7 +47,7 @@ class Home extends React.Component {
 
         if (!_.isEmpty(nextProps.room) && !this.state.flag) {
             this.setState({flag: true});
-            addResponseMessage(`How may i help you?`);
+            //onseMessage(`How may i help you?`);
             nextProps.socket.emit('joinRoom', {room: nextProps.room});
         }
     }
@@ -93,7 +93,7 @@ class Home extends React.Component {
         socket.on('admin-msg', (inboundMessage) => {
             //this.props.createMessage({room: this.props.room, newMessage: {user: JSON.parse(inboundMessage).user, message: JSON.parse(inboundMessage).message}})
             console.log('received message from adminnnnnnnnnnnn', inboundMessage);
-            addResponseMessage(inboundMessage);
+            //addResponseMessage(inboundMessage);
         });
 
     }
@@ -106,6 +106,7 @@ class Home extends React.Component {
                 text : msg.text,
                 template : false
             }
+            this.user.name = msg.text;
             let chats = this.state.messages;
             chats.push(obj);
             this.setState({messages : chats},() => {
@@ -122,7 +123,6 @@ class Home extends React.Component {
             });
         }
 
-        //this.getCredentials(newMessage, 'name');
         //const {socket} = this.props;
         //
         //// Now send the message throught the backend API
@@ -143,7 +143,7 @@ class Home extends React.Component {
     render() {
         return (
             <section className="container bg-gray">
-                <ChatBot messages={this.state.messages} handleUserMessage={this.handleUserMessage} user={this.state.user}/>
+                <ChatBot messages={this.state.messages} handleUserMessage={this.handleUserMessage} user={this.state.user} addUser={this.addUser}/>
             </section>
         )
     }
