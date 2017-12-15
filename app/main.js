@@ -8,8 +8,8 @@ import rootReducer from './reducers';
 import {isProd} from './config';
 import rootSaga from './sagas';
 import App from './App.js';
-import './assets/less/style.less';
 import 'react-chat-elements/dist/main.css';
+import './assets/less/style.less';
 
 const logger = createLogger({
     predicate: (getState, action) => !isProd()
