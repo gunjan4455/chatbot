@@ -6,10 +6,38 @@ import DynamicStep from "../shared/DynamicStep";
 import {Widget, addResponseMessage, addLinkSnippet, renderCustomComponent} from 'react-chat-widget';
 import InputForm from "../shared/InputForm";
 import 'react-chat-elements/dist/main.css';
-import {ChatItem, MessageBox, ChatList, Input, Button, Navbar} from 'react-chat-elements'
 
 
 class Home extends React.Component {
+    constructor(props) {
+        super(props);
+        this.room = {};
+        this.logo = 'https://medias2.prestastore.com/835054-pbig/chat-bot-for-social-networking.jpg',
+            this.state = {
+                steps: [],
+                name: "",
+                message: "",
+                messages :
+                    [{
+                        "type": 'response',
+                        "text": "Hello! What is your name?"
+                    },{
+                        "type" : 'client',
+                        "text": "yes...."
+                    }],
+                room: {},
+                connected: false,
+                steps: [],
+                flag: false,
+                stepName: "last",
+                newStep: {}
+            };
+        this.user = {
+            name: ''
+        };
+
+    }
+
     newMessage = (msg) => {
         this.setState({message: msg});
     }
@@ -78,52 +106,6 @@ class Home extends React.Component {
         }
     }
 
-    constructor(props) {
-        super(props);
-        this.room = {};
-        this.logo = 'https://medias2.prestastore.com/835054-pbig/chat-bot-for-social-networking.jpg',
-            this.state = {
-                steps: [],
-                name: "",
-                message: "",
-                messages: [{
-                    message: 'How do I use this messaging app?',
-                    from: 'right',
-                    backColor: '#3d83fa',
-                    textColor: "white",
-                    avatar: 'https://www.seeklogo.net/wp-content/uploads/2015/09/google-plus-new-icon-logo.png',
-                    duration: 2000,
-                }, {
-                    message: 'How do I use this messaging app?',
-                    from: 'left',
-                    backColor: '#3d83fa',
-                    textColor: "white",
-                    avatar: 'https://www.seeklogo.net/wp-content/uploads/2015/09/google-plus-new-icon-logo.png',
-                    duration: 2000,
-                }, {
-                    message: 'How do I use this messaging app?',
-                    from: 'right',
-                    backColor: '#3d83fa',
-                    textColor: "white",
-                    avatar: 'https://www.seeklogo.net/wp-content/uploads/2015/09/google-plus-new-icon-logo.png',
-                    duration: 2000,
-                }]
-            };
-        this.user = {
-            name: ''
-        };
-        this.state = {
-            room: {},
-            connected: false,
-            steps: [],
-            flag: false,
-            stepName: "last",
-            message: "abcd",
-            newStep: {}
-        };
-
-    }
-
     init(user, type) {
         const {socket} = this.props;
         socket.emit('subscribe', {user: user});
@@ -176,65 +158,7 @@ class Home extends React.Component {
         let room = this.props.room ? this.props.room.title : "";
         return (
             <section className="container bg-gray">
-                {/*<div className="wraper">
-             <ChatBot message={this.state.message} createUser={this.createUser} {...this.props} step={this.state.newStep}/>
-             </div>*/}
-                <div className="App">
-                    <Widget id="1234" key="1234"
-                            handleNewUserMessage={this.handleNewUserMessage} profileAvatar={this.logo}
-                            title={room}
-                            subtitle={this.user.name}
-                    />
-                    <div className="widget-container">
-                        <div className="conversation-container">
-
-                            <Navbar
-                                center={
-                                    <div>welcome </div>
-                                }/>
-                            <div className="messages-container">
-                                <ChatItem className="client"
-                                    avatar={'https://facebook.github.io/react/img/logo.svg'}
-                                    alt={'Reactjs'}
-                                    title={'Facebook'}
-                                    subtitle={'What are you doing?'}
-                                    date={new Date()}
-                                    unread={0}/>
-                                <ChatItem className="response"
-                                avatar={'https://facebook.github.io/react/img/logo.svg'}
-                                alt={'Reactjs'}
-                                title={'Facebook'}
-                                subtitle={'What are you doing?'}
-                                date={new Date()}
-                                unread={0}/>
-                                <ChatItem className="client"
-                                avatar={'https://facebook.github.io/react/img/logo.svg'}
-                                alt={'Reactjs'}
-                                title={'Facebook'}
-                                subtitle={'What are you doing?'}
-                                date={new Date()}
-                                unread={0}/>
-                                <ChatItem className="response"
-                                avatar={'https://facebook.github.io/react/img/logo.svg'}
-                                alt={'Reactjs'}
-                                title={'Facebook'}
-                                subtitle={'What are you doing?'}
-                                date={new Date()}
-                                unread={0}/>
-                            </div>
-                            <Input
-                                placeholder="Type here..."
-                                multiline={true}
-                                rightButtons={
-                                    <Button
-                                        color='white'
-                                        backgroundColor='black'
-                                        text='Send'
-                                        onClick={this.handleNewUserMessage}/>
-                                }/>
-                        </div>
-                    </div>
-                </div>
+                <ChatBot messages={this.state.messages}/>
             </section>
         )
     }

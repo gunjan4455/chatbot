@@ -1,15 +1,28 @@
 import React from "react";
 import Chatbot from 'react-simple-chatbot';
+import _ from 'lodash';
 import InputForm from "../InputForm";
 import DynamicStep from "../DynamicStep";
 import DynamicStep1 from "../InputFormWrapper";
-
-import {Widget  as Bot, addResponseMessage} from 'react-chat-widget';
+import {ChatItem, MessageBox, ChatList, Input, Button, Navbar} from 'react-chat-elements'
 
 class ChatBot extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            steps: [],
+            name: "",
+            message: ""
+        };
+        this.user = {
+            name: ''
+        };
+    }
+
     newMessage = (msg) => {
         this.setState({message: msg});
     }
+
     getCredentials = (value, type) => {
         switch (type) {
             case 'name':
@@ -18,36 +31,11 @@ class ChatBot extends React.Component {
             default:
                 break;
         }
-    };
+    }
+
     addUser = (user) => {
         let details = Object.assign({}, user, this.user);
         this.props.createUser(details); //this dispatchs from wrapper
-    };
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            steps: [],
-            name: "",
-            message: "",
-            messages :
-                [{
-                    "type" : 0,
-                    "image": "cat.jpg",
-                    "text": "Hello! Good Morning!"
-                }, {
-                    "type": 1,
-                    "image": "dog.jpg",
-                    "text": "Hello! Good Afternoon!"
-                }]
-        };
-        this.user = {
-            name: ''
-        };
-    }
-
-    componentWillMount() {
-
     }
 
     handleNewUserMessage = (newMessage) => {
@@ -55,7 +43,7 @@ class ChatBot extends React.Component {
         // Now send the message throught the backend API
         // addResponseMessage(`Hi ${newMessage},what would you like to enter?`);
         const {socket, room} = this.props;
-        socket.emit('admin-msg',  {room : room,message:newMessage});
+        socket.emit('admin-msg', {room: room, message: newMessage});
 
 
         socket.on('user-msg', (inboundMessage) => {
@@ -64,16 +52,46 @@ class ChatBot extends React.Component {
         });
     }
 
+    messages = () => {
+        let texts =  _.map(this.props.messages, (message) => {
+                return (
+                    <ChatItem className={message.type}
+                          avatar={'https://facebook.github.io/react/img/logo.svg'}
+                          alt={'Reactjs'}
+                          subtitle={message.text}
+                          date={new Date()}
+                          unread={0}
+                        ket={message.text}/>
+                )
+            })
+        return texts;
+    }
+
     render() {
-        console.log("rooooooooooo", this.props);
-        let room = this.props.room ? this.props.room.title : "";
+        let messages = this.messages();
         return (
-            <div>
-                <Bot key={this.props.room.title} id={this.props.room._id}
-                    handleNewUserMessage={this.handleNewUserMessage}
-                    title={this.props.room.title}
-                    subtitle={this.props.room.title}
-                />
+            <div className="App">
+                <div className="widget-container">
+                    <div className="conversation-container">
+                        <Navbar
+                            center={
+                                    <div>welcome </div>
+                                }/>
+                        <div className="messages-container">
+                            {messages}
+                        </div>
+                        <Input
+                            placeholder="Type here..."
+                            multiline={true}
+                            rightButtons={
+                                    <Button
+                                        color='white'
+                                        backgroundColor='black'
+                                        text='Send'
+                                        onClick={this.handleNewUserMessage}/>
+                                }/>
+                    </div>
+                </div>
             </div>
         );
     }

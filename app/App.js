@@ -8,7 +8,6 @@ import {BrowserRouter as Router, Route, Switch, Redirect} from 'react-router-dom
  import NotFound from './components/NotFound';*/
 import Wrapper from "./containers/wrapper"
 
-
 const App = () => (
     <div>
         <Wrapper/>
