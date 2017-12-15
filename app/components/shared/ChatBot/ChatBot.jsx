@@ -81,12 +81,11 @@ class ChatBot extends React.Component {
                         <form onSubmit={this.handleUserMessage}>
                             <input
                                 placeholder="Type here..."
-                                multiline={true}
+                                multiline="true"
                                 value={this.state.message}
                                 onChange={this.updateInputValue}/>
                             <button
                                 color='white'
-                                backgroundColor='black'
                                 text='Send'
                                 type="submit"
                                 onSubmit={this.handleUserMessage}/>
