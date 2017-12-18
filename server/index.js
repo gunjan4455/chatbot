@@ -252,7 +252,7 @@ io.on('connection', function (socket) {
         message.save((err) => {
             if (err) return err
         })
-        io.sockets.to(newObj.room.title).emit('user-msg', JSON.stringify(newObj.message));
+        io.sockets.to(newObj.room.title).emit('user-msg'+newObj.room.title, JSON.stringify(newObj.message));
     });
 
     socket.on('new room', (roomData) => {

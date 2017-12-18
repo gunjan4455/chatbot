@@ -71,19 +71,25 @@ class ChatBot extends React.Component {
         this.setState({message: "", messages: msgs});
     }
 
-    handleNewUserMessage = (newMessage) => {
-        console.log(`New adminsssssssssssmessage incoming! ${newMessage}`);
+    handleNewUserMessage = () => {
         // Now send the message throught the backend API
         // addResponseMessage(`Hi ${newMessage},what would you like to enter?`);
-        const {socket} = this.props;
-        const {room} = this.state;
-        //socket.emit('admin-msg', JSON.stringify({room: room, message: newMessage}));
-
-
-        socket.on('user-msg', (inboundMessage) => {
-            console.log('received message from user', inboundMessage);
+        const {socket, room} = this.props;
+        const self = this;
+        socket.on('user-msg'+room.title, (message) => {
+            console.log('received message from user', message);
+            let msg = JSON.parse(message);
+            let obj = {
+                type: "client",
+                text: msg.text,
+                room: room._id
+            };
+            let msgs = self.state.messages;
+            msgs.push(obj);
+            self.setState({message: "", messages: msgs});
             //  addResponseMessage("from 22222");
         });
+
     }
 
     componentDidMount() {
