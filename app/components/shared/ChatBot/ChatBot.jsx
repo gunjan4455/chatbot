@@ -3,6 +3,7 @@ import _ from 'lodash';
 import InputForm from "../InputForm";
 import ChatItem from "../ChatItem";
 import {Navbar, Button} from 'react-chat-elements'
+import {updateScroll} from "../../../utility/index.js"
 
 class ChatBot extends React.Component {
     getCredentials = (value, type) => {
@@ -59,6 +60,10 @@ class ChatBot extends React.Component {
         };
     }
 
+    componentDidUpdate() {
+        updateScroll()
+    }
+
     render() {
         let messages = this.messages();
         return (
@@ -67,7 +72,7 @@ class ChatBot extends React.Component {
                     <div className="conversation-container">
                         <Navbar
                             center={
-                                <div>welcome </div>
+                                <div>{this.user.name||"welcome"} </div>
                             }/>
                         <div className="messages-container">
                             {messages}

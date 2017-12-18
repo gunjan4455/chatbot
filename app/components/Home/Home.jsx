@@ -2,6 +2,7 @@ import React from "react";
 import PropTypes from "prop-types";
 import ChatBot from '../shared/ChatBot';
 import InputForm from "../shared/InputForm";
+//import {updateScroll} from "../../utility/index.js"
 
 class Home extends React.Component {
     getCredentials = (value, type) => {
@@ -14,17 +15,13 @@ class Home extends React.Component {
                 break;
         }
     }
+
     addUser = (user) => {
         let details = Object.assign({}, user, this.user);
         this.props.addNewUser(details);
     }
     handleMessageEvent = () => {
         const {socket} = this.props;
-        socket.on('chat-message', (msg) => {
-            //this.props.createMessage({room: this.props.room, newMessage: {user: JSON.parse(inboundMessage).user, message: JSON.parse(inboundMessage).message}})
-            console.log('received message from adminnnnnnnnnnnn', msg)
-        });
-
         socket.on('admin-msg', (message) => {
             if (this.props.history.location.pathname != "/admin") {
                 let msg = JSON.parse(message);
@@ -38,9 +35,12 @@ class Home extends React.Component {
                 let chats = this.state.messages;
                 chats.push(obj);
                 this.setState({messages: chats});
+               // updateScroll();
+
             }
         });
     }
+
     handleUserMessage = (msg) => {
         console.log(`New message incomig! ${msg}`);
         const {room, socket} = this.props
@@ -67,24 +67,11 @@ class Home extends React.Component {
                 }
 
             });
+            //updateScroll();
             if (!_.isEmpty(this.user.name) && !_.isEmpty(this.props.room)) {
                 socket.emit('user-msg', JSON.stringify({room: room, message: obj}));
             }
         }
-
-        //const {socket} = this.props;
-        //
-        //// Now send the message throught the backend API
-        ////addResponseMessage(newMessage);
-        //if (!_.isEmpty(this.user.name) && !this.state.flag) {
-        //    renderCustomComponent(InputForm, {
-        //        ...this.props,
-        //        addUser: this.addUser,
-        //        option: true,
-        //        username: this.user.name
-        //    }, true)
-        //}
-
     }
 
     constructor(props) {

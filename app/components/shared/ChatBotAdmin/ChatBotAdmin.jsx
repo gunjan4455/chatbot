@@ -3,6 +3,7 @@ import _ from "lodash";
 import InputForm from "../InputForm";
 import ChatItem from "../ChatItem";
 import {Navbar, Button} from "react-chat-elements";
+import {updateScroll} from "../../../utility";
 
 class ChatBot extends React.Component {
     constructor(props) {
@@ -69,6 +70,7 @@ class ChatBot extends React.Component {
         let msgs = this.state.messages;
         msgs.push(obj);
         this.setState({message: "", messages: msgs});
+        updateScroll();
     }
 
     handleNewUserMessage = () => {
@@ -87,10 +89,13 @@ class ChatBot extends React.Component {
             let msgs = self.state.messages;
             msgs.push(obj);
             self.setState({message: "", messages: msgs});
+            updateScroll();
             //  addResponseMessage("from 22222");
+
         });
 
     }
+
 
     componentDidMount() {
         this.handleNewUserMessage();
