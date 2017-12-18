@@ -109,18 +109,20 @@ class Home extends React.Component {
 
     handleUserMessage = (msg) => {
         console.log(`New message incomig! ${msg}`);
+        const {room, socket} = this.props
         if (msg && msg.field && msg.field == "name") {
-            let obj = {
+            var obj = {
                 type: "client",
                 text: msg.text,
-                template: false
+                template: false,
+                room: room._id
             }
             this.user.name = msg.text;
             let chats = this.state.messages;
             chats.push(obj);
             this.setState({messages: chats}, () => {
                 if (this.state.messages.length == 2) {
-                    let obj = {
+                    var obj = {
                         type: "response",
                         text: "",
                         template: true
@@ -129,7 +131,11 @@ class Home extends React.Component {
                     chats.push(obj);
                     this.setState({messages: chats});
                 }
+
             });
+            if (!_.isEmpty(this.user.name) && !_.isEmpty(this.props.room)) {
+                socket.emit('user-msg', JSON.stringify({room: room, message: obj}));
+            }
         }
 
         //const {socket} = this.props;
@@ -144,9 +150,7 @@ class Home extends React.Component {
         //        username: this.user.name
         //    }, true)
         //}
-        //if (!_.isEmpty(this.user.name) && !_.isEmpty(this.room)) {
-        //    socket.emit('user-msg', {room: this.room, message: newMessage});
-        //}
+
     }
 
     render() {

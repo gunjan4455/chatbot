@@ -49,7 +49,6 @@ class Admin extends React.Component {
                 room: room
             });
         });
-
     }
 
     acceptRequest = (e) => { //accepting request from client
@@ -66,20 +65,7 @@ class Admin extends React.Component {
         this.setState({greetingMessage: ''})
     }
 
-    handleNewUserMessage = (newMessage) => {
-        console.log(`New adminsssssssssssmessage incoming! ${newMessage}`);
-        // Now send the message throught the backend API
-        // addResponseMessage(`Hi ${newMessage},what would you like to enter?`);
-        const {socket} = this.props;
-        const {room} = this.state;
-        //socket.emit('admin-msg', JSON.stringify({room: room, message: newMessage}));
 
-
-        socket.on('user-msg', (inboundMessage) => {
-            console.log('received message from user', inboundMessage);
-            //  addResponseMessage("from 22222");
-        });
-    }
 
     chats = () => {
         let rooms = _.map(this.state.chatRooms, (room, index) => {
