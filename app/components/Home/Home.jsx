@@ -8,18 +8,17 @@ class Home extends React.Component {
         super(props);
         //this.room = {};
         this.logo = 'https://medias2.prestastore.com/835054-pbig/chat-bot-for-social-networking.jpg',
-        this.state = {
-            messages :
-                [{
+            this.state = {
+                messages: [{
                     "type": 'response',
                     "text": "Hello! What is your name?",
-                    "template" : false
+                    "template": false
                 }],
-            room: {},
-            connected: false,
-            flag: false,
-            user: "client" //to distinguish between admin and user
-        };
+                room: {},
+                connected: false,
+                flag: false,
+                user: "client" //to distinguish between admin and user
+            };
         this.user = {
             name: ''
         };
@@ -57,7 +56,7 @@ class Home extends React.Component {
         const {socket} = this.props;
         const self = this;
         socket.on("room-details", (data) => {
-            self.setState({room : data});
+            self.setState({room: data});
         });
         socket.on('greeting-request', function (room) {
             //    self.chatRequests.unshift(room);
@@ -90,42 +89,45 @@ class Home extends React.Component {
             //this.props.createMessage({room: this.props.room, newMessage: {user: JSON.parse(inboundMessage).user, message: JSON.parse(inboundMessage).message}})
             console.log('received message from adminnnnnnnnnnnn', msg)
         });
-        socket.on('admin-msg', (msg) => {
-            //this.props.createMessage({room: this.props.room, newMessage: {user: JSON.parse(inboundMessage).user, message: JSON.parse(inboundMessage).message}})
-            console.log('received message from adminnnnnnnnnnnn', msg);
-            let obj = {
-                type : msg.type,
-                text : msg.text,
-                template : false
-            }
-            let chats = this.state.messages;
-            chats.push(obj);
-            this.setState({messages : chats});
-        });
 
+            socket.on('admin-msg', (message) => {
+                if (this.props.history.location.pathname != "/admin") {
+                    let msg = JSON.parse(message);
+                    //this.props.createMessage({room: this.props.room, newMessage: {user: JSON.parse(inboundMessage).user, message: JSON.parse(inboundMessage).message}})
+                    console.log('received message from adminnnnnnnnnnnn', JSON.parse(message));
+                    let obj = {
+                        type: msg.type,
+                        text: msg.text,
+                        template: false
+                    }
+                    let chats = this.state.messages;
+                    chats.push(obj);
+                    this.setState({messages: chats});
+                }
+            });
     }
 
     handleUserMessage = (msg) => {
         console.log(`New message incomig! ${msg}`);
-        if(msg && msg.field && msg.field=="name") {
+        if (msg && msg.field && msg.field == "name") {
             let obj = {
-                type : "client",
-                text : msg.text,
-                template : false
+                type: "client",
+                text: msg.text,
+                template: false
             }
             this.user.name = msg.text;
             let chats = this.state.messages;
             chats.push(obj);
-            this.setState({messages : chats},() => {
-                if(this.state.messages.length == 2) {
+            this.setState({messages: chats}, () => {
+                if (this.state.messages.length == 2) {
                     let obj = {
-                        type : "response",
-                        text : "",
-                        template : true
+                        type: "response",
+                        text: "",
+                        template: true
                     }
                     let chats = this.state.messages;
                     chats.push(obj);
-                    this.setState({messages : chats});
+                    this.setState({messages: chats});
                 }
             });
         }
@@ -150,7 +152,8 @@ class Home extends React.Component {
     render() {
         return (
             <section className="container bg-gray">
-                <ChatBot messages={this.state.messages} handleUserMessage={this.handleUserMessage} user={this.state.user} addUser={this.addUser} room={this.state.room} from="client"/>
+                <ChatBot messages={this.state.messages} handleUserMessage={this.handleUserMessage}
+                         user={this.state.user} addUser={this.addUser} room={this.state.room} from="client"/>
             </section>
         )
     }

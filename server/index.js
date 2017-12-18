@@ -18,7 +18,7 @@ const {Server} = require('http');
 const mongoose = require('mongoose');
 const Users = require('./models/user');
 const Admins = require('./models/admin');
-const Messages = require('./models/message');
+const Message = require('./models/message');
 const helper = require('./helper/response');
 const open = require('open');
 
@@ -235,17 +235,18 @@ io.on('connection', function (socket) {
         //io.sockets.in(msg.room.title).emit('chat-message', msg.message);
     })
     socket.on('admin-msg', function (obj) {
-        console.log('admin-msg==================', obj)
-        let message = new Message({user: obj.room.owner, room: obj.room._id, text : obj.message.text, type : obj.message.type})
-        message.save((err) => {
-            if(err)
-                return err
-            else {
-                console.log("message saved");
-                }
-            });
+        console.log('@@@@@@@@@@@@admin-msg==================',JSON.parse("your string"), obj);
+          let newObj=JSON.parse(obj);
+        //let message = new Message({user: obj.room.owner, room: obj.room._id, text : obj.message.text, type : obj.message.type})
+        //message.save((err) => {
+        //    if(err)
+        //        return err
+        //    else {
+        //        console.log("message saved");
+        //        }
+        //    });
         //io.to(msg.room).emit('chat-message', JSON.stringify(msg.message))
-        io.sockets.in(msg.room.title).emit('admin-msg', msg.message);
+       io.sockets.to(newObj.room.title).emit('admin-msg',obj.message);
 
         //io.sockets.in(msg.room.title).emit('chat-message', msg.message);
     });
