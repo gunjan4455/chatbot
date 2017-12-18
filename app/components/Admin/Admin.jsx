@@ -5,17 +5,6 @@ import ConfirmationModal from "../shared/ConfirmationModal";
 import ChatBot from '../shared/ChatBotAdmin';
 
 class Admin extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            greetingMessage: "",
-            chatRooms: [],
-            room: {},
-            messages: [],
-        };
-        this.chatRequests = [];
-    }
-
     sendMessage = (value) => {
         const {socket} = this.props;
         socket.emit('chat-message', {room: this.state.room, message: value});
@@ -30,6 +19,38 @@ class Admin extends React.Component {
         //        room.chat.push(obj);
         //    }
         //})
+    }
+    acceptRequest = (e) => { //accepting request from client
+        e.preventDefault();
+        const {socket} = this.props;
+        socket.emit('accept-greeting-request', {room: this.state.room, user: this.props.user});
+        let chats = this.state.chatRooms;
+        chats.push(this.state.room);
+        this.setState({chatRooms: chats, greetingMessage: ""});
+    }
+    onHideModal = (e) => {
+        e.preventDefault();
+        this.setState({greetingMessage: ''})
+    }
+    chats = () => {
+        let rooms = _.map(this.state.chatRooms, (room, index) => {
+            return (
+                <ChatBot key={Math.random() * 11}
+                         room={room} user={this.props.user} {...this.props} from="admin"/>
+            )
+        });
+        return rooms;
+    }
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            greetingMessage: "",
+            chatRooms: [],
+            room: {},
+            messages: [],
+        };
+        this.chatRequests = [];
     }
 
     componentWillMount() {
@@ -49,32 +70,6 @@ class Admin extends React.Component {
                 room: room
             });
         });
-    }
-
-    acceptRequest = (e) => { //accepting request from client
-        e.preventDefault();
-        const {socket} = this.props;
-        socket.emit('accept-greeting-request', {room: this.state.room, user: this.props.user});
-        let chats = this.state.chatRooms;
-        chats.push(this.state.room);
-        this.setState({chatRooms: chats, greetingMessage: ""});
-    }
-
-    onHideModal = (e) => {
-        e.preventDefault();
-        this.setState({greetingMessage: ''})
-    }
-
-
-
-    chats = () => {
-        let rooms = _.map(this.state.chatRooms, (room, index) => {
-            return (
-                <ChatBot key={Math.random()*11}
-                         room={room} user={this.props.user} {...this.props} from="admin"/>
-            )
-        });
-        return rooms;
     }
 
     render() {
@@ -202,7 +197,7 @@ class Admin extends React.Component {
                     </div>
                 </div>
 
-                <div className="chat-room-container" id={Math.random()*10} key={Math.random()*11}>
+                <div className="chat-room-container" id={Math.random() * 10} key={Math.random() * 11}>
                     {rooms}
                 </div>
             </div>

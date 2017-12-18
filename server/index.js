@@ -195,7 +195,7 @@ io.on('connection', function (socket) {
                     _.map(admins, function (admin, index) {
                         if (io.sockets.connected[admin.socketId])
                             io.sockets.connected[admin.socketId].emit("greeting-request", data.room);
-                            socket.emit('room-details', data.room);
+                        socket.emit('room-details', data.room);
 
                     });
                 }
@@ -237,29 +237,16 @@ io.on('connection', function (socket) {
     socket.on('admin-msg', function (obj) {
         const newObj = JSON.parse(obj);
         console.log('@@@@@@@@@@@@admin-msg==================', obj, newObj);
-        //let message = new Message({user: obj.room.owner, room: obj.room._id, text : obj.message.text, type : obj.message.type})
-        //message.save((err) => {
-        //    if(err)
-        //        return err
-        //    else {
-
-        //        console.log("message saved");
-        //        }
-        //    });
-        //io.to(msg.room).emit('chat-message', JSON.stringify(msg.message))
-        io.sockets.to(newObj.room.title).emit('admin-msg',JSON.stringify(newObj.message));
-
-        //io.sockets.in(msg.room.title).emit('chat-message', msg.message);
+        io.sockets.to(newObj.room.title).emit('admin-msg', JSON.stringify(newObj.message));
     });
     socket.on('user-msg', function (msg) {
         console.log('user-msg', msg);
-        const newMsg = JSON.parse(msg);
         //let message = new Message({user: msg.user, content: msg.message, room: msg.room})
         //message.save((err) => {
         //    if (err) return err
         //})
         //io.to(msg.room).emit('chat-message', JSON.stringify(msg.message))
-        io.sockets.to(newMsg.room.title).emit('user-msg', JSON.stringify(newMsg.message));
+        io.sockets.in(msg.room.title).emit('user-msg', msg.message);
 
         //io.sockets.in(msg.room.title).emit('chat-message', msg.message);
     });
