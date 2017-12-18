@@ -5,6 +5,17 @@ import ChatItem from "../ChatItem";
 import {Navbar, Button} from "react-chat-elements";
 
 class ChatBot extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            message: "",
+            messages: this.props.room && this.props.room.messages
+        };
+        this.user = {
+            name: ""
+        };
+    }
+
     getCredentials = (value, type) => {
         switch (type) {
             case "name":
@@ -13,11 +24,13 @@ class ChatBot extends React.Component {
             default:
                 break;
         }
-    };
+    }
+
     addUser = user => {
         let details = Object.assign({}, user, this.user);
         this.props.addUser(details); //this dispatchs from wrapper
-    };
+    }
+
     messages = () => {
         let texts = _.map(this.state.messages, (message, index) => {
             return (
@@ -37,10 +50,12 @@ class ChatBot extends React.Component {
             );
         });
         return texts;
-    };
+    }
+
     updateInputValue = evt => {
         this.setState({message: evt.target.value});
-    };
+    }
+
     handleUserMessage = evt => {
         evt.preventDefault();
         let message = this.state.message;
@@ -55,6 +70,7 @@ class ChatBot extends React.Component {
         msgs.push(obj);
         this.setState({message: "", messages: msgs});
     }
+
     handleNewUserMessage = (newMessage) => {
         console.log(`New adminsssssssssssmessage incoming! ${newMessage}`);
         // Now send the message throught the backend API
@@ -68,17 +84,6 @@ class ChatBot extends React.Component {
             console.log('received message from user', inboundMessage);
             //  addResponseMessage("from 22222");
         });
-    }
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            message: "",
-            messages: this.props.room && this.props.room.messages
-        };
-        this.user = {
-            name: ""
-        };
     }
 
     componentDidMount() {
