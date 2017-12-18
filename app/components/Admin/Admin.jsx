@@ -72,7 +72,7 @@ class Admin extends React.Component {
         // addResponseMessage(`Hi ${newMessage},what would you like to enter?`);
         const {socket} = this.props;
         const {room} = this.state;
-        socket.emit('admin-msg', JSON.stringify({room: room, message: newMessage}));
+        //socket.emit('admin-msg', JSON.stringify({room: room, message: newMessage}));
 
 
         socket.on('user-msg', (inboundMessage) => {

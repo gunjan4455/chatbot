@@ -32,7 +32,7 @@ class ChatBot extends React.Component {
     }
 
     messages = () => {
-        let texts =  _.map(this.state.messages, (message) => {
+        let texts =  _.map(this.state.messages, (message, index) => {
                 return (
                     <ChatItem className={message.type}
                           avatar={'https://medias2.prestastore.com/835054-pbig/chat-bot-for-social-networking.jpg'}
@@ -40,7 +40,7 @@ class ChatBot extends React.Component {
                           subtitle={message.text}
                           date={new Date()}
                           unread={0}
-                          key={message.text}
+                          key={index}
                           template={message.template}
                           addUser={this.addUser}/>
                 )
@@ -54,14 +54,14 @@ class ChatBot extends React.Component {
 
     handleUserMessage = (evt) => {
         evt.preventDefault();
+        let message = this.state.message;
+        const {socket, room} = this.props;
         let obj = {
             type : "response",
-            text : this.state.message,
-            field : "name",
-            room : this.props.room
+            text : message,
+            room : room._id
         }
-        const {socket, room} = this.props;
-        socket.emit('admin-msg', {room: room, message: obj});
+        socket.emit('admin-msg', JSON.stringify({room: room, message: obj}));
         let msgs = this.state.messages;
         msgs.push(obj);
         this.setState({message : "", messages : msgs});

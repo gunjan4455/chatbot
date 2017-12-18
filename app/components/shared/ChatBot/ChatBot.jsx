@@ -31,7 +31,7 @@ class ChatBot extends React.Component {
     }
 
     messages = () => {
-        let texts =  _.map(this.props.messages, (message) => {
+        let texts =  _.map(this.props.messages, (message, index) => {
                 return (
                     <ChatItem className={message.type}
                           avatar={'https://medias2.prestastore.com/835054-pbig/chat-bot-for-social-networking.jpg'}
@@ -39,7 +39,7 @@ class ChatBot extends React.Component {
                           subtitle={message.text}
                           date={new Date()}
                           unread={0}
-                          key={message.text}
+                          key={index}
                           template={message.template}
                           addUser={this.addUser}/>
                 )
