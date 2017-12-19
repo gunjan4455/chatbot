@@ -77,9 +77,8 @@ class ChatBot extends React.Component {
                                 <div className="user-header">{this.props.userName || "welcome"} </div>
                             }
 
-                            right={  <button type="button" className="btn btn-info" data-toggle="collapse" data-target="#demo">Simple collapsible</button>}
                         />
-                        <div className="messages-container" id="demo">
+                        <div className="messages-container" >
                             {messages}
                         </div>
                         <form onSubmit={this.handleUserMessage}>

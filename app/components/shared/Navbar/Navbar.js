@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './Navbar.css';
 
-const classNames = require('classnames');
+import classNames from 'classnames';
 
 export class Navbar extends Component {
     render() {

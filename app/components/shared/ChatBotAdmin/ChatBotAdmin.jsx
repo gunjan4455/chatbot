@@ -1,7 +1,7 @@
 import React from "react";
 import _ from "lodash";
 import ChatItem from "../ChatItem";
-import {Navbar} from '../Navbar';
+import {Navbar} from '../Navbar/Navbar';
 
 class ChatBotAdmin extends React.Component {
     constructor(props) {
@@ -103,8 +103,8 @@ class ChatBotAdmin extends React.Component {
         return (
             <div className="App">
                 <div className="widget-container">
-                    <div className="conversation-container demo ">
-                        <Navbar right={<button type="button" className="btn btn-info" data-toggle="collapse" data-target=".demo">Simple collapsible</button>} center={<div className="user-header">{this.props.userName||"welcome"} </div>}/>
+                    <div className="conversation-container">
+                        <Navbar center={<div className="user-header">{this.props.userName||"welcome"} </div>}/>
                         <div className="messages-container">{messages}</div>
                         <form onSubmit={this.handleUserMessage}>
                             <input
