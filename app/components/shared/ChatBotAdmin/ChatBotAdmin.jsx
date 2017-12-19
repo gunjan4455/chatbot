@@ -2,6 +2,7 @@ import React from "react";
 import _ from "lodash";
 import ChatItem from "../ChatItem";
 import {Navbar} from '../Navbar/Navbar';
+import {updateScroll} from "../../../utility/index.js"
 
 class ChatBotAdmin extends React.Component {
     constructor(props) {
@@ -87,13 +88,15 @@ class ChatBotAdmin extends React.Component {
             let msgs = self.state.messages;
             msgs.push(obj);
             self.setState({message: "", messages: msgs});
-            updateScroll();
             //  addResponseMessage("from 22222");
         });
     }
 
     componentDidMount() {
         this.handleNewUserMessage();
+    }
+    componentDidUpdate() {
+        updateScroll()
     }
 
 
