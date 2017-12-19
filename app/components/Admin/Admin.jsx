@@ -2,24 +2,10 @@ import React from "react";
 import _ from 'lodash';
 import DetailModal from "../shared/DetailModal";
 import ConfirmationModal from "../shared/ConfirmationModal";
-import ChatBot from '../shared/ChatBotAdmin';
+import ChatBotAdmin from '../shared/ChatBotAdmin';
 
 class Admin extends React.Component {
-    sendMessage = (value) => {
-        const {socket} = this.props;
-        socket.emit('chat-message', {room: this.state.room, message: value});
-        //_.map(this.state.chatRooms, (room) => {
-        //    if (room._id == this.state.room._id) {
-        //        let obj = {
-        //            type: "response",
-        //            text: "How may i help you?",
-        //            template: false
-        //        }
-        //        room.chat = [];
-        //        room.chat.push(obj);
-        //    }
-        //})
-    }
+
     acceptRequest = (e) => { //accepting request from client
         e.preventDefault();
         const {socket} = this.props;
@@ -35,8 +21,8 @@ class Admin extends React.Component {
     chats = () => {
         let rooms = _.map(this.state.chatRooms, (room, index) => {
             return (
-                <ChatBot key={Math.random() * 11}
-                         room={room} user={this.props.user} {...this.props} from="admin"/>
+                <ChatBotAdmin key={Math.random() * 11}
+                        userName={this.state.userName} room={room} user={this.props.user} {...this.props} from="admin"/>
             )
         });
         return rooms;
@@ -49,6 +35,7 @@ class Admin extends React.Component {
             chatRooms: [],
             room: {},
             messages: [],
+            userName:''
         };
         this.chatRequests = [];
     }
@@ -62,12 +49,13 @@ class Admin extends React.Component {
     componentDidMount() {
         const {socket} = this.props;
         const self = this;
-        socket.on('greeting-request', function (room) {
+        socket.on('greeting-request', function (data) {
             //self.chatRequests.unshift(room);
-            room.messages = [];
+            data.room.messages = [];
             self.setState({
-                greetingMessage: room.message,
-                room: room
+                greetingMessage: data.room.message,
+                room: data.room,
+                userName:data.userName
             });
         });
         //this.handleNewUserMessage();

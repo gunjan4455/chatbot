@@ -89,11 +89,11 @@ export class InputForm extends React.Component {
                             </form>)
                         }
                     </div>
-                    : <div className="response">
+                    :
                         <div className="message-text">
                             <p>Successfully registered</p>
                     </div>
-                </div> }
+              }
             </div>
         );
     }

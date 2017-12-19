@@ -22,7 +22,8 @@ class Home extends React.Component {
             };
         this.user = {
             name: '',
-            text:''
+            userName:'',
+            userFlag: true
         };
     }
 
@@ -63,7 +64,11 @@ class Home extends React.Component {
 
     handleUserMessage = (msg) => {
         console.log(`New message incomig! ${msg}`);
-        const {room, socket} = this.props
+        if (this.user.userFlag) {
+            this.user.userName = msg.text;
+            this.user.userFlag = false;
+        }
+        const {room, socket} = this.props;
         if (msg && msg.field && msg.field == "name") {
             var obj = {
                 type: "client",
@@ -119,7 +124,7 @@ class Home extends React.Component {
         if (!_.isEmpty(nextProps.room) && !this.state.flag) {
             this.setState({flag: true});
             //onseMessage(`How may i help you?`);
-            nextProps.socket.emit('joinRoom', {room: nextProps.room});
+            nextProps.socket.emit('joinRoom', {room: nextProps.room,userName:this.user.userName});
         }
     }
 
@@ -130,11 +135,11 @@ class Home extends React.Component {
         socket.on("room-details", (data) => {
             self.setState({room: data});
         });
-        socket.on('greeting-request', function (room) {
+        socket.on('greeting-request', function (data) {
             //    self.chatRequests.unshift(room);
             //   console.log("msssg", room);
             self.setState({
-                room: room
+                room: data.room
             });
         });
     }
@@ -143,7 +148,7 @@ class Home extends React.Component {
         return (
             <section className="container bg-gray">
                 <ChatBot messages={this.state.messages} handleUserMessage={this.handleUserMessage}
-                    user={this.state.user} addUser={this.addUser} room={this.state.room} from="client"/>
+                   userName={this.user.userName} user={this.state.user} addUser={this.addUser} room={this.state.room} from="client"/>
             </section>
         )
     }

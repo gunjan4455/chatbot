@@ -1,10 +1,9 @@
 import React from "react";
 import _ from "lodash";
-import InputForm from "../InputForm";
 import ChatItem from "../ChatItem";
-import {Navbar, Button} from "react-chat-elements";
+import {Navbar} from '../Navbar';
 
-class ChatBot extends React.Component {
+class ChatBotAdmin extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -97,13 +96,15 @@ class ChatBot extends React.Component {
         this.handleNewUserMessage();
     }
 
+
+
     render() {
         let messages = this.messages();
         return (
             <div className="App">
                 <div className="widget-container">
-                    <div className="conversation-container">
-                        <Navbar center={<div className="user-header">{this.user.name||"welcome"} </div>}/>
+                    <div className="conversation-container demo ">
+                        <Navbar right={<button type="button" className="btn btn-info" data-toggle="collapse" data-target=".demo">Simple collapsible</button>} center={<div className="user-header">{this.props.userName||"welcome"} </div>}/>
                         <div className="messages-container">{messages}</div>
                         <form onSubmit={this.handleUserMessage}>
                             <input
@@ -131,4 +132,4 @@ class ChatBot extends React.Component {
     }
 }
 
-export default ChatBot;
+export default ChatBotAdmin;

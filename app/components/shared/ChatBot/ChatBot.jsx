@@ -2,7 +2,7 @@ import React from "react";
 import _ from 'lodash';
 import InputForm from "../InputForm";
 import ChatItem from "../ChatItem";
-import {Navbar, Button} from 'react-chat-elements'
+import {Navbar, Button} from '../Navbar/Navbar'
 import {updateScroll} from "../../../utility/index.js"
 
 class ChatBot extends React.Component {
@@ -32,7 +32,7 @@ class ChatBot extends React.Component {
                           key={index}
                           template={message.template}
                           addUser={this.addUser}
-                          userName={this.user.name}/>
+                          userName={this.props.userName}/>
 
             )
         })
@@ -44,10 +44,7 @@ class ChatBot extends React.Component {
     handleUserMessage = (evt) => {
         evt.preventDefault();
 
-        if (this.user.userFlag) {
-            this.user.name = this.state.message;
-            this.user.userFlag = false;
-        }
+
         let obj = {
             type: this.props.user,
             text: this.state.message,
@@ -63,10 +60,6 @@ class ChatBot extends React.Component {
         this.state = {
             message: ""
         };
-        this.user = {
-            name: '',
-            userFlag: true
-        };
     }
 
     componentDidUpdate() {
@@ -78,12 +71,15 @@ class ChatBot extends React.Component {
         return (
             <div className="App">
                 <div className="widget-container">
-                    <div className="conversation-container">
+                    <div className="conversation-container  ">
                         <Navbar
                             center={
-                                <div className="user-header">{this.user.name || "welcome"} </div>
-                            }/>
-                        <div className="messages-container">
+                                <div className="user-header">{this.props.userName || "welcome"} </div>
+                            }
+
+                            right={  <button type="button" className="btn btn-info" data-toggle="collapse" data-target="#demo">Simple collapsible</button>}
+                        />
+                        <div className="messages-container" id="demo">
                             {messages}
                         </div>
                         <form onSubmit={this.handleUserMessage}>

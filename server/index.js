@@ -185,6 +185,7 @@ io.on('connection', function (socket) {
 
     socket.on('joinRoom', (data) => {
         console.log("jjjjjjjjjjjjjjj", data.room.title);
+        console.log("dataaaaaaaaa", data);
         socket.join(data.room.title, function (err) {
             console.log("roommmmmmmmmmmm", data.room);
             console.log("clients=======", io.sockets.adapter.rooms[data.room.title], 'ffffffffff', io.sockets.adapter.rooms);
@@ -194,7 +195,7 @@ io.on('connection', function (socket) {
                 if (admins.length) {
                     _.map(admins, function (admin, index) {
                         if (io.sockets.connected[admin.socketId])
-                            io.sockets.connected[admin.socketId].emit("greeting-request", data.room);
+                            io.sockets.connected[admin.socketId].emit("greeting-request", {room:data.room,userName:data.userName});
                         socket.emit('room-details', data.room);
 
                     });
