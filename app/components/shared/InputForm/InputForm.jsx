@@ -52,7 +52,7 @@ export class InputForm extends React.Component {
                     <div  className="message-text">
                         { this.props.option ? (
                             <form className="form-horizontal" onSubmit={this.onSubmit}>
-                                <h5> hi,  {this.props.userName}
+                                <h5> Hi,  <span className="user-form-header">{this.props.userName}</span>
                                 <br/><p>Please enter the credentials
                                 </p></h5>
                                 <div style={{"marginBottom": "25px"}} className="input-group">

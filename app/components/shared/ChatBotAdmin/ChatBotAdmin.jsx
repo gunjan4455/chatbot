@@ -103,7 +103,7 @@ class ChatBot extends React.Component {
             <div className="App">
                 <div className="widget-container">
                     <div className="conversation-container">
-                        <Navbar center={<div>{this.user.name||"welcome"} </div>}/>
+                        <Navbar center={<div className="user-header">{this.user.name||"welcome"} </div>}/>
                         <div className="messages-container">{messages}</div>
                         <form onSubmit={this.handleUserMessage}>
                             <input

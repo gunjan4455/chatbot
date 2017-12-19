@@ -81,7 +81,7 @@ class ChatBot extends React.Component {
                     <div className="conversation-container">
                         <Navbar
                             center={
-                                <div>{this.user.name || "welcome"} </div>
+                                <div className="user-header">{this.user.name || "welcome"} </div>
                             }/>
                         <div className="messages-container">
                             {messages}
