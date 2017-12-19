@@ -86,7 +86,6 @@ class ChatBot extends React.Component {
                 text: msg.text,
                 room: room._id
             };
-
             let msgs = self.state.messages;
             msgs.push(obj);
             self.setState({message: "", messages: msgs});
