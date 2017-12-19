@@ -6,15 +6,16 @@ import {Navbar, Button} from 'react-chat-elements'
 import {updateScroll} from "../../../utility/index.js"
 
 class ChatBot extends React.Component {
-    getCredentials = (value, type) => {
-        switch (type) {
-            case 'name':
-                this.user.name = value;
-                break;
-            default:
-                break;
-        }
-    }
+
+    /*  getCredentials = (value, type) => {
+          switch (type) {
+              case 'name':
+                  this.user.name = value;
+                  break;
+              default:
+                  break;
+          }
+      }*/
     addUser = (user) => {
         let details = Object.assign({}, user, this.user);
         this.props.addUser(details); //this dispatchs from wrapper
@@ -30,7 +31,9 @@ class ChatBot extends React.Component {
                           unread={0}
                           key={index}
                           template={message.template}
-                          addUser={this.addUser}/>
+                          addUser={this.addUser}
+                          userName={this.user.name}/>
+
             )
         })
         return texts;
@@ -40,6 +43,11 @@ class ChatBot extends React.Component {
     }
     handleUserMessage = (evt) => {
         evt.preventDefault();
+
+        if (this.user.userFlag) {
+            this.user.name = this.state.message;
+            this.user.userFlag = false;
+        }
         let obj = {
             type: this.props.user,
             text: this.state.message,
@@ -56,7 +64,8 @@ class ChatBot extends React.Component {
             message: ""
         };
         this.user = {
-            name: ''
+            name: '',
+            userFlag: true
         };
     }
 
@@ -72,7 +81,7 @@ class ChatBot extends React.Component {
                     <div className="conversation-container">
                         <Navbar
                             center={
-                                <div>{this.user.name||"welcome"} </div>
+                                <div>{this.user.name || "welcome"} </div>
                             }/>
                         <div className="messages-container">
                             {messages}

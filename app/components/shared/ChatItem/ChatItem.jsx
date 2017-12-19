@@ -48,7 +48,7 @@ export class ChatItem extends  React.Component {
 
                         <div className="rce-citem-body--bottom">
                             <div className="rce-citem-body--bottom-title">
-                                {this.props.template ?  <InputForm option="true" addUser={this.props.addUser}/> : this.props.subtitle}
+                                {this.props.template ?  <InputForm option="true" userName={this.props.userName} addUser={this.props.addUser}/> : this.props.subtitle}
                             </div>
                             <div className="rce-citem-body--bottom-status">
                                 {

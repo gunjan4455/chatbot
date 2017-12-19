@@ -3,7 +3,6 @@ import _ from "lodash";
 import InputForm from "../InputForm";
 import ChatItem from "../ChatItem";
 import {Navbar, Button} from "react-chat-elements";
-import {updateScroll} from "../../../utility";
 
 class ChatBot extends React.Component {
     constructor(props) {
@@ -17,7 +16,7 @@ class ChatBot extends React.Component {
         };
     }
 
-    getCredentials = (value, type) => {
+  /*  getCredentials = (value, type) => {
         switch (type) {
             case "name":
                 this.user.name = value;
@@ -26,7 +25,7 @@ class ChatBot extends React.Component {
                 break;
         }
     }
-
+*/
     addUser = user => {
         let details = Object.assign({}, user, this.user);
         this.props.addUser(details); //this dispatchs from wrapper
@@ -47,6 +46,7 @@ class ChatBot extends React.Component {
                     key={index}
                     template={message.template}
                     addUser={this.addUser}
+                    userName={this.user.name}
                 />
             );
         });
@@ -70,7 +70,6 @@ class ChatBot extends React.Component {
         let msgs = this.state.messages;
         msgs.push(obj);
         this.setState({message: "", messages: msgs});
-        updateScroll();
     }
 
     handleNewUserMessage = () => {
@@ -91,11 +90,8 @@ class ChatBot extends React.Component {
             self.setState({message: "", messages: msgs});
             updateScroll();
             //  addResponseMessage("from 22222");
-
         });
-
     }
-
 
     componentDidMount() {
         this.handleNewUserMessage();
@@ -107,7 +103,7 @@ class ChatBot extends React.Component {
             <div className="App">
                 <div className="widget-container">
                     <div className="conversation-container">
-                        <Navbar center={<div>welcome </div>}/>
+                        <Navbar center={<div>{this.user.name||"welcome"} </div>}/>
                         <div className="messages-container">{messages}</div>
                         <form onSubmit={this.handleUserMessage}>
                             <input

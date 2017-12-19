@@ -1,11 +1,32 @@
 import React from "react";
 import PropTypes from "prop-types";
 import ChatBot from '../shared/ChatBot';
-import InputForm from "../shared/InputForm";
-//import {updateScroll} from "../../utility/index.js"
 
 class Home extends React.Component {
-    getCredentials = (value, type) => {
+
+
+    constructor(props) {
+        super(props);
+        //this.room = {};
+        this.logo = 'https://medias2.prestastore.com/835054-pbig/chat-bot-for-social-networking.jpg',
+            this.state = {
+                messages: [{
+                    "type": 'response',
+                    "text": "Hello! What is your name?",
+                    "template": false
+                }],
+                room: {},
+                connected: false,
+                flag: false,
+                user: "client" //to distinguish between admin and user
+            };
+        this.user = {
+            name: '',
+            text:''
+        };
+    }
+
+  /*  getCredentials = (value, type) => {
         switch (type) {
             case 'name':
                 this.user.name = value;
@@ -14,7 +35,7 @@ class Home extends React.Component {
             default:
                 break;
         }
-    }
+    }*/
 
     addUser = (user) => {
         let details = Object.assign({}, user, this.user);
@@ -35,7 +56,6 @@ class Home extends React.Component {
                 let chats = this.state.messages;
                 chats.push(obj);
                 this.setState({messages: chats});
-               // updateScroll();
 
             }
         });
@@ -54,7 +74,7 @@ class Home extends React.Component {
             this.user.name = msg.text;
             let chats = this.state.messages;
             chats.push(obj);
-            this.setState({messages: chats}, () => {
+            this.setState({messages: chats}, () => { //better would be to make a add message response/client function
                 if (this.state.messages.length == 2) {
                     var obj = {
                         type: "response",
@@ -74,25 +94,7 @@ class Home extends React.Component {
         }
     }
 
-    constructor(props) {
-        super(props);
-        //this.room = {};
-        this.logo = 'https://medias2.prestastore.com/835054-pbig/chat-bot-for-social-networking.jpg',
-            this.state = {
-                messages: [{
-                    "type": 'response',
-                    "text": "Hello! What is your name?",
-                    "template": false
-                }],
-                room: {},
-                connected: false,
-                flag: false,
-                user: "client" //to distinguish between admin and user
-            };
-        this.user = {
-            name: ''
-        };
-    }
+
 
     init(user, type) {
         const {socket} = this.props;
@@ -141,7 +143,7 @@ class Home extends React.Component {
         return (
             <section className="container bg-gray">
                 <ChatBot messages={this.state.messages} handleUserMessage={this.handleUserMessage}
-                         user={this.state.user} addUser={this.addUser} room={this.state.room} from="client"/>
+                    user={this.state.user} addUser={this.addUser} room={this.state.room} from="client"/>
             </section>
         )
     }
