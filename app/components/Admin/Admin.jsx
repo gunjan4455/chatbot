@@ -11,8 +11,10 @@ class Admin extends React.Component {
         const {socket} = this.props;
         socket.emit('accept-greeting-request', {room: this.state.room, user: this.props.user});
         let chats = this.state.chatRooms;
+        let userList = this.state.userList;
+        userList.push(this.state.userName);
         chats.push(this.state.room);
-        this.setState({chatRooms: chats, greetingMessage: ""});
+        this.setState({chatRooms: chats, greetingMessage: "",userList:userList});
     }
     onHideModal = (e) => {
         e.preventDefault();
@@ -22,7 +24,7 @@ class Admin extends React.Component {
         let rooms = _.map(this.state.chatRooms, (room, index) => {
             return (
                 <ChatBotAdmin key={Math.random() * 11}
-                        userName={this.state.userName} room={room} user={this.props.user} {...this.props} from="admin"/>
+                        userName={this.state.userList[index]} room={room} user={this.props.user} {...this.props} from="admin"/>
             )
         });
         return rooms;
@@ -35,6 +37,7 @@ class Admin extends React.Component {
             chatRooms: [],
             room: {},
             messages: [],
+            userList:[],
             userName:''
         };
         this.chatRequests = [];

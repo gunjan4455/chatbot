@@ -46,7 +46,6 @@ class ChatBotAdmin extends React.Component {
                     key={index}
                     template={message.template}
                     addUser={this.addUser}
-                    userName={this.user.name}
                 />
             );
         });
