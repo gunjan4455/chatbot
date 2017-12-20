@@ -3,6 +3,7 @@ import _ from "lodash";
 import ChatItem from "../ChatItem";
 import {Navbar} from '../Navbar/Navbar';
 import {updateScroll} from "../../../utility/index.js"
+import {Collapse } from 'react-bootstrap';
 
 class ChatBotAdmin extends React.Component {
     constructor(props) {
@@ -106,8 +107,15 @@ class ChatBotAdmin extends React.Component {
             <div className="App">
                 <div className="widget-container">
                     <div className="conversation-container">
-                        <Navbar center={<div className="user-header">{this.props.userName||"welcome"} </div>}/>
+                        <Navbar right={
+                            <button onClick={() => this.setState({open: !this.state.open})}>
+                                -
+                            </button>}
+                                center={<div className="user-header">{this.props.userName||"welcome"} </div>} right={<span>-</span>}/>
+                        <Collapse  in={this.state.open}>
                         <div className="messages-container">{messages}</div>
+                        </Collapse>
+                        <Collapse  in={this.state.open}>
                         <form onSubmit={this.handleUserMessage}>
                             <input
                                 className="sender"
@@ -127,6 +135,7 @@ class ChatBotAdmin extends React.Component {
                                 send
                             </button>
                         </form>
+                        </Collapse>
                     </div>
                 </div>
             </div>

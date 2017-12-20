@@ -4,7 +4,7 @@ import InputForm from "../InputForm";
 import ChatItem from "../ChatItem";
 import {Navbar, Button} from '../Navbar/Navbar'
 import {updateScroll} from "../../../utility/index.js"
-
+import {Collapse } from 'react-bootstrap';
 class ChatBot extends React.Component {
 
     /*  getCredentials = (value, type) => {
@@ -58,7 +58,8 @@ class ChatBot extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            message: ""
+            message: "",
+
         };
     }
 
@@ -71,16 +72,21 @@ class ChatBot extends React.Component {
         return (
             <div className="App">
                 <div className="widget-container">
-                    <div className="conversation-container  ">
-                        <Navbar
-                            center={
-                                <div className="user-header">{this.props.userName || "welcome"} </div>
-                            }
-
+                    <div className="conversation-container" >
+                        <Navbar right={
+                            <button onClick={() => this.setState({open: !this.state.open})}>
+                                -
+                            </button>}
+                                center={
+                                    <div className="user-header">{this.props.userName || "welcome"} </div>
+                                }
                         />
+                        <Collapse  in={this.state.open}>
                         <div className="messages-container" >
                             {messages}
                         </div>
+                        </Collapse>
+                        <Collapse  in={this.state.open}>
                         <form onSubmit={this.handleUserMessage}>
                             <input className="sender"
                                    placeholder="Type here..."
@@ -96,6 +102,8 @@ class ChatBot extends React.Component {
                             </button>
 
                         </form>
+                        </Collapse>
+
                     </div>
                 </div>
             </div>
