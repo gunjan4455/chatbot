@@ -6,20 +6,18 @@ import {Navbar, Button} from '../Navbar/Navbar'
 import {updateScroll} from "../../../utility/index.js"
 import {Collapse } from 'react-bootstrap';
 class ChatBot extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            message: ""
 
-    /*  getCredentials = (value, type) => {
-          switch (type) {
-              case 'name':
-                  this.user.name = value;
-                  break;
-              default:
-                  break;
-          }
-      }*/
-    addUser = (user) => {
-        let details = Object.assign({}, user, this.user);
-        this.props.addUser(details); //this dispatchs from wrapper
+        };
     }
+
+    addUser = (user) => {
+        this.props.addUser(user); //this dispatchs from wrapper
+    }
+
     messages = () => {
         let texts = _.map(this.props.messages, (message, index) => {
             return (
@@ -32,7 +30,8 @@ class ChatBot extends React.Component {
                           key={index}
                           template={message.template}
                           addUser={this.addUser}
-                          userName={this.props.userName}/>
+                          userName={this.props.userName}
+                          user={this.props.user}/>
 
             )
         })
@@ -55,14 +54,6 @@ class ChatBot extends React.Component {
         this.setState({message: ""});
     }
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            message: "",
-
-        };
-    }
-
     componentDidUpdate() {
         updateScroll()
     }
@@ -78,7 +69,7 @@ class ChatBot extends React.Component {
                                 -
                             </button>}
                                 center={
-                                    <div className="user-header">{this.props.userName || "welcome"} </div>
+                                    <div className="user-header">{this.props.userName || "Saxo Chat Support"} </div>
                                 }
                         />
                         <Collapse  in={this.state.open}>

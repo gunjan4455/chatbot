@@ -11,7 +11,7 @@ export class InputForm extends React.Component {
             name: this.props.name ? this.props.name : ""
         };
         this.state = {
-            showForm : true
+            showForm: true
         }
     }
 
@@ -26,6 +26,9 @@ export class InputForm extends React.Component {
             case 'email':
                 this.details.email = evt.target.value;
                 break;
+            case 'name':
+                this.details.name = evt.target.value;
+                break;
             default:
                 break;
         }
@@ -38,43 +41,75 @@ export class InputForm extends React.Component {
     }
 
     componentWillReceiveProps(nextProps, prv) {
-        if(!_.isEmpty(nextProps.user) && !_.isEmpty(nextProps.user.isAdmin))
+        if (!_.isEmpty(nextProps.user) && !_.isEmpty(nextProps.user.isAdmin))
             nextProps.history.push('/admin');
-        else
+        else if(!_.isEmpty(nextProps.user)){
             this.setState({showForm : false});
-
+        }
     }
 
     render() {
         return (
             <div className="response">
                 {this.state.showForm ?
-                    <div  className="message-text">
+                    <div className="message-text">
                         { this.props.option ? (
-                            <form className="form-horizontal" onSubmit={this.onSubmit}>
-                                <h5> Hi,  <span className="user-form-header">{this.props.userName}</span>
-                                <br/><p>Please enter the credentials
-                                </p></h5>
-                                <div style={{"marginBottom": "25px"}} className="input-group">
+                            <div>
+                                <form className="form-horizontal" onSubmit={this.onSubmit}>
+                                    <h5> Hi, <span className="user-form-header">{this.props.userName}</span>
+                                        <br/>
+                                        <p>Please enter the credentials
+                                        </p></h5>
+                                    <div style={{"marginBottom": "25px"}} className="input-group">
                                     <span className="input-group-addon"><i
                                         className="glyphicon glyphicon-user"></i></span>
-                                    <input className="form-control" defaultValue="" placeholder="userid"
-                                           onChange={this.onChange.bind(this,'userid')}/>
-                                </div>
-                                <div style={{"marginBottom": "25px"}} className="input-group">
+                                        <input className="form-control" defaultValue="" placeholder="name"
+                                               onChange={this.onChange.bind(this,'name')}/>
+                                    </div>
+                                    <div style={{"marginBottom": "25px"}} className="input-group">
+                                    <span className="input-group-addon"><i
+                                        className="glyphicon glyphicon-user"></i></span>
+                                        <input className="form-control" defaultValue="" placeholder="userid"
+                                               onChange={this.onChange.bind(this,'userid')}/>
+                                    </div>
+                                    <div style={{"marginBottom": "25px"}} className="input-group">
                                     <span className="input-group-addon"><i
                                         className="glyphicon glyphicon-lock"></i></span>
-                                    <input type="password" className="form-control" defaultValue=''
-                                           placeholder="password"
-                                           onChange={this.onChange.bind(this,'password')}/>
-                                </div>
-                                <div style={{"marginTop":"10px"}} className="form-group">
-                                    <div className="col-sm-12 controls">
-                                        <button type="submit" className="btn btn-success">Submit</button>
+                                        <input type="password" className="form-control" defaultValue=''
+                                               placeholder="password"
+                                               onChange={this.onChange.bind(this,'password')}/>
                                     </div>
-                                </div>
-                            </form> ) : (
+                                    <div style={{"marginTop":"10px"}} className="form-group">
+                                        <div className="col-sm-12 controls">
+                                            <button type="submit" className="btn btn-success">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                                <br></br>
+                                or
+                                <hr/>
+                                <form className="form-horizontal" onSubmit={this.onSubmit}>
+                                    <div style={{"marginBottom": "25px"}} className="input-group">
+                                    <span className="input-group-addon"><i
+                                        className="glyphicon glyphicon-user"></i></span>
+                                        <input className="form-control" defaultValue="" placeholder="name"
+                                               onChange={this.onChange.bind(this,'name')}/>
+                                    </div>
+                                    <div style={{"marginBottom": "25px"}} className="input-group">
+                            <span className="input-group-addon"><i
+                                className="glyphicon glyphicon-user"></i></span>
+                                        <input className="form-control" defaultValue="" placeholder="email"
+                                               onChange={this.onChange.bind(this,'email')}/>
+                                    </div>
+                                    <div style={{"marginTop":"10px"}} className="form-group">
+                                        <div className="col-sm-12 controls">
+                                            <button type="submit" className="btn btn-success">Submit</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>) : (
                             <form className="form-horizontal" onSubmit={this.onSubmit}>
+
                                 <div style={{"marginBottom": "25px"}} className="input-group">
                                     <span className="input-group-addon"><i
                                         className="glyphicon glyphicon-user"></i></span>
@@ -90,10 +125,10 @@ export class InputForm extends React.Component {
                         }
                     </div>
                     :
-                        <div className="message-text">
-                            <p>Successfully registered</p>
+                    <div className="message-text">
+                        <p>Thank you for your information.</p>
                     </div>
-              }
+                }
             </div>
         );
     }

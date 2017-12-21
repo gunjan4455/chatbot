@@ -61,6 +61,11 @@ class Admin extends React.Component {
                 userName:data.userName
             });
         });
+        socket.on('refresh-admin-list', function () {
+            //self.chatRequests.unshift(room);
+            console.log("admin logggggggggg");
+
+        });
         //this.handleNewUserMessage();
 
     }

@@ -6,18 +6,6 @@ const {API: {protocols, domain, imagePath}} = config;
 import _ from "lodash";
 
 class Header extends React.Component {
-    handlePanel = () => {
-        if (this.state.handleDropdown == "open")
-            this.setState({handleDropdown: "close"});
-        else
-            this.setState({handleDropdown: "open"});
-
-    };
-    logout = () => {
-        this.props.logout(this.props.user);
-        this.setState({handleDropdown: "close"});
-    };
-
     constructor(props) {
         super(props);
         this.state = {
@@ -30,6 +18,20 @@ class Header extends React.Component {
         }
 
     }
+
+    handlePanel = () => {
+        if (this.state.handleDropdown == "open")
+            this.setState({handleDropdown: "close"});
+        else
+            this.setState({handleDropdown: "open"});
+
+    };
+    logout = () => {
+        const {socket} = this.props;
+        this.props.logout(this.props.user);
+        socket.emit('admin-logout');
+        this.setState({handleDropdown: "close"});
+    };
 
     render() {
         return (
