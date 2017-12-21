@@ -74,19 +74,19 @@ class ChatBot extends React.Component {
                 <div className="widget-container">
                     <div className="conversation-container" >
                         <Navbar right={
-                            <button onClick={() => this.setState({open: !this.state.open})}>
-                                -
-                            </button>}
+                            <span className={this.state.open?"glyphicon glyphicon-plus":"glyphicon glyphicon-minus"} onClick={() => this.setState({open: !this.state.open})}>
+
+                            </span>}
                                 center={
                                     <div className="user-header">{this.props.userName || "welcome"} </div>
                                 }
                         />
-                        <Collapse  in={this.state.open}>
+                        <Collapse  in={!this.state.open}>
                         <div className="messages-container" >
                             {messages}
                         </div>
                         </Collapse>
-                        <Collapse  in={this.state.open}>
+                        <Collapse  in={!this.state.open}>
                         <form onSubmit={this.handleUserMessage}>
                             <input className="sender"
                                    placeholder="Type here..."
