@@ -78,6 +78,7 @@ class ChatBotAdmin extends React.Component {
         const {socket, room} = this.props;
         const self = this;
         socket.on('user-msg'+room.title, (message) => {
+            console.log("state messagese",self.state.messages);
             console.log('received message from user', message);
             let msg = JSON.parse(message);
             let obj = {
@@ -106,33 +107,33 @@ class ChatBotAdmin extends React.Component {
         return (
             <div className="App">
                 <div className="widget-container">
-                    <div className="conversation-container">
+                    <div className="conversation-container" >
                         <Navbar right={
-                            <button onClick={() => this.setState({open: !this.state.open})}>
-                                -
-                            </button>}
-                                center={<div className="user-header">{this.props.userName||"welcome"} </div>} right={<span>-</span>}/>
-                        <Collapse  in={this.state.open}>
-                        <div className="messages-container">{messages}</div>
+                            <span className={this.state.open?"glyphicon glyphicon-plus":"glyphicon glyphicon-minus"} onClick={() => this.setState({open: !this.state.open})}>
+
+                            </span>}
+                                center={
+                                    <div className="user-header">{this.props.userName || "welcome"} </div>
+                                }
+                        />
+                        <Collapse  in={!this.state.open}>
+                        <div className="messages-container" >
+                            {messages}
+                        </div>
                         </Collapse>
-                        <Collapse  in={this.state.open}>
+                        <Collapse  in={!this.state.open}>
                         <form onSubmit={this.handleUserMessage}>
-                            <input
-                                className="sender"
+                            <input className="sender"
                                 placeholder="Type here..."
                                 multiline="true"
                                 value={this.state.message}
-                                onChange={this.updateInputValue}
-                            />
-                            <button
-                                className="send"
-                                color="white"
-                                text="Send"
+                                   onChange={this.updateInputValue}/>
+                            <button className="send"
+                                    color='white'
+                                    text='Send'
                                 type="submit"
                                 value="send"
-                                onSubmit={this.handleUserMessage}
-                            >
-                                send
+                                    onSubmit={this.handleUserMessage}>send
                             </button>
                         </form>
                         </Collapse>

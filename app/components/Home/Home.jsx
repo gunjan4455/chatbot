@@ -97,7 +97,7 @@ class Home extends React.Component {
         const {socket} = this.props;
         socket.emit('subscribe', {user: user});
         let self = this;
-        socket.on('subscribeSuccess', function (user) {
+        socket.on('subscribeSuccess'+user._id, function (user) {
             let room = {};
             room.title = user.name;
             room.owner = user._id;
