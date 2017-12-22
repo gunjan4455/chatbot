@@ -28,6 +28,11 @@ class Home extends React.Component {
                 flag: false,
                 user: "client" //to distinguish between admin and user
             };
+        this.user = {
+            name: '',
+            userName:'',
+            userFlag: true
+        };
     }
 
     addUser = (user) => {

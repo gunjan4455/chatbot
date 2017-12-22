@@ -246,11 +246,8 @@ io.on('connection', function (socket) {
     });
 
     socket.on('user-msg', function (msg) {
-        console.log('user-msg', msg);
         const newObj = JSON.parse(msg);
         console.log('parsed-user-msg', newObj);
-
-
         const message = new Message({user: newObj.room.owner, text: newObj.message.text, room: newObj.room._id, type: newObj.message.type})
         message.save((err) => {
             if (err) return err
