@@ -56,10 +56,10 @@ class Home extends React.Component {
 
     handleUserMessage = (msg) => {
         console.log(`New message incomig! ${msg}`);
-        if (this.user.userFlag) {
-            this.user.userName = msg.text;
-            this.user.userFlag = false;
-        }
+        //if (this.user.userFlag) {
+        //    this.user.userName = msg.text;
+        //    this.user.userFlag = false;
+        //}
         const {room, socket} = this.props;
         if (msg && msg.field && msg.field == "name") {
             var obj = {
@@ -68,24 +68,24 @@ class Home extends React.Component {
                 template: false,
                 room: room._id
             }
-            this.user.name = msg.text;
             let chats = this.state.messages;
             chats.push(obj);
-            this.setState({messages: chats}, () => { //better would be to make a add message response/client function
-                if (this.state.messages.length == 2) {
-                    var obj = {
-                        type: "response",
-                        text: "",
-                        template: true
-                    }
-                    let chats = this.state.messages;
-                    chats.push(obj);
-                    this.setState({messages: chats});
-                }
-
-            });
+            this.setState({messages: chats});
+            //    , () => { //better would be to make a add message response/client function
+            //    if (this.state.messages.length == 2) {
+            //        var obj = {
+            //            type: "response",
+            //            text: "",
+            //            template: true
+            //        }
+            //        let chats = this.state.messages;
+            //        chats.push(obj);
+            //        this.setState({messages: chats});
+            //    }
+            //
+            //});
             //updateScroll();
-            if (!_.isEmpty(this.user.name) && !_.isEmpty(this.props.room)) {
+            if (!_.isEmpty(this.props.user) && !_.isEmpty(this.props.room)) {
                 socket.emit('user-msg', JSON.stringify({room: room, message: obj}));
             }
         }

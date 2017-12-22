@@ -5,6 +5,7 @@ import ChatItem from "../ChatItem";
 import {Navbar, Button} from '../Navbar/Navbar'
 import {updateScroll} from "../../../utility/index.js"
 import {Collapse } from 'react-bootstrap';
+
 class ChatBot extends React.Component {
     constructor(props) {
         super(props);

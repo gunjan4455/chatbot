@@ -1,4 +1,4 @@
-import DetailModal from './DetailModal'
+import DetailModal from './DetailModal.jsx'
 
 
 export default DetailModal

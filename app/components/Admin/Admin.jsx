@@ -1,8 +1,8 @@
 import React from "react";
 import _ from 'lodash';
 import DetailModal from "../shared/DetailModal";
-import ConfirmationModal from "../shared/ConfirmationModal";
-import ChatBotAdmin from '../shared/ChatBotAdmin';
+import Notification from "../shared/Notification";
+import ChatBotAdmin from "../shared/ChatBotAdmin";
 
 class Admin extends React.Component {
 
@@ -16,10 +16,13 @@ class Admin extends React.Component {
         chats.push(this.state.room);
         this.setState({chatRooms: chats, greetingMessage: "",userList:userList});
     }
+
     onHideModal = (e) => {
-        e.preventDefault();
-        this.setState({greetingMessage: ''})
+        if(e)
+            e.preventDefault();
+        this.setState({greetingMessage: ''});
     }
+
     chats = () => {
         let rooms = _.map(this.state.chatRooms, (room, index) => {
             return (
@@ -60,7 +63,9 @@ class Admin extends React.Component {
                 room: data.room,
                 userName:data.userName
             });
+            self.props.getOnlineUsers();
         });
+
         socket.on('refresh-admin-list', function () {
             //self.chatRequests.unshift(room);
             console.log("admin logggggggggg");
@@ -90,8 +95,7 @@ class Admin extends React.Component {
         return (
             <div className="container">
                 {this.state.greetingMessage &&
-                <DetailModal handleSubmit={this.acceptRequest} onHideModal={this.onHideModal}
-                             greetingMessage={this.state.greetingMessage}></DetailModal>}
+                <Notification room={this.state.room} onHideModal={this.onHideModal}/>}
                 <div className="row well">
                     <div className="col-md-2">
                         <ul className="nav nav-pills nav-stacked well">
