@@ -40,41 +40,6 @@
   }
 }
 
-.book {
-  margin-top: 40px;
-  .content {
-    padding: 10px;
-    color: #ffffff;
-    border-radius: 0px 0px 10px 10px;
-    margin-bottom: 30px;
-    position: relative;
-    border-top: 1px solid #eeeeee;
-    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.6);
-  }
-  .thumbnail {
-    padding: 0px;
-    border: 0px;
-    margin-bottom: 0px;
-    background: transparent;
-    position: relative;
-    .hover {
-      position: absolute;
-      bottom: 0px;
-      background: -moz-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%);
-      background: -webkit-linear-gradient(top, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%);
-      background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%);
-      filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#00000000', endColorstr='#a6000000', GradientType=0);
-      color: #ffffff;
-      width: 100%;
-      transform: translateY(60px);
-      transition: 0.3s transform;
-    }
-
-  }
-  .thumbnail:hover .hover {
-    transform: translateY(0px);
-  }
-}
 
 .btn-round {
   border-radius: 50%;
@@ -220,54 +185,6 @@
   border-right: 8px solid transparent;
   border-top: 8px solid #d43e2a;
   clear: both;
-}
-
-.book {
-  margin-top: 40px;
-  content {
-
-    padding: 10px;
-    color: #fff;
-    border-radius: 0px 0px 10px 10px;
-    margin-bottom: 30px;
-    position: relative;
-    border-top: 1px solid #eee;
-    box-shadow: 1px 1px 10px rgba(0, 0, 0, 0.6);
-  }
-  .thumbnail {
-    padding: 0px;
-    border: 0px;
-    margin-bottom: 0px;
-    background: transparent;
-    position: relative;
-    .cover {
-      height: 250px;
-    }
-    &.hover {
-      .hover {
-        transform: translateY(0px);
-      }
-      position: absolute;
-      bottom: 0px;
-      background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.65) 100%);
-      color: #fff;
-      width: 100%;
-      transform: translateY(60px);
-      transition: 0.3s transform;
-    }
-  }
-}
-
-.book {
-  .thumbnail {
-    .cover {
-      @media (min-width: 767px) {
-        height: 350px;
-        border-radius: 10px 10px 0px 0px;
-        width: 100%;
-      }
-    }
-  }
 }
 
 .corner-bottom {
@@ -466,27 +383,12 @@
   z-index: 9999;
 }
 
-.conversation-container {
-  -webkit-animation-duration: 0.5s;
-  -webkit-animation-name: slide-in;
-  -webkit-animation-fill-mode: forwards;
-  -moz-animation-duration: 0.5s;
-  -moz-animation-name: slide-in;
-  -moz-animation-fill-mode: forwards;
-  animation-duration: 0.5s;
-  animation-name: slide-in;
-  animation-fill-mode: forwards;
-  border-radius: 10px;
-  box-shadow: 0px 2px 10px 1px #b5b5b5;
-}
-
-
 .rce-container-clist {
   overflow-y: scroll;
 }
 
 .messages-container {
-  background-color: #fff;
+  background: #008a7c;
   height: 50vh;
   max-height: 410px;
   overflow-y: scroll;
@@ -567,31 +469,45 @@
 }
 
 div.rce-navbar.light {
+  border-bottom: 2px solid black;
   background-color: #35cce6;
 
 }
 
 .send {
-  background: #f4f7f9;
-  border: 0;
-  padding: 14px;
+  outline: none;
+  display: inline-block;
+  background: #008a7c;
+  border-radius: 2%;
+  color: #fff;
+  position: relative;
+  width: 48px;
+  height: 48px;
+  align-items: center;
+  justify-content: center;
+  border:2px solid black;
+  border-left: none;
+  border-bottom: none;
+  border-right: none;
 }
 
 .sender {
-  align-items: center;
-  display: flex;
-  background-color: #f4f7f9;
-  height: 45px;
-  padding: 5px;
-  border-radius: 0 0 10px 10px;
-  align-items: center;
-  display: inline-block;
-  background-color: #f4f7f9;
-  width: 83%;
-  border-radius: 0 0 10px 10px;
-}
 
+  outline: none;
+  justify-content: center;
+  height: 48px;
+  padding: 5px;
+  display: inline-block;
+  border:2px solid black;
+  width: 86.8%;
+  border-left: none;
+  border-bottom: none;
+}
+.conversation-container{
+  border:2px solid black;
+}
 .rce-citem-body--bottom-title {
+
   overflow: visible;
   white-space: nowrap;
 }
@@ -601,6 +517,7 @@ div.rce-navbar.light {
 }
 
 .rce-container-citem {
+
   height: initial;
 }
 
@@ -684,16 +601,41 @@ div.rce-navbar.light {
 .user-header {
   font-weight: bold;
   color: darkblue;
-  text-transform:uppercase;
+  text-transform: uppercase;
 }
 
 .user-form-header {
   font-weight: bold;
 }
-.modal-title{
-  font-weight:bold;
+
+.modal-title {
+  font-weight: bold;
   color: #52a4e0;
-  text-transform:uppercase;
+  text-transform: uppercase;
 
+}
 
+.list-group-item {
+  cursor: pointer;
+}
+
+.glyphicon-one-fine-yellow-dot:after {
+  content: "\25cf";
+  color: yellow;
+  position: absolute;
+  top: 0;
+  right: 0;
+  font-size: 2em;
+}
+
+.glyphicon-remove {
+  cursor: pointer;
+}
+
+.glyphicon-plus {
+  cursor: pointer;
+}
+
+.glyphicon-minus {
+  cursor: pointer;
 }

@@ -4,21 +4,12 @@ import InputForm from "../InputForm";
 import ChatItem from "../ChatItem";
 import {Navbar, Button} from '../Navbar/Navbar'
 import {updateScroll} from "../../../utility/index.js"
-import {Collapse } from 'react-bootstrap';
+import {Collapse} from 'react-bootstrap';
 
 class ChatBot extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            message: ""
-
-        };
-    }
-
     addUser = (user) => {
         this.props.addUser(user); //this dispatchs from wrapper
     }
-
     messages = () => {
         let texts = _.map(this.props.messages, (message, index) => {
             return (
@@ -38,6 +29,13 @@ class ChatBot extends React.Component {
         })
         return texts;
     }
+    closeChat = () => {
+        const {socket} = this.props;
+        socket.emit("unsubscribe");
+    }
+    toggleMinMax = () => {
+        this.setState({open: !this.state.open});
+    }
     updateInputValue = (evt) => {
         this.setState({message: evt.target.value});
     }
@@ -55,6 +53,14 @@ class ChatBot extends React.Component {
         this.setState({message: ""});
     }
 
+    constructor(props) {
+        super(props);
+        this.state = {
+            message: ""
+
+        };
+    }
+
     componentDidUpdate() {
         updateScroll()
     }
@@ -64,36 +70,41 @@ class ChatBot extends React.Component {
         return (
             <div className="App">
                 <div className="widget-container">
-                    <div className="conversation-container" >
-                        <Navbar right={
-                            <span className={this.state.open?"glyphicon glyphicon-plus":"glyphicon glyphicon-minus"} onClick={() => this.setState({open: !this.state.open})}>
+                    <div className="conversation-container">
+                        <Navbar right={<div>
+                            <span className={this.state.open ? "glyphicon glyphicon-plus" : "glyphicon glyphicon-minus"}
+                                  onClick={this.toggleMinMax}>
 
-                            </span>}
+                            </span>
+                            <span onClick={this.closeChat} className={"glyphicon glyphicon-remove"}>
+                            </span>
+                        </div>}
                                 center={
-                                    <div className="user-header">{this.props.userName || "Saxo Chat Support"} </div>
+                                    <div
+                                        className="user-header">{this.props.userName || "Saxo Chat Support"} </div>
                                 }
                         />
-                        <Collapse  in={!this.state.open}>
-                        <div className="messages-container" >
-                            {messages}
-                        </div>
+                        <Collapse in={!this.state.open}>
+                            <div className="messages-container">
+                                {messages}
+                            </div>
                         </Collapse>
-                        <Collapse  in={!this.state.open}>
-                        <form onSubmit={this.handleUserMessage}>
-                            <input className="sender"
-                                   placeholder="Type here..."
-                                   multiline="true"
-                                   value={this.state.message}
-                                   onChange={this.updateInputValue}/>
-                            <button className="send"
-                                    color='white'
-                                    text='Send'
-                                    type="submit"
-                                    value="send"
-                                    onSubmit={this.handleUserMessage}>send
-                            </button>
+                        <Collapse in={!this.state.open}>
+                            <form onSubmit={this.handleUserMessage}>
+                                <input className="sender"
+                                       placeholder="Type here..."
+                                       multiline="true"
+                                       value={this.state.message}
+                                       onChange={this.updateInputValue}/>
+                                <button className="send"
+                                        color='white'
+                                        text='Send'
+                                        type="submit"
+                                        value="send"
+                                        onSubmit={this.handleUserMessage}>send
+                                </button>
 
-                        </form>
+                            </form>
                         </Collapse>
 
                     </div>

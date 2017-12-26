@@ -214,7 +214,7 @@ io.on('connection', function (socket) {
         }
     })
 
-    socket.on('unsubscribe', () => {
+    socket.on('unsubscribe', (room) => {
         socket.leave(room)
         console.log('leaving room', room)
     })

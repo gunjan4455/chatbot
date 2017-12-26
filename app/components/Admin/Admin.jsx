@@ -2,6 +2,7 @@ import React from "react";
 import _ from 'lodash';
 import DetailModal from "../shared/DetailModal";
 import Notification from "../shared/Notification";
+import UserList from "../shared/UserList";
 import ChatBotAdmin from "../shared/ChatBotAdmin";
 
 class Admin extends React.Component {
@@ -14,11 +15,11 @@ class Admin extends React.Component {
         let userList = this.state.userList;
         userList.push(this.state.userName);
         chats.push(this.state.room);
-        this.setState({chatRooms: chats, greetingMessage: "",userList:userList});
+        this.setState({chatRooms: chats, greetingMessage: "", userList: userList});
     }
 
     onHideModal = (e) => {
-        if(e)
+        if (e)
             e.preventDefault();
         this.setState({greetingMessage: ''});
     }
@@ -26,8 +27,9 @@ class Admin extends React.Component {
     chats = () => {
         let rooms = _.map(this.state.chatRooms, (room, index) => {
             return (
-                <ChatBotAdmin key={Math.random() * 11}
-                        userName={this.state.userList[index]} room={room} user={this.props.user} {...this.props} from="admin"/>
+                <ChatBotAdmin key={index}
+                              userName={this.state.userList[index]} room={room} user={this.props.user} {...this.props}
+                              from="admin"/>
             )
         });
         return rooms;
@@ -40,8 +42,8 @@ class Admin extends React.Component {
             chatRooms: [],
             room: {},
             messages: [],
-            userList:[],
-            userName:''
+            userList: [],
+            userName: ''
         };
         this.chatRequests = [];
     }
@@ -61,7 +63,7 @@ class Admin extends React.Component {
             self.setState({
                 greetingMessage: data.room.message,
                 room: data.room,
-                userName:data.userName
+                userName: data.userName
             });
             self.props.getOnlineUsers();
         });
@@ -94,6 +96,7 @@ class Admin extends React.Component {
         let rooms = this.chats();
         return (
             <div className="container">
+
                 {this.state.greetingMessage &&
                 <Notification room={this.state.room} onHideModal={this.onHideModal}/>}
                 <div className="row well">
@@ -101,7 +104,9 @@ class Admin extends React.Component {
                         <ul className="nav nav-pills nav-stacked well">
                             <li className="active"><a><i className="fa fa-envelope"></i>Online</a></li>
                             {this.props.onlineUsers && this.props.onlineUsers.length && _.map(this.props.onlineUsers, (onlineUsers, index) => {
-                                return (<li className="list-group-item" key={index}>{onlineUsers.name}</li>)
+                                return (
+                                    <UserList acceptRequest={this.acceptRequest} className="list-group-item" key={index}
+                                              onlineUserName={onlineUsers.name}></UserList>)
                             })}
                         </ul>
                     </div>
@@ -131,7 +136,6 @@ class Admin extends React.Component {
                                 <a type="button" data-toggle="collapse" data-target="#a1">
                                     <div className="btn-toolbar well well-sm" role="toolbar" style={{"margin": "0px"}}>
                                         <div className="btn-group"><input type="checkbox"/></div>
-
                                         <div className="btn-group col-md-3">Admin Kumar</div>
                                         <div className="btn-group col-md-8"><b>Hi Check this new Bootstrap
                                             plugin</b>
@@ -214,7 +218,7 @@ class Admin extends React.Component {
                     </div>
                 </div>
 
-                <div className="chat-room-container" id={Math.random() * 10} key={Math.random() * 11}>
+                <div className="chat-room-container">
                     {rooms}
                 </div>
             </div>

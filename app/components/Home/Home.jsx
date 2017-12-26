@@ -35,6 +35,7 @@ class Home extends React.Component {
         };
     }
 
+
     addUser = (user) => {
         //let details = Object.assign({}, user, this.user);
         this.props.addNewUser(user);
@@ -144,7 +145,7 @@ class Home extends React.Component {
         return (
             <section className="container bg-gray">
                 <ChatBot messages={this.state.messages} handleUserMessage={this.handleUserMessage}
-                   userName={this.props.user.name} user={this.props.user} addUser={this.addUser} room={this.state.room} from="client"/>
+                           userName={this.props.user.name} user={this.props.user} addUser={this.addUser} room={this.state.room} from="client"/>
             </section>
         )
     }
