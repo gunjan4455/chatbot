@@ -97,7 +97,9 @@ if (isDeveloping) {
 
     app.use(middleware);
     app.use(webpackHotMiddleware(compiler));
-    app.use(express.static(__dirname + '/public'))
+    app.use(express.static(__dirname + '/public'));
+    app.use(express.static('app/assets/images'));
+    app.use(express.static(__dirname + '/dist/index.html'));
     app.get('*', function response(req, res) {
         res.write(middleware.fileSystem.readFileSync(path.join(__dirname, '../dist/index.html')));
         res.end();

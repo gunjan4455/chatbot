@@ -1,14 +1,13 @@
 import React from "react";
 import PropTypes from "prop-types";
 import ChatBot from '../shared/ChatBot';
-
+import {updateScroll} from "../../utility/index"
 class Home extends React.Component {
 
 
     constructor(props) {
         super(props);
         //this.room = {};
-        this.logo = 'https://medias2.prestastore.com/835054-pbig/chat-bot-for-social-networking.jpg',
             this.state = {
                 messages: [{
                     "type": 'response',
@@ -54,7 +53,9 @@ class Home extends React.Component {
                     }
                 let chats = this.state.messages;
                 chats.push(obj);
-                this.setState({messages: chats});
+                this.setState(({messages: chats}),()=>{
+                    updateScroll();
+                });
 
             }
         });
@@ -90,7 +91,6 @@ class Home extends React.Component {
             //    }
             //
             //});
-            //updateScroll();
             if (!_.isEmpty(this.props.user) && !_.isEmpty(this.props.room)) {
                 socket.emit('user-msg', JSON.stringify({room: room, message: obj}));
             }

@@ -1,6 +1,5 @@
 import React from "react";
 import _ from 'lodash';
-import InputForm from "../InputForm";
 import ChatItem from "../ChatItem";
 import {Navbar, Button} from '../Navbar/Navbar'
 import {updateScroll} from "../../../utility/index.js"
@@ -14,7 +13,7 @@ class ChatBot extends React.Component {
         let texts = _.map(this.props.messages, (message, index) => {
             return (
                 <ChatItem className={message.type}
-                          avatar={'https://medias2.prestastore.com/835054-pbig/chat-bot-for-social-networking.jpg'}
+                          avatar={message.type + '.jpg'}
                           alt={'Reactjs'}
                           subtitle={message.text}
                           date={new Date()}
@@ -28,6 +27,7 @@ class ChatBot extends React.Component {
             )
         })
         return texts;
+
     }
     closeChat = () => {
         const {socket} = this.props;
@@ -41,7 +41,7 @@ class ChatBot extends React.Component {
     }
     handleUserMessage = (evt) => {
         evt.preventDefault();
-
+        evt.persist();
 
         let obj = {
             type: this.props.user,
@@ -50,7 +50,9 @@ class ChatBot extends React.Component {
             room: this.props.room
         }
         this.props.handleUserMessage(obj);
-        this.setState({message: ""});
+        this.setState({message: ""}, () => {
+            updateScroll();
+        });
     }
 
     constructor(props) {
@@ -59,10 +61,6 @@ class ChatBot extends React.Component {
             message: ""
 
         };
-    }
-
-    componentDidUpdate() {
-        updateScroll()
     }
 
     render() {

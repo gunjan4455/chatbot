@@ -21,8 +21,8 @@ class ChatBotAdmin extends React.Component {
         this.props.addUser(details); //this dispatchs from wrapper
     }
     closeChat = () => {
-        const {socket, room}  = this.props;
-        socket.emit("unsubscribe",room);
+        const {socket, room} = this.props;
+        socket.emit("unsubscribe", room);
     }
     toggleMinMax = () => {
         this.setState({open: !this.state.open});
@@ -32,9 +32,7 @@ class ChatBotAdmin extends React.Component {
             return (
                 <ChatItem
                     className={message.type}
-                    avatar={
-                        "https://medias2.prestastore.com/835054-pbig/chat-bot-for-social-networking.jpg"
-                    }
+                    avatar={message.type + '.jpg'}
                     alt={"Reactjs"}
                     subtitle={message.text}
                     date={new Date()}
@@ -49,9 +47,10 @@ class ChatBotAdmin extends React.Component {
     }
     updateInputValue = evt => {
         this.setState({message: evt.target.value});
-    }
+    };
     handleUserMessage = evt => {
         evt.preventDefault();
+        evt.persist();
         let message = this.state.message;
         const {socket, room} = this.props;
         let obj = {
@@ -62,7 +61,11 @@ class ChatBotAdmin extends React.Component {
         socket.emit("admin-msg", JSON.stringify({room: room, message: obj}));
         let msgs = this.state.messages;
         msgs.push(obj);
-        this.setState({message: "", messages: msgs});
+        this.setState({message: "", messages: msgs}, () => {
+            updateScroll();
+
+        });
+
     }
     handleNewUserMessage = () => {
         // Now send the message throught the backend API
@@ -80,7 +83,10 @@ class ChatBotAdmin extends React.Component {
             };
             let msgs = self.state.messages;
             msgs.push(obj);
-            self.setState({message: "", messages: msgs});
+            self.setState(({message: "", messages: msgs}),()=>{
+                updateScroll();
+            });
+
             //  addResponseMessage("from 22222");
         });
     }
@@ -101,7 +107,7 @@ class ChatBotAdmin extends React.Component {
     }
 
     componentDidUpdate() {
-        updateScroll()
+
     }
 
 
