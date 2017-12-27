@@ -40,7 +40,6 @@
   }
 }
 
-
 .btn-round {
   border-radius: 50%;
   padding: 6px 10px !important;
@@ -362,13 +361,7 @@
 
 .widget-container {
   display: inline-block;
-  position: relative;
-}
-
-.chat-room-container {
-  display: inline-flex;
   position: fixed;
-  bottom: 0;
 }
 
 .widget-container {
@@ -379,7 +372,6 @@
   margin: 0 20px 20px 0;
   max-width: 370px;
   right: 0;
-  width: 90vw;
   z-index: 9999;
 }
 
@@ -388,6 +380,7 @@
 }
 
 .messages-container {
+
   background: #008a7c;
   height: 50vh;
   max-height: 410px;
@@ -485,7 +478,7 @@ div.rce-navbar.light {
   height: 48px;
   align-items: center;
   justify-content: center;
-  border:2px solid black;
+  border: 2px solid black;
   border-left: none;
   border-bottom: none;
   border-right: none;
@@ -498,14 +491,19 @@ div.rce-navbar.light {
   height: 48px;
   padding: 5px;
   display: inline-block;
-  border:2px solid black;
+  border: 2px solid black;
   width: 86.8%;
   border-left: none;
   border-bottom: none;
 }
-.conversation-container{
-  border:2px solid black;
+
+.conversation-container {
+  position: fixed;
+  bottom: 0px;
+  width: 22vw;
+  border: 2px solid black;
 }
+
 .rce-citem-body--bottom-title {
 
   overflow: visible;
@@ -638,4 +636,13 @@ div.rce-navbar.light {
 
 .glyphicon-minus {
   cursor: pointer;
+}
+
+.chat-room-container {
+  position: fixed;
+  display: inline-flex;
+  bottom: 0;
+}
+.App{
+  width: 23vw;
 }
