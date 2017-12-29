@@ -11,8 +11,9 @@ class ChatBotAdmin extends React.Component {
         let details = Object.assign({}, user, this.user);
         this.props.addUser(details); //this dispatchs from wrapper
     }
-    closeChat = () => {
-        const {socket, room} = this.props;
+    closeChat = (e) => {
+        const {socket, room} = this.props
+        e.target.closest(".App").parentElement.removeChild(e.target.closest(".App"));
         socket.emit("unsubscribe", room);
         socket.emit("disconnect");
     }
