@@ -5,6 +5,9 @@ import {Navbar, Button} from '../Navbar/Navbar'
 import {updateScroll} from "../../../utility/index.js"
 import {Collapse} from 'react-bootstrap';
 
+const moment = require('moment');
+
+
 class ChatBot extends React.Component {
     addUser = (user) => {
         this.props.addUser(user); //this dispatchs from wrapper
@@ -16,7 +19,7 @@ class ChatBot extends React.Component {
                           avatar={message.type + '.jpg'}
                           alt={'Reactjs'}
                           subtitle={message.text}
-                          date={new Date()}
+                          date={message.timeStamp}
                           unread={0}
                           key={index}
                           template={message.template}
@@ -30,8 +33,9 @@ class ChatBot extends React.Component {
 
     }
     closeChat = () => {
-        const {socket} = this.props;
-        socket.emit("unsubscribe");
+        const {socket, room} = this.props;
+        socket.emit("unsubscribe", room);
+        socket.emit("disconnect");
     }
     toggleMinMax = () => {
         this.setState({open: !this.state.open});

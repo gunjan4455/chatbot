@@ -1,6 +1,5 @@
 import React from "react";
 import _ from 'lodash';
-import DetailModal from "../shared/DetailModal";
 import Notification from "../shared/Notification";
 import UserList from "../shared/UserList";
 import ChatBotAdmin from "../shared/ChatBotAdmin";
@@ -73,25 +72,7 @@ class Admin extends React.Component {
             console.log("admin logggggggggg");
 
         });
-        //this.handleNewUserMessage();
-
     }
-
-    //handleNewUserMessage = (newMessage) => {
-    //        console.log(`New adminsssssssssssmessage incoming! ${newMessage}`);
-    //        // Now send the message throught the backend API
-    //        // addResponseMessage(`Hi ${newMessage},what would you like to enter?`);
-    //        const {socket} = this.props;
-    //        const {room} = this.state;
-    //        //socket.emit('admin-msg', JSON.stringify({room: room, message: newMessage}));
-    //
-    //
-    //        socket.on('user-msg', (inboundMessage) => {
-    //            console.log('received message from user', inboundMessage);
-    //            //  addResponseMessage("from 22222");
-    //        });
-    //    }
-
     render() {
         let rooms = this.chats();
         return (

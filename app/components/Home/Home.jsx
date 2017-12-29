@@ -2,44 +2,12 @@ import React from "react";
 import PropTypes from "prop-types";
 import ChatBot from '../shared/ChatBot';
 import {updateScroll} from "../../utility/index"
+
 class Home extends React.Component {
 
-
-    constructor(props) {
-        super(props);
-        //this.room = {};
-            this.state = {
-                messages: [{
-                    "type": 'response',
-                    "text": "Welcome to saxo chat support",
-                    "template": false
-                },{
-                    "type": 'response',
-                    "text": "Please help us with following information",
-                    "template": false
-                },{
-                    type: "response",
-                    text: "",
-                    template: true
-                }],
-                room: {},
-                connected: false,
-                flag: false,
-                user: "client" //to distinguish between admin and user
-            };
-        this.user = {
-            name: '',
-            userName:'',
-            userFlag: true
-        };
-    }
-
-
     addUser = (user) => {
-        //let details = Object.assign({}, user, this.user);
         this.props.addNewUser(user);
     }
-
     handleMessageEvent = () => {
         const {socket} = this.props;
         socket.on('admin-msg', (message) => {
@@ -49,18 +17,18 @@ class Home extends React.Component {
                 let obj = {
                     type: msg.type,
                     text: msg.text,
-                    template: false
-                    }
+                    template: false,
+                    timeStamp:msg.timeStamp
+                }
                 let chats = this.state.messages;
                 chats.push(obj);
-                this.setState(({messages: chats}),()=>{
+                this.setState(({messages: chats}), () => {
                     updateScroll();
                 });
 
             }
         });
     }
-
     handleUserMessage = (msg) => {
         console.log(`New message incomig! ${msg}`);
         //if (this.user.userFlag) {
@@ -73,7 +41,8 @@ class Home extends React.Component {
                 type: "client",
                 text: msg.text,
                 template: false,
-                room: room._id
+                room: room._id,
+                timeStamp: new Date()
             }
             let chats = this.state.messages;
             chats.push(obj);
@@ -97,13 +66,42 @@ class Home extends React.Component {
         }
     }
 
-
+    constructor(props) {
+        super(props);
+        this.state = {
+            messages: [{
+                "type": 'response',
+                "text": "Welcome to saxo chat support",
+                "template": false,
+                "timeStamp": new Date()
+            }, {
+                "type": 'response',
+                "text": "Please help us with following information",
+                "template": false,
+                "timeStamp": new Date()
+            }, {
+                type: "response",
+                text: "",
+                template: true,
+                "timeStamp": new Date()
+            }],
+            room: {},
+            connected: false,
+            flag: false,
+            user: "client" //to distinguish between admin and user
+        };
+        this.user = {
+            name: '',
+            userName: '',
+            userFlag: true
+        };
+    }
 
     init(user, type) {
         const {socket} = this.props;
         socket.emit('subscribe', {user: user});
         let self = this;
-        socket.on('subscribeSuccess'+user._id, function (user) {
+        socket.on('subscribeSuccess' + user._id, function (user) {
             let room = {};
             room.title = user.name;
             room.owner = user._id;
@@ -121,7 +119,7 @@ class Home extends React.Component {
 
         if (!_.isEmpty(nextProps.room) && !this.state.flag) {
             this.setState({flag: true});
-            nextProps.socket.emit('joinRoom', {room: nextProps.room,userName:this.props.user.name});
+            nextProps.socket.emit('joinRoom', {room: nextProps.room, userName: this.props.user.name});
         }
     }
 
@@ -145,7 +143,8 @@ class Home extends React.Component {
         return (
             <section className="container bg-gray">
                 <ChatBot messages={this.state.messages} handleUserMessage={this.handleUserMessage}
-                           userName={this.props.user.name} user={this.props.user} addUser={this.addUser} room={this.state.room} from="client"/>
+                         userName={this.props.user.name} user={this.props.user} addUser={this.addUser}
+                         room={this.state.room} from="client"/>
             </section>
         )
     }

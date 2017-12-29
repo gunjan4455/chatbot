@@ -118,7 +118,7 @@ io.on('connection', function (socket) {
     console.log("socket connection on=======", socket.id);
     console.log('a user connected')
     socket.on('subscribe', (data) => {
-            io.sockets.emit('subscribeSuccess'+data.user._id, data.user);
+            io.sockets.emit('subscribeSuccess' + data.user._id, data.user);
             if (data.user.isAdmin) {
                 Users.findOneAndUpdate({_id: data.user._id}, {
                     $set: {
@@ -179,9 +179,6 @@ io.on('connection', function (socket) {
                 });
 
             }
-            //room = data.room
-            //socket.join(room)
-            //console.log('joined room', room)
         }
     )
 
@@ -197,7 +194,10 @@ io.on('connection', function (socket) {
                 if (admins.length) {
                     _.map(admins, function (admin, index) {
                         if (io.sockets.connected[admin.socketId])
-                            io.sockets.connected[admin.socketId].emit("greeting-request", {room:data.room,userName:data.userName});
+                            io.sockets.connected[admin.socketId].emit("greeting-request", {
+                                room: data.room,
+                                userName: data.userName
+                            });
                         socket.emit('room-details', data.room);
 
                     });
@@ -217,9 +217,12 @@ io.on('connection', function (socket) {
     })
 
     socket.on('unsubscribe', (room) => {
-        socket.leave(room)
-        console.log('leaving room', room)
-    })
+        console.log("left room", room);
+
+        socket.leave(room.title, (err) => {
+            console.log("left successfully", err);
+        });
+    });
 
     socket.on('disconnect', () => {
         console.log('a user disconnected')
@@ -239,7 +242,12 @@ io.on('connection', function (socket) {
     //})
     socket.on('admin-msg', function (obj) {
         const newObj = JSON.parse(obj);
-        const message = new Message({user: newObj.room.owner, text: newObj.message.text, room: newObj.room._id, type: newObj.message.type})
+        const message = new Message({
+            user: newObj.room.owner,
+            text: newObj.message.text,
+            room: newObj.room._id,
+            type: newObj.message.type
+        })
         message.save((err) => {
             if (err) return err
         })
@@ -250,11 +258,16 @@ io.on('connection', function (socket) {
     socket.on('user-msg', function (msg) {
         const newObj = JSON.parse(msg);
         console.log('parsed-user-msg', newObj);
-        const message = new Message({user: newObj.room.owner, text: newObj.message.text, room: newObj.room._id, type: newObj.message.type})
+        const message = new Message({
+            user: newObj.room.owner,
+            text: newObj.message.text,
+            room: newObj.room._id,
+            type: newObj.message.type
+        })
         message.save((err) => {
             if (err) return err
         })
-        io.sockets.to(newObj.room.title).emit('user-msg'+newObj.room.title, JSON.stringify(newObj.message));//
+        io.sockets.to(newObj.room.title).emit('user-msg' + newObj.room.title, JSON.stringify(newObj.message));//
     });
 
     socket.on('new room', (roomData) => {
@@ -263,6 +276,28 @@ io.on('connection', function (socket) {
             if (err) return err
         })
     })
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     socket.on('file_upload', (data, buffer) => {
         console.log(data)

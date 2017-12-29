@@ -6,16 +6,7 @@ import {updateScroll} from "../../../utility/index.js"
 import {Collapse} from 'react-bootstrap';
 
 class ChatBotAdmin extends React.Component {
-    /*  getCredentials = (value, type) => {
-          switch (type) {
-              case "name":
-                  this.user.name = value;
-                  break;
-              default:
-                  break;
-          }
-      }
-  */
+
     addUser = user => {
         let details = Object.assign({}, user, this.user);
         this.props.addUser(details); //this dispatchs from wrapper
@@ -23,6 +14,7 @@ class ChatBotAdmin extends React.Component {
     closeChat = () => {
         const {socket, room} = this.props;
         socket.emit("unsubscribe", room);
+        socket.emit("disconnect");
     }
     toggleMinMax = () => {
         this.setState({open: !this.state.open});
@@ -60,10 +52,14 @@ class ChatBotAdmin extends React.Component {
         };
         socket.emit("admin-msg", JSON.stringify({room: room, message: obj}));
         let msgs = this.state.messages;
-        msgs.push(obj);
+        try{
+            msgs.push(obj);
+
+        }catch (e){
+            console.error(e);
+        }
         this.setState({message: "", messages: msgs}, () => {
             updateScroll();
-
         });
 
     }
@@ -86,8 +82,6 @@ class ChatBotAdmin extends React.Component {
             self.setState(({message: "", messages: msgs}),()=>{
                 updateScroll();
             });
-
-            //  addResponseMessage("from 22222");
         });
     }
 
@@ -105,11 +99,6 @@ class ChatBotAdmin extends React.Component {
     componentDidMount() {
         this.handleNewUserMessage();
     }
-
-    componentDidUpdate() {
-
-    }
-
 
     render() {
         let messages = this.messages();

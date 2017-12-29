@@ -1,12 +1,11 @@
 import React from "react";
-import './ChatItem.css';
 import Avatar from '../Avatar';
 import InputForm from "../InputForm";
 
 const moment = require('moment');
 const classNames = require('classnames');
 
-export class ChatItem extends  React.Component {
+export class ChatItem extends React.Component {
 
     render() {
         return (
@@ -39,8 +38,8 @@ export class ChatItem extends  React.Component {
                                     this.props.date &&
                                     !isNaN(this.props.date) &&
                                     (
-                                        this.props.dateString ||
-                                        moment(this.props.date).fromNow()
+                                        moment(this.props.date).format('h:mm:ss a')
+
                                     )
                                 }
                             </div>
@@ -48,7 +47,9 @@ export class ChatItem extends  React.Component {
 
                         <div className="rce-citem-body--bottom">
                             <div className="rce-citem-body--bottom-title">
-                                {this.props.template ?  <InputForm option="true" userName={this.props.userName} addUser={this.props.addUser} user={this.props.user}/> : this.props.subtitle}
+                                {this.props.template ? <InputForm option="true" userName={this.props.userName}
+                                                                  addUser={this.props.addUser}
+                                                                  user={this.props.user}/> : this.props.subtitle}
                             </div>
                             <div className="rce-citem-body--bottom-status">
                                 {
@@ -81,4 +82,3 @@ ChatItem.defaultProps = {
 }
 
 export default ChatItem;
-//{this.props.template ? <InputForm/> : this.props.subtitle}
