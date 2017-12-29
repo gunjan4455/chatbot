@@ -137,7 +137,7 @@ class ChatBotAdmin extends React.Component {
                             </div>
                         </Collapse>
                         <Collapse in={!this.state.open}>
-                            <form onSubmit={this.handleUserMessage}>
+                            <form onSubmit={this.state.message?this.handleUserMessage:this.handleEmptyUserMessage}>
                                 <input className="sender"
                                        placeholder="Type here..."
                                        multiline="true"
@@ -148,7 +148,7 @@ class ChatBotAdmin extends React.Component {
                                         text='Send'
                                         type="submit"
                                         value="send"
-                                        onSubmit={this.handleUserMessage}>send
+                                        onSubmit={this.state.message?this.handleUserMessage:this.handleEmptyUserMessage}>send
                                 </button>
                             </form>
                         </Collapse>
