@@ -43,6 +43,11 @@ class ChatBot extends React.Component {
     updateInputValue = (evt) => {
         this.setState({message: evt.target.value});
     }
+
+
+    handleEmptyUserMessage = (evt) => {
+        evt.preventDefault();
+    }
     handleUserMessage = (evt) => {
         evt.preventDefault();
         evt.persist();
@@ -92,7 +97,7 @@ class ChatBot extends React.Component {
                             </div>
                         </Collapse>
                         <Collapse in={!this.state.open}>
-                            <form onSubmit={this.handleUserMessage}>
+                            <form onSubmit={this.state.message?this.handleUserMessage:this.handleEmptyUserMessage}>
                                 <input className="sender"
                                        placeholder="Type here..."
                                        multiline="true"
@@ -103,7 +108,7 @@ class ChatBot extends React.Component {
                                         text='Send'
                                         type="submit"
                                         value="send"
-                                        onSubmit={this.handleUserMessage}>send
+                                        onSubmit={this.state.message?this.handleUserMessage:this.handleEmptyUserMessage}>send
                                 </button>
 
                             </form>

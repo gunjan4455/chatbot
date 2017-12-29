@@ -8,6 +8,7 @@ class Admin extends React.Component {
 
     acceptRequest = (e) => { //accepting request from client
         e.preventDefault();
+        e.target.children[0].style.background="green"; //changing the color
         const {socket} = this.props;
         socket.emit('accept-greeting-request', {room: this.state.room, user: this.props.user});
         let chats = this.state.chatRooms;
