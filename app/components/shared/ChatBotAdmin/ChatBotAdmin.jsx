@@ -27,7 +27,7 @@ class ChatBotAdmin extends React.Component {
                     avatar={message.type + '.jpg'}
                     alt={"Reactjs"}
                     subtitle={message.text}
-                    date={new Date()}
+                    date={message.timeStamp}
                     unread={0}
                     key={index}
                     template={message.template}
@@ -48,7 +48,8 @@ class ChatBotAdmin extends React.Component {
         let obj = {
             type: "response",
             text: message,
-            room: room._id
+            room: room._id,
+            timeStamp: new Date()
         };
         socket.emit("admin-msg", JSON.stringify({room: room, message: obj}));
         let msgs = this.state.messages;
@@ -75,7 +76,8 @@ class ChatBotAdmin extends React.Component {
             let obj = {
                 type: "client",
                 text: msg.text,
-                room: room._id
+                room: room._id,
+                timeStamp: msg.timeStamp
             };
             let msgs = self.state.messages;
             msgs.push(obj);

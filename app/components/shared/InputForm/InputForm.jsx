@@ -85,9 +85,9 @@ export class InputForm extends React.Component {
                                         </div>
                                     </div>
                                 </form>
-                                <br></br>
                                 or
-                                <hr/>
+                                <br></br>
+                                <br></br>
                                 <form className="form-horizontal" onSubmit={this.onSubmit}>
                                     <div style={{"marginBottom": "25px"}} className="input-group">
                                     <span className="input-group-addon"><i

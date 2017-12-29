@@ -35,10 +35,9 @@ export class ChatItem extends React.Component {
                             </div>
                             <div className="rce-citem-body--top-time">
                                 {
-                                    this.props.date &&
-                                    !isNaN(this.props.date) &&
+                                    this.props.date  &&
                                     (
-                                        moment(this.props.date).format('h:mm:ss a')
+                                        moment(this.props.date).format('HH:mm:ss')
 
                                     )
                                 }

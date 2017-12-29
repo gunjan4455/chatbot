@@ -80,9 +80,9 @@ class Home extends React.Component {
                 "template": false,
                 "timeStamp": new Date()
             }, {
-                type: "response",
-                text: "",
-                template: true,
+                "type": "response",
+                "text":"",
+                "template": true,
                 "timeStamp": new Date()
             }],
             room: {},
