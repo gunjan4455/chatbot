@@ -11,9 +11,19 @@ class ChatBotAdmin extends React.Component {
         let details = Object.assign({}, user, this.user);
         this.props.addUser(details); //this dispatchs from wrapper
     }
-    closeChat = (e) => {
-        const {socket, room} = this.props
-        e.target.closest(".App").parentElement.removeChild(e.target.closest(".App"));
+    closeChat = (evt) => {
+        const {socket, room} = this.props;
+        let listElement = document.getElementsByClassName("list-group-item");
+        let returnText= _.map(listElement, (ele) => {
+
+            if (ele.innerText == room.title) {
+                ele.children[0].style.background = "red";
+
+            }
+
+        });
+        evt.target.closest(".App").parentElement.removeChild(evt.target.closest(".App"));
+        evt.target.children[0].style.background = "green";
         socket.emit("unsubscribe", room);
         socket.emit("disconnect");
     }
@@ -54,10 +64,10 @@ class ChatBotAdmin extends React.Component {
         };
         socket.emit("admin-msg", JSON.stringify({room: room, message: obj}));
         let msgs = this.state.messages;
-        try{
+        try {
             msgs.push(obj);
 
-        }catch (e){
+        } catch (e) {
             console.error(e);
         }
         this.setState({message: "", messages: msgs}, () => {
@@ -82,7 +92,7 @@ class ChatBotAdmin extends React.Component {
             };
             let msgs = self.state.messages;
             msgs.push(obj);
-            self.setState(({message: "", messages: msgs}),()=>{
+            self.setState(({message: "", messages: msgs}), () => {
                 updateScroll();
             });
         });
