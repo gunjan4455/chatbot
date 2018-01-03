@@ -6,6 +6,16 @@ import {updateScroll} from "../../../utility/index.js"
 import {Collapse} from 'react-bootstrap';
 
 class ChatBotAdmin extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            message: "",
+            messages: this.props.room && this.props.room.messages
+        };
+        this.user = {
+            name: ""
+        };
+    }
 
     addUser = user => {
         let details = Object.assign({}, user, this.user);
@@ -96,17 +106,6 @@ class ChatBotAdmin extends React.Component {
                 updateScroll();
             });
         });
-    }
-
-    constructor(props) {
-        super(props);
-        this.state = {
-            message: "",
-            messages: this.props.room && this.props.room.messages
-        };
-        this.user = {
-            name: ""
-        };
     }
 
     componentDidMount() {

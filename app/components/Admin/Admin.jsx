@@ -5,6 +5,18 @@ import UserList from "../shared/UserList";
 import ChatBotAdmin from "../shared/ChatBotAdmin";
 
 class Admin extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            greetingMessage: "",
+            chatRooms: [],
+            room: {},
+            messages: [],
+            userList: [],
+            userName: ''
+        };
+        this.chatRequests = [];
+    }
 
     acceptRequest = (e) => { //accepting request from client
         e.preventDefault();
@@ -35,19 +47,6 @@ class Admin extends React.Component {
         return rooms;
     }
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            greetingMessage: "",
-            chatRooms: [],
-            room: {},
-            messages: [],
-            userList: [],
-            userName: ''
-        };
-        this.chatRequests = [];
-    }
-
     componentWillMount() {
         this.props.getOnlineUsers();
         this.props.getAdmins();
@@ -67,18 +66,24 @@ class Admin extends React.Component {
             });
             self.props.getOnlineUsers();
         });
-
         socket.on('refresh-admin-list', function () {
             //self.chatRequests.unshift(room);
             console.log("admin logggggggggg");
-
+        });
+        socket.on('refresh-users-list', function (user) {
+            self.props.getOnlineUsers();
+            let chats = self.state.chatRooms;
+            let rooms = _.filter(chats, (room, index) => {
+                    return room.owner != user._id;
+            });
+            self.setState({chatRooms: rooms});
         });
     }
+
     render() {
         let rooms = this.chats();
         return (
             <div className="container">
-
                 {this.state.greetingMessage &&
                 <Notification room={this.state.room} onHideModal={this.onHideModal}/>}
                 <div className="row well">
@@ -181,10 +186,10 @@ class Admin extends React.Component {
                                         <img className="media-object img-thumbnail" width="100"
                                              src="http://placehold.it/120x120" alt="..."/>
                                     </a>
-
-                                    <div className="media-body">
-                                        <h4 className="media-heading">Animation Workshop</h4>
-                                        2Days animation workshop to be conducted
+ation workshop to be conducted
+                                        <div className="media-body">
+                                            <h4 className="media-heading">Animation Workshop</h4>
+                                            2Days anim
                                     </div>
                                 </div>
                             </div>

@@ -225,8 +225,31 @@ io.on('connection', function (socket) {
     });
 
     socket.on('disconnect', () => {
-        console.log('a user disconnected')
-    })
+        console.log('a user disconnected', socket.id)
+        //Users.remove({socketId: socket.id}, {
+        //}).exec(function (err, change) {
+        //    console.log("subscription=======2222=", user);
+        //    if (err) {
+        //        res.status(422).json(helper.responseObject(422, err, null, true));
+        //    } else if (!(change.result.ok === 1 && change.result.n === 1)) {
+        //        return res.status(422).json(helper.handleError(422, "Socket not found sorry"));
+        //    } else {
+        //       //socket.emit("refresh-users-list");
+        //    }
+        //});
+
+        Users.findOneAndRemove({
+                socketId: socket.id,
+                isAdmin: false
+            }, function (err, user) {
+            if (err) {
+                console.log('disconnected=======================000', socket.id)
+            } else if (user) {
+                console.log('disconnected=======================1111', socket.id, user);
+                io.sockets.emit("refresh-users-list", user);
+            }
+        });
+    });
 
     //socket.on('chat-message', function (msg) {
     //    console.log('sending message to', msg)
