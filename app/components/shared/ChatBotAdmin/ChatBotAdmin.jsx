@@ -21,25 +21,28 @@ class ChatBotAdmin extends React.Component {
         let details = Object.assign({}, user, this.user);
         this.props.addUser(details); //this dispatchs from wrapper
     }
+
     closeChat = (evt) => {
         const {socket, room} = this.props;
-        let listElement = document.getElementsByClassName("list-group-item");
-        let returnText= _.map(listElement, (ele) => {
-
-            if (ele.innerText == room.title) {
-                ele.children[0].style.background = "red";
-
-            }
-
-        });
-        evt.target.closest(".App").parentElement.removeChild(evt.target.closest(".App"));
-        evt.target.children[0].style.background = "green";
+        //let listElement = document.getElementsByClassName("list-group-item");
+        //let returnText= _.map(listElement, (ele) => {
+        //
+        //    if (ele.innerText == room.title) {
+        //        ele.children[0].style.background = "red";
+        //
+        //    }
+        //
+        //});
+        //evt.target.closest(".App").parentElement.removeChild(evt.target.closest(".App"));
+      //  evt.target.children[0].style.background = "green";
         socket.emit("unsubscribe", room);
-        socket.emit("disconnect");
+        //socket.emit("disconnect");
     }
+
     toggleMinMax = () => {
         this.setState({open: !this.state.open});
     }
+
     messages = () => {
         let texts = _.map(this.state.messages, (message, index) => {
             return (
@@ -58,9 +61,11 @@ class ChatBotAdmin extends React.Component {
         });
         return texts;
     }
+
     updateInputValue = evt => {
         this.setState({message: evt.target.value});
-    };
+    }
+
     handleUserMessage = evt => {
         evt.preventDefault();
         evt.persist();

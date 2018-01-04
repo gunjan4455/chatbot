@@ -211,16 +211,38 @@ io.on('connection', function (socket) {
         console.log('admin joined room', data, socket.id);
         if (data.user.isAdmin) {
             socket.join(data.room.title, (err) => {
-                console.log("admin joined successfully", err);
+                Users.findOneAndUpdate({_id: data.room.owner}, {
+                    $set: {
+                        status: "engaged"
+                    }
+                }).exec(function (err, user) {
+                    if (err) {
+                        console.log("err", err);
+                    } else if (user) {
+                        io.sockets.emit("refresh-users-list");
+                        console.log("client engaged", user);
+                    }
+                });
             });
         }
     })
 
     socket.on('unsubscribe', (room) => {
         console.log("left room", room);
-
         socket.leave(room.title, (err) => {
             console.log("left successfully", err);
+            Users.findOneAndUpdate({_id: room.owner}, {
+                $set: {
+                    status: "waiting"
+                }
+            }).exec(function (err, user) {
+                if (err) {
+                    console.log("err", err);
+                } else if (user) {
+                    io.sockets.emit("refresh-users-list", user);
+                    console.log("client engaged", user);
+                }
+            });
         });
     });
 

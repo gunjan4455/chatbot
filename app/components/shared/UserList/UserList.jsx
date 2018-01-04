@@ -1,14 +1,48 @@
 import React, {Component} from 'react';
 
-class UserList extends React.PureComponent {
+class UserList extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {
+            status : ""
+        }
     }
 
+    setStatus() {
+        switch(this.props.user.status) {
+            case 'online':
+                this.setState({status : "glyphicon-one-fine-grey-dot"});
+                break;
+            case 'engaged':
+                this.setState({status : "glyphicon-one-fine-green-dot"});
+                break;
+            case 'waiting':
+                this.setState({status : "glyphicon-one-fine-yellow-dot"});
+                break;
+            case 'default':
+                this.setState({status : "glyphicon-one-fine-yellow-dot"});
+                break;
+        }
+    }
 
     render() {
+        let status = "";
+        switch(this.props.user.status) {
+            case 'online':
+                status = "glyphicon-one-fine-grey-dot"
+                break;
+            case 'engaged':
+                status = "glyphicon-one-fine-green-dot";
+                break;
+            case 'waiting':
+               status = "glyphicon-one-fine-yellow-dot";
+                break;
+            case 'default':
+                status = "glyphicon-one-fine-grey-dot";
+                break;
+        }
         return (
-            <li onClick={this.props.acceptRequest} className="list-group-item">{this.props.onlineUserName}<span  className="glyphicon-one-fine-yellow-dot"></span></li>        )
+            <li onClick={this.props.acceptRequest.bind(this, this.props.user)} className="list-group-item">{this.props.user.name}<span  className={status}></span></li>        )
     }
 }
 

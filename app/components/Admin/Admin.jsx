@@ -18,16 +18,20 @@ class Admin extends React.Component {
         this.chatRequests = [];
     }
 
-    acceptRequest = (e) => { //accepting request from client
+    acceptRequest = (user, e) => { //accepting request from client
         e.preventDefault();
-        e.target.children[0].style.background="green"; //changing the color
-        const {socket} = this.props;
-        socket.emit('accept-greeting-request', {room: this.state.room, user: this.props.user});
-        let chats = this.state.chatRooms;
-        let userList = this.state.userList;
-        userList.push(this.state.userName);
-        chats.push(this.state.room);
-        this.setState({chatRooms: chats, greetingMessage: "", userList: userList});
+        //e.target.children[0].style.background="green"; //changing the color
+        if(user.status == 'engaged')
+            return;
+        else {
+            const {socket} = this.props;
+            socket.emit('accept-greeting-request', {room: this.state.room, user: this.props.user});
+            let chats = this.state.chatRooms;
+            let userList = this.state.userList;
+            userList.push(this.state.userName);
+            chats.push(this.state.room);
+            this.setState({chatRooms: chats, greetingMessage: "", userList: userList});
+        }
     }
 
     onHideModal = (e) => {
@@ -72,11 +76,13 @@ class Admin extends React.Component {
         });
         socket.on('refresh-users-list', function (user) {
             self.props.getOnlineUsers();
-            let chats = self.state.chatRooms;
-            let rooms = _.filter(chats, (room, index) => {
+            if(user) {
+                let chats = self.state.chatRooms;
+                let rooms = _.filter(chats, (room, index) => {
                     return room.owner != user._id;
-            });
-            self.setState({chatRooms: rooms});
+                });
+                self.setState({chatRooms: rooms});
+            }
         });
     }
 
@@ -90,10 +96,10 @@ class Admin extends React.Component {
                     <div className="col-md-2">
                         <ul className="nav nav-pills nav-stacked well">
                             <li className="active"><a><i className="fa fa-envelope"></i>Online</a></li>
-                            {this.props.onlineUsers && this.props.onlineUsers.length && _.map(this.props.onlineUsers, (onlineUsers, index) => {
+                            {this.props.onlineUsers && this.props.onlineUsers.length && _.map(this.props.onlineUsers, (user, index) => {
                                 return (
                                     <UserList acceptRequest={this.acceptRequest} className="list-group-item" key={index}
-                                              onlineUserName={onlineUsers.name}></UserList>)
+                                              user={user}></UserList>)
                             })}
                         </ul>
                     </div>

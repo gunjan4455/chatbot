@@ -27,7 +27,7 @@ module.exports = {
         });
     },
     getOnlineUsers: function (req, res, next) {
-        Users.find({"status":"online", isAdmin: false}).exec(function (err, onlineUsers) {
+        Users.find({isAdmin: false}).exec(function (err, onlineUsers) {
             if (err) {
                 res.status(422).json(helper.responseObject(422, err, null, true));
             } else {
