@@ -10,6 +10,7 @@ class Admin extends React.Component {
         this.state = {
             greetingMessage: "",
             chatRooms: [],
+            rooms: [],
             room: {},
             messages: [],
             userList: [],
@@ -21,16 +22,17 @@ class Admin extends React.Component {
     acceptRequest = (user, e) => { //accepting request from client
         e.preventDefault();
         //e.target.children[0].style.background="green"; //changing the color
-        if(user.status == 'engaged')
+        if (user.status == 'engaged')
             return;
         else {
             const {socket} = this.props;
-            socket.emit('accept-greeting-request', {room: this.state.room, user: this.props.user});
+            socket.emit('accept-greeting-request', {user: user, admin: this.props.user});
             let chats = this.state.chatRooms;
-            let userList = this.state.userList;
-            userList.push(this.state.userName);
-            chats.push(this.state.room);
-            this.setState({chatRooms: chats, greetingMessage: "", userList: userList});
+            /*let userList = this.state.userList;
+             userList.push(this.state.userName);
+             */
+            chats.push(this.state.rooms[user._id]);
+            this.setState({chatRooms: chats, greetingMessage: ""});
         }
     }
 
@@ -41,17 +43,24 @@ class Admin extends React.Component {
     }
 
     chats = () => {
-        let rooms = _.map(this.state.chatRooms, (room, index) => {
-            return (
-                <ChatBotAdmin key={index}
-                              userName={this.state.userList[index]} room={room} user={this.props.user} {...this.props}
-                              from="admin"/>
-            )
-        });
-        return rooms;
+        if(this.state.chatRooms.length) {
+            let rooms = _.map(this.state.chatRooms, (room, index) => {
+                return (
+                    <ChatBotAdmin key={room._id}
+                                  room={room} user={this.props.user} {...this.props}
+                                  from="admin"/>
+                )
+            });
+            return rooms;
+        }
+        else
+            return [];
+
     }
 
     componentWillMount() {
+        const {socket} = this.props;
+        socket.emit('refresh-admin-list');
         this.props.getOnlineUsers();
         this.props.getAdmins();
 
@@ -63,20 +72,23 @@ class Admin extends React.Component {
         socket.on('greeting-request', function (data) {
             //self.chatRequests.unshift(room);
             data.room.messages = [];
+            let rooms = self.state.rooms;
+            rooms[data.room.user] = data.room;
             self.setState({
                 greetingMessage: data.room.message,
+                rooms: rooms,
                 room: data.room,
                 userName: data.userName
             });
             self.props.getOnlineUsers();
         });
         socket.on('refresh-admin-list', function () {
-            //self.chatRequests.unshift(room);
+            self.props.getAdmins();
             console.log("admin logggggggggg");
         });
         socket.on('refresh-users-list', function (user) {
             self.props.getOnlineUsers();
-            if(user) {
+            if (user) {
                 let chats = self.state.chatRooms;
                 let rooms = _.filter(chats, (room, index) => {
                     return room.owner != user._id;
@@ -192,10 +204,10 @@ class Admin extends React.Component {
                                         <img className="media-object img-thumbnail" width="100"
                                              src="http://placehold.it/120x120" alt="..."/>
                                     </a>
-ation workshop to be conducted
-                                        <div className="media-body">
-                                            <h4 className="media-heading">Animation Workshop</h4>
-                                            2Days anim
+                                    ation workshop to be conducted
+                                    <div className="media-body">
+                                        <h4 className="media-heading">Animation Workshop</h4>
+                                        2Days anim
                                     </div>
                                 </div>
                             </div>

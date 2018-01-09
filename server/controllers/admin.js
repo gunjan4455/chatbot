@@ -33,6 +33,7 @@ module.exports = {
                     //        });
                     //    }
                     //});
+
                     req.result = change.result;
                     next();
                 }

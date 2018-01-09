@@ -8,23 +8,6 @@ class UserList extends React.Component {
         }
     }
 
-    setStatus() {
-        switch(this.props.user.status) {
-            case 'online':
-                this.setState({status : "glyphicon-one-fine-grey-dot"});
-                break;
-            case 'engaged':
-                this.setState({status : "glyphicon-one-fine-green-dot"});
-                break;
-            case 'waiting':
-                this.setState({status : "glyphicon-one-fine-yellow-dot"});
-                break;
-            case 'default':
-                this.setState({status : "glyphicon-one-fine-yellow-dot"});
-                break;
-        }
-    }
-
     render() {
         let status = "";
         switch(this.props.user.status) {

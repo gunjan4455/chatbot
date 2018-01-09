@@ -6,7 +6,6 @@ module.exports = {
     createUser: function (req, res, next) {
         const {name, userid, password, email} = req.body;
         Users.findOne({name: name, userid: userid, password: password}).exec(function (err,user) {
-            console.log("uuuuuuuuuuuuuuuuuuuu",user, req.body);
             if (err) {
                 res.status(422).json(helper.responseObject(422, err, null, true));
             } else if(user){

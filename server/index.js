@@ -116,7 +116,7 @@ if (isDeveloping) {
 
 io.on('connection', function (socket) {
     console.log("socket connection on=======", socket.id);
-    console.log('a user connected')
+    console.log('a user connected');
     socket.on('subscribe', (data) => {
             io.sockets.emit('subscribeSuccess' + data.user._id, data.user);
             if (data.user.isAdmin) {
@@ -155,6 +155,7 @@ io.on('connection', function (socket) {
                                         //res.status(422).json(helper.responseObject(422, err, null, true));
                                     } else {
                                         console.log("admin added successfully", admin);
+                                        io.sockets.emit('refresh-admin-list');
                                         //res.status(200).json(helper.responseObject(200, user, null, true));
                                     }
                                 })
@@ -183,23 +184,19 @@ io.on('connection', function (socket) {
     )
 
     socket.on('joinRoom', (data) => {
-        console.log("jjjjjjjjjjjjjjj", data.room.title);
-        console.log("dataaaaaaaaa", data);
         socket.join(data.room.title, function (err) {
-            console.log("roommmmmmmmmmmm", data.room);
-            console.log("clients=======", io.sockets.adapter.rooms[data.room.title], 'ffffffffff', io.sockets.adapter.rooms);
             data.room.message = "Hey admin how r u???";
             data.room.socketId = socket.id;
+            data.room.user = data.user._id;
             Admins.find({}).exec(function (err, admins) {
                 if (admins.length) {
                     _.map(admins, function (admin, index) {
                         if (io.sockets.connected[admin.socketId])
                             io.sockets.connected[admin.socketId].emit("greeting-request", {
                                 room: data.room,
-                                userName: data.userName
+                                userName: data.user.name
                             });
                         socket.emit('room-details', data.room);
-
                     });
                 }
             });
@@ -208,10 +205,10 @@ io.on('connection', function (socket) {
     })
 
     socket.on('accept-greeting-request', (data) => {
-        console.log('admin joined room', data, socket.id);
-        if (data.user.isAdmin) {
-            socket.join(data.room.title, (err) => {
-                Users.findOneAndUpdate({_id: data.room.owner}, {
+        //console.log('admin joined room', data, socket.id);
+        if (data.admin.isAdmin) {
+            socket.join(data.user.name, (err) => {
+                Users.findOneAndUpdate({_id: data.user._id}, {
                     $set: {
                         status: "engaged"
                     }
@@ -220,7 +217,7 @@ io.on('connection', function (socket) {
                         console.log("err", err);
                     } else if (user) {
                         io.sockets.emit("refresh-users-list");
-                        console.log("client engaged", user);
+                        //console.log("client engaged", user);
                     }
                 });
             });
@@ -228,21 +225,21 @@ io.on('connection', function (socket) {
     })
 
     socket.on('unsubscribe', (room) => {
-        console.log("left room", room);
-        socket.leave(room.title, (err) => {
-            console.log("left successfully", err);
-            Users.findOneAndUpdate({_id: room.owner}, {
-                $set: {
-                    status: "waiting"
-                }
-            }).exec(function (err, user) {
-                if (err) {
-                    console.log("err", err);
-                } else if (user) {
-                    io.sockets.emit("refresh-users-list", user);
-                    console.log("client engaged", user);
-                }
-            });
+        console.log("left room==============================", room);
+            socket.leave(room.title, (err) => {
+                console.log("left successfully", err);
+                Users.findOneAndUpdate({_id: room.owner}, {
+                    $set: {
+                        status: "waiting"
+                    }
+                }).exec(function (err, user) {
+                    if (err) {
+                        console.log("err", err);
+                    } else if (user) {
+                        io.sockets.emit("refresh-users-list", user);
+                        console.log("client engaged", user);
+                    }
+                });
         });
     });
 
@@ -265,9 +262,7 @@ io.on('connection', function (socket) {
                 isAdmin: false
             }, function (err, user) {
             if (err) {
-                console.log('disconnected=======================000', socket.id)
             } else if (user) {
-                console.log('disconnected=======================1111', socket.id, user);
                 io.sockets.emit("refresh-users-list", user);
             }
         });
@@ -296,7 +291,6 @@ io.on('connection', function (socket) {
         message.save((err) => {
             if (err) return err
         })
-        console.log('@@@@@@@@@@@@admin-msg==================', obj, newObj);
         io.sockets.to(newObj.room.title).emit('admin-msg', JSON.stringify(newObj.message));
     });
 
@@ -312,7 +306,8 @@ io.on('connection', function (socket) {
         message.save((err) => {
             if (err) return err
         })
-        io.sockets.to(newObj.room.title).emit('user-msg' + newObj.room.title, JSON.stringify(newObj.message));//
+        //io.sockets.to(newObj.room.title)
+        io.sockets.emit('user-msg' + newObj.room.title, JSON.stringify(newObj.message));//
     });
 
     socket.on('new room', (roomData) => {

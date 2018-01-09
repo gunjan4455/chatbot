@@ -119,7 +119,7 @@ class Home extends React.Component {
 
         if (!_.isEmpty(nextProps.room) && !this.state.flag) {
             this.setState({flag: true});
-            nextProps.socket.emit('joinRoom', {room: nextProps.room, userName: this.props.user.name});
+            nextProps.socket.emit('joinRoom', {room: nextProps.room, user: this.props.user});
         }
     }
 

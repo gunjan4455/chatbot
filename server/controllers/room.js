@@ -19,12 +19,26 @@ module.exports = {
                     } else {
                         req.result = {};
                         req.result.room = room;
+
                         next();
                     }
                 });
             }
         });
+    },
+
+    getRoomById: function (req, res, next) {
+        Room.find({socketId: req.params.id}).exec(function (err, room) {
+            if (err) {
+                res.status(422).json(helper.responseObject(422, err, null, true));
+            } else {
+                req.result = {};
+                req.result.room = room;
+                next();
+            }
+        });
     }
+
 };
 
 

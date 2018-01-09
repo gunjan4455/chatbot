@@ -65,7 +65,10 @@ class ChatBotAdmin extends React.Component {
     updateInputValue = evt => {
         this.setState({message: evt.target.value});
     }
+    handleEmptyUserMessage(evt){
 
+        evt.preventDefault();
+    }
     handleUserMessage = evt => {
         evt.preventDefault();
         evt.persist();
@@ -90,6 +93,7 @@ class ChatBotAdmin extends React.Component {
         });
 
     }
+
     handleNewUserMessage = () => {
         // Now send the message throught the backend API
         // addResponseMessage(`Hi ${newMessage},what would you like to enter?`);
@@ -132,7 +136,7 @@ class ChatBotAdmin extends React.Component {
                             </span>
                         </div>}
                                 center={
-                                    <div className="user-header">{this.props.userName || "welcome"} </div>
+                                    <div className="user-header">{this.props.room.title || "welcome"} </div>
                                 }
                         />
                         <Collapse in={!this.state.open}>
